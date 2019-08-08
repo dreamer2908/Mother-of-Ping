@@ -192,13 +192,13 @@ namespace Mother_of_Ping_CLI
         /// <summary>
         /// Pings the target
         /// </summary>
-        /// <param name="ipAddr">Target victim, defaultIP only</param>
+        /// <param name="hostname">Target victim, either IP address or hostname</param>
         /// <param name="timeout">Timeout limit in ms</param>
         /// <param name="limitRate">Cap the rate down to 1 per second</param>
         /// <param name="replyTime">Output Roundtrip Time</param>
-        public static pingStatus ping(string ipAddr, int timeout, int bufferSize, int ttl, out string replyAddr, out long replyTime, out int replyTtl, Boolean limitRate, int period)
+        public static pingStatus ping(string hostname, int timeout, int bufferSize, int ttl, out string replyAddr, out long replyTime, out int replyTtl, Boolean limitRate, int period)
         {
-            pingStatus pingResult = ping(ipAddr, timeout, bufferSize, ttl, out replyAddr, out replyTime, out replyTtl);
+            pingStatus pingResult = ping(hostname, timeout, bufferSize, ttl, out replyAddr, out replyTime, out replyTtl);
 
             // Reduce ping rate by delaying more if roundtrip time is less than 1000ms
             if (limitRate && replyTime < 1000) Thread.Sleep((int)(1000 - replyTime));
@@ -206,22 +206,8 @@ namespace Mother_of_Ping_CLI
             return pingResult;
         }
 
-        public static pingStatus ping(string ipAddr, int timeout, int bufferSize, int ttl, out string replyAddr, out long replyTime, out int replyTtl)
+        public static pingStatus ping(string hostname, int timeout, int bufferSize, int ttl, out string replyAddr, out long replyTime, out int replyTtl)
         {
-            // Parse victim address
-            IPAddress IP;
-            try
-            {
-                IP = IPAddress.Parse(ipAddr);
-            }
-            catch
-            {
-                replyAddr = string.Empty;
-                replyTime = 0;
-                replyTtl = 0;
-                return pingStatus.generalFailure;
-            }
-
             // Create a new instant
             Ping pingSender = new Ping();
 
@@ -235,13 +221,22 @@ namespace Mother_of_Ping_CLI
             PingOptions options = new PingOptions(ttl, true);
 
             // True work here
-            PingReply reply = pingSender.Send(IP, timeout, buffer, options);
+            PingReply reply = null;
+            pingStatus pingResult;
+
+            try
+            {
+                reply = pingSender.Send(hostname, timeout, buffer, options);
+            }
+            catch (System.Net.NetworkInformation.PingException)
+            {
+            }
 
             // Now compiling result
-            pingStatus pingResult = ipStatusToPingStatus[reply.Status];
-            replyAddr = (reply.Address != null) ? reply.Address.ToString(): string.Empty; // it's null when timeout
-            replyTime = (reply.Status == IPStatus.Success) ? reply.RoundtripTime : 0;
-            replyTtl = (reply.Options != null) ? reply.Options.Ttl : 0; // when unreachable, it's null
+            pingResult = (reply != null) ? ipStatusToPingStatus[reply.Status] : pingStatus.generalFailure;
+            replyAddr = (reply != null && reply.Address != null) ? reply.Address.ToString() : string.Empty; // address is null when timeout
+            replyTime = (reply != null && reply.Status == IPStatus.Success) ? reply.RoundtripTime : 0;
+            replyTtl = (reply != null && reply.Options != null) ? reply.Options.Ttl : 0; // options is null when unreachable
 
             return pingResult;
         }
