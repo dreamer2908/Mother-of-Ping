@@ -143,33 +143,50 @@ namespace Mother_of_Ping_CLI
         #endregion
 
         #region ping work
-        public static string[] pingStatusTable = new string[] { "Online", "Timed out", "Unreachable", "TTL expired", "General failure" };
-        private static readonly Dictionary<IPStatus, int> ipStatusToPingStatus = new Dictionary<IPStatus, int>()
+        public enum pingStatus
         {
-            {IPStatus.BadDestination, 4},
-            {IPStatus.BadHeader, 4},
-            {IPStatus.BadOption, 4},
-            {IPStatus.BadRoute, 4},
-            {IPStatus.DestinationHostUnreachable, 2},
-            {IPStatus.DestinationNetworkUnreachable, 2},
-            {IPStatus.DestinationPortUnreachable, 2},
-            //{IPStatus.DestinationProhibited, 2}, // DestinationProhibited & DestinationProtocolUnreachable have the same value
-            {IPStatus.DestinationProtocolUnreachable, 2},
-            {IPStatus.DestinationScopeMismatch, 2},
-            {IPStatus.DestinationUnreachable, 2},
-            {IPStatus.HardwareError, 4},
-            {IPStatus.IcmpError, 4},
-            {IPStatus.NoResources, 4},
-            {IPStatus.PacketTooBig, 4},
-            {IPStatus.ParameterProblem, 4},
-            {IPStatus.SourceQuench, 4},
-            {IPStatus.Success, 0},
-            {IPStatus.TimedOut, 1},
-            {IPStatus.TimeExceeded, 3},
-            {IPStatus.TtlExpired, 3},
-            {IPStatus.TtlReassemblyTimeExceeded, 3},
-            {IPStatus.Unknown, 4},
-            {IPStatus.UnrecognizedNextHeader, 4}
+            online = 0,
+            timeout = 1,
+            unreachable = 2,
+            ttlExpired = 3,
+            generalFailure = 4
+        }
+
+        public static readonly Dictionary<pingStatus, string> pingStatusToText = new Dictionary<pingStatus, string>()
+        {
+            { pingStatus.online, "Online" },
+            { pingStatus.timeout, "Timed out" },
+            { pingStatus.unreachable, "Unreachable" },
+            { pingStatus.ttlExpired, "TTL expired" },
+            { pingStatus.generalFailure, "General failure" },
+        };
+
+        private static readonly Dictionary<IPStatus, pingStatus> ipStatusToPingStatus = new Dictionary<IPStatus, pingStatus>()
+        {
+            {IPStatus.BadDestination, pingStatus.generalFailure},
+            {IPStatus.BadHeader, pingStatus.generalFailure},
+            {IPStatus.BadOption, pingStatus.generalFailure},
+            {IPStatus.BadRoute, pingStatus.generalFailure},
+            {IPStatus.DestinationHostUnreachable, pingStatus.unreachable},
+            {IPStatus.DestinationNetworkUnreachable, pingStatus.unreachable},
+            {IPStatus.DestinationPortUnreachable, pingStatus.unreachable},
+            //{IPStatus.DestinationProhibited, pingStatus.unreachable}, // DestinationProhibited & DestinationProtocolUnreachable have the same value
+            {IPStatus.DestinationProtocolUnreachable, pingStatus.unreachable},
+            {IPStatus.DestinationScopeMismatch, pingStatus.unreachable},
+            {IPStatus.DestinationUnreachable, pingStatus.unreachable},
+            {IPStatus.HardwareError, pingStatus.generalFailure},
+            {IPStatus.IcmpError, pingStatus.generalFailure},
+            {IPStatus.NoResources, pingStatus.generalFailure},
+            {IPStatus.PacketTooBig, pingStatus.generalFailure},
+            {IPStatus.ParameterProblem, pingStatus.generalFailure},
+            {IPStatus.SourceQuench, pingStatus.generalFailure},
+            {IPStatus.Success, pingStatus.online},
+            {IPStatus.TimedOut, pingStatus.timeout},
+            {IPStatus.TimeExceeded, pingStatus.ttlExpired},
+            {IPStatus.TtlExpired, pingStatus.ttlExpired},
+            {IPStatus.TtlReassemblyTimeExceeded, pingStatus.ttlExpired},
+            {IPStatus.Unknown, pingStatus.generalFailure},
+            {IPStatus.UnrecognizedNextHeader, pingStatus.generalFailure}
         };
 
         /// <summary>
@@ -179,9 +196,9 @@ namespace Mother_of_Ping_CLI
         /// <param name="timeout">Timeout limit in ms</param>
         /// <param name="limitRate">Cap the rate down to 1 per second</param>
         /// <param name="replyTime">Output Roundtrip Time</param>
-        public static int ping(string ipAddr, int timeout, int bufferSize, int ttl, out string replyAddr, out long replyTime, out int replyTtl, Boolean limitRate, int period)
+        public static pingStatus ping(string ipAddr, int timeout, int bufferSize, int ttl, out string replyAddr, out long replyTime, out int replyTtl, Boolean limitRate, int period)
         {
-            int pingResult = ping(ipAddr, timeout, bufferSize, ttl, out replyAddr, out replyTime, out replyTtl);
+            pingStatus pingResult = ping(ipAddr, timeout, bufferSize, ttl, out replyAddr, out replyTime, out replyTtl);
 
             // Reduce ping rate by delaying more if roundtrip time is less than 1000ms
             if (limitRate && replyTime < 1000) Thread.Sleep((int)(1000 - replyTime));
@@ -189,7 +206,7 @@ namespace Mother_of_Ping_CLI
             return pingResult;
         }
 
-        public static int ping(string ipAddr, int timeout, int bufferSize, int ttl, out string replyAddr, out long replyTime, out int replyTtl)
+        public static pingStatus ping(string ipAddr, int timeout, int bufferSize, int ttl, out string replyAddr, out long replyTime, out int replyTtl)
         {
             // Parse victim address
             IPAddress IP;
@@ -202,7 +219,7 @@ namespace Mother_of_Ping_CLI
                 replyAddr = string.Empty;
                 replyTime = 0;
                 replyTtl = 0;
-                return 4;
+                return pingStatus.generalFailure;
             }
 
             // Create a new instant
@@ -221,7 +238,7 @@ namespace Mother_of_Ping_CLI
             PingReply reply = pingSender.Send(IP, timeout, buffer, options);
 
             // Now compiling result
-            int pingResult = ipStatusToPingStatus[reply.Status];
+            pingStatus pingResult = ipStatusToPingStatus[reply.Status];
             replyAddr = (reply.Address != null) ? reply.Address.ToString(): string.Empty; // it's null when timeout
             replyTime = (reply.Status == IPStatus.Success) ? reply.RoundtripTime : 0;
             replyTtl = (reply.Options != null) ? reply.Options.Ttl : 0; // when unreachable, it's null
@@ -245,10 +262,10 @@ namespace Mother_of_Ping_CLI
                 // measure how much time ping and other works take
                 Stopwatch watch = Stopwatch.StartNew();
 
-                int result = ping(hostname, timeout, bufferSize, ttl, out string replyAddr, out long replyTime, out int replyTtl);
+                pingStatus result = ping(hostname, timeout, bufferSize, ttl, out string replyAddr, out long replyTime, out int replyTtl);
                 // Console.WriteLine(tools.pingStatusTable[result] + " " + replyAddr + " " + replyTime.ToString() + " " + replyTtl.ToString());
                 totalCount++;
-                if (result == 0)
+                if (result == pingStatus.online)
                 {
                     upCount++;
                     consecutiveDownCount = 0;
