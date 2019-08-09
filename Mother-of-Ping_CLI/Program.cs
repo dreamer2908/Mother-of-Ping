@@ -10,18 +10,6 @@ namespace Mother_of_Ping_CLI
     {
         static void Main(string[] args)
         {
-            //string ipAddr = "10.30.11.110";
-            //int timeout = 5000;
-            //int bufferSize = 32;
-            //int ttl = 128;
-            //bool wait1s = true;
-
-            //for (int i = 0; i < 0; i++)
-            //{
-            //    int result = tools.ping(ipAddr, timeout, bufferSize, ttl, out string replyAddr, out long replyTime, out int replyTtl, wait1s, 1000);
-            //    Console.WriteLine(tools.pingStatusTable[result] + " " + replyAddr + " " + replyTime.ToString() + " " + replyTtl.ToString());
-            //}
-
             List<string[]> hostList = tools.csvHostListParser(@"D:\Code\MonitorHost\IP_List_2019-07-05 - test 1.csv", false);
             tools.printListOfStringArray(hostList);
 
@@ -37,6 +25,7 @@ namespace Mother_of_Ping_CLI
 
                 work.id = i;
                 work.hostname = hostList[i][0];
+                work.description = hostList[i][1];
                 work.period = 1000;
                 work.timeout = 1000;
                 work.bufferSize = 32;
@@ -75,20 +64,36 @@ namespace Mother_of_Ping_CLI
                 workForce[i].stopPing();
             }
 
-            // check if the target threads received is the same as what main sended
-            //for (int i = 0; i < numOfHost; i++)
-            //{
-            //    string target = hostList[i][0];
-            //    string realTarget = actualHostList[i];
-            //    if (target == realTarget)
-            //    {
-            //        Console.WriteLine("Host " + i.ToString() + " matches");
-            //    }
-            //    else
-            //    {
-            //        Console.WriteLine("Host " + i.ToString() + " NOT matches");
-            //    }
-            //}
+            Thread.Sleep(3000);
+
+            pingWork worker = workForce[0];
+
+            tools.printVariableNameAndValue(nameof(worker.id), worker.id);
+            tools.printVariableNameAndValue(nameof(worker.hostname), worker.hostname);
+            tools.printVariableNameAndValue(nameof(worker.description), worker.description);
+            tools.printVariableNameAndValue(nameof(worker.period), worker.period);
+            tools.printVariableNameAndValue(nameof(worker.timeout), worker.timeout);
+            tools.printVariableNameAndValue(nameof(worker.bufferSize), worker.bufferSize);
+            tools.printVariableNameAndValue(nameof(worker.ttl), worker.ttl);
+            tools.printVariableNameAndValue(nameof(worker.threadIsWorking), worker.threadIsWorking);
+            tools.printVariableNameAndValue(nameof(worker.flushLogSignal), worker.flushLogSignal);
+            tools.printVariableNameAndValue(nameof(worker.totalCount), worker.totalCount);
+            tools.printVariableNameAndValue(nameof(worker.downCount), worker.downCount);
+            tools.printVariableNameAndValue(nameof(worker.upCount), worker.upCount);
+            tools.printVariableNameAndValue(nameof(worker.consecutiveDownCount), worker.consecutiveDownCount);
+            tools.printVariableNameAndValue(nameof(worker.maxConsecutiveDownCount), worker.maxConsecutiveDownCount);
+            tools.printVariableNameAndValue(nameof(worker.maxConsecutiveDownTimestamp), worker.maxConsecutiveDownTimestamp);
+            tools.printVariableNameAndValue(nameof(worker.percentDown), worker.percentDown);
+            tools.printVariableNameAndValue(nameof(worker.lastReply_result), worker.lastReply_result);
+            tools.printVariableNameAndValue(nameof(worker.lastReply_address), worker.lastReply_address);
+            tools.printVariableNameAndValue(nameof(worker.lastReply_time), worker.lastReply_time);
+            tools.printVariableNameAndValue(nameof(worker.lastReply_ttl), worker.lastReply_ttl);
+            tools.printVariableNameAndValue(nameof(worker.avgPingTime), worker.avgPingTime);
+            tools.printVariableNameAndValue(nameof(worker.minPingTime), worker.minPingTime);
+            tools.printVariableNameAndValue(nameof(worker.maxPingTime), worker.maxPingTime);
+            tools.printVariableNameAndValue(nameof(worker.lastUpTimestamp), worker.lastUpTimestamp);
+            tools.printVariableNameAndValue(nameof(worker.lastDownTimestamp), worker.lastDownTimestamp);
+            tools.printVariableNameAndValue(nameof(worker.order), worker.order);
 
             Console.ReadLine();
         }

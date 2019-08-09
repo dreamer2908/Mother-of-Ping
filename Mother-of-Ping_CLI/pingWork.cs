@@ -13,6 +13,7 @@ namespace Mother_of_Ping_CLI
     {
         public int id { get; set; }
         public string hostname { get; set; }
+        public string description { get; set; }
         public int period { get; set; }
         public int timeout { get; set; }
         public int bufferSize { get; set; }
@@ -20,16 +21,23 @@ namespace Mother_of_Ping_CLI
         public bool threadIsWorking { get; set; }
         public bool flushLogSignal { get; set; }
 
-        public bool totalCount { get; }
-        public bool downCount { get; }
-        public bool upCount { get; }
-
-        private string _lastReply_address;
-        public string lastReply_address { get { return _lastReply_address; } }
-        private long _lastReply_time;
-        public long lastReply_time { get { return _lastReply_time; } }
-        private int _lastReply_ttl;
-        public int lastReply_ttl { get { return _lastReply_ttl; } }
+        public int totalCount { get; private set; }
+        public int downCount { get; private set; }
+        public int upCount { get; private set; }
+        public int consecutiveDownCount { get; private set; }
+        public int maxConsecutiveDownCount { get; private set; }
+        public string maxConsecutiveDownTimestamp { get; private set; }
+        public string percentDown { get; private set; }
+        public pingStatus lastReply_result { get; private set; }
+        public string lastReply_address { get; private set; }
+        public long lastReply_time { get; private set; }
+        public int lastReply_ttl { get; private set; }
+        public long avgPingTime { get; private set; }
+        public long minPingTime { get; private set; }
+        public long maxPingTime { get; private set; }
+        public string lastUpTimestamp { get; private set; }
+        public string lastDownTimestamp { get; private set; }
+        public int order { get { return id; } }
 
         private bool stopSignal = false;
         private Thread thread;
@@ -134,10 +142,10 @@ namespace Mother_of_Ping_CLI
 
         private void backgroundPing()
         {
-            int totalCount = 0;
-            int downCount = 0;
-            int upCount = 0;
-            int consecutiveDownCount = 0;
+            totalCount = 0;
+            downCount = 0;
+            upCount = 0;
+            consecutiveDownCount = 0;
 
             while (!stopSignal)
             {
@@ -146,19 +154,41 @@ namespace Mother_of_Ping_CLI
                 // measure how much time ping and other works take
                 Stopwatch watch = Stopwatch.StartNew();
 
-                pingStatus result = singlePing(hostname, timeout, bufferSize, ttl, out _lastReply_address, out long _lastReply_time, out int _lastReply_ttl);
+                string timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                lastReply_result = singlePing(hostname, timeout, bufferSize, ttl, out string replyAddr, out long replyTime, out int replyTtl);
+                lastReply_address = replyAddr;
+                lastReply_time = replyTime;
+                lastReply_ttl = replyTtl;
                 // Console.WriteLine(tools.pingStatusTable[result] + " " + replyAddr + " " + replyTime.ToString() + " " + replyTtl.ToString());
+
+                // stat update
                 totalCount++;
-                if (result == pingStatus.online)
+                if (lastReply_result == pingStatus.online)
                 {
                     upCount++;
                     consecutiveDownCount = 0;
+                    lastUpTimestamp = timestamp;
                 }
                 else
                 {
                     downCount++;
                     consecutiveDownCount++;
+                    lastDownTimestamp = timestamp;
+
+                    if (consecutiveDownCount >= maxConsecutiveDownCount)
+                    {
+                        maxConsecutiveDownCount = consecutiveDownCount;
+                        maxConsecutiveDownTimestamp = timestamp;
+                    }
                 }
+
+                percentDown = string.Format("{0:0.##}%", ((float)downCount / totalCount));
+
+                if (lastReply_time > maxPingTime)
+                    maxPingTime = lastReply_time;
+                if (lastReply_time < minPingTime)
+                    minPingTime = lastReply_time;
+                // todo: avgPingTime
 
                 // todo: create log line
 

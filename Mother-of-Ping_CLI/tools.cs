@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.VisualBasic.FileIO;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace Mother_of_Ping_CLI
 {
@@ -83,6 +85,35 @@ namespace Mother_of_Ping_CLI
                 object s = arr[i];
                 Console.WriteLine(i.ToString() + ": " + s.ToString());
             }
+        }
+
+        // From http://web.archive.org/web/20130124234247/http://abdullin.com/journal/2008/12/13/how-to-find-out-variable-or-parameter-name-in-c.html
+        //public static void Check<T>(Expression<Func<T>> expr)
+        //{
+        //    var body = ((MemberExpression)expr.Body);
+        //    Console.WriteLine("Name is: {0}", body.Member.Name);
+        //    Console.WriteLine("Value is: {0}", ((FieldInfo)body.Member).GetValue(((ConstantExpression)body.Expression).Value));
+        //}
+
+        //public static void Check<T>(Func<T> expr)
+        //{
+        //    // get IL code behind the delegate
+        //    var il = expr.Method.GetMethodBody().GetILAsByteArray();
+        //    // bytes 2-6 represent the field handle
+        //    var fieldHandle = BitConverter.ToInt32(il, 2);
+        //    // resolve the handle
+        //    var field = expr.Target.GetType()
+        //      .Module.ResolveField(fieldHandle);
+
+        //    Console.WriteLine("Name is: {0}", field.Name);
+        //    Console.WriteLine("Value is: {0}", expr());
+        //}
+
+        public static void printVariableNameAndValue(string name, object value)
+        {
+            Console.Write(name);
+            Console.Write(" = ");
+            Console.WriteLine(value);
         }
         #endregion
 
