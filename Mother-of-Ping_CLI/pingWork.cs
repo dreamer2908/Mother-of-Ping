@@ -20,6 +20,7 @@ namespace Mother_of_Ping_CLI
         public int ttl { get; set; }
         public bool threadIsWorking { get; set; }
         public bool flushLogSignal { get; set; }
+        public string threadLastActiveTimestamp { get; private set; }
 
         public int totalCount { get; private set; }
         public int downCount { get; private set; }
@@ -149,7 +150,7 @@ namespace Mother_of_Ping_CLI
                 // measure how much time ping and other works take
                 Stopwatch watch = Stopwatch.StartNew();
 
-                string timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                threadLastActiveTimestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                 lastReply_result = singlePing(hostname, timeout, bufferSize, ttl, out string replyAddr, out long replyTime, out int replyTtl);
                 lastReply_address = replyAddr;
                 lastReply_time = replyTime;
@@ -157,37 +158,7 @@ namespace Mother_of_Ping_CLI
                 // Console.WriteLine(tools.pingStatusTable[result] + " " + replyAddr + " " + replyTime.ToString() + " " + replyTtl.ToString());
 
                 // stat update
-                totalCount++;
-                if (lastReply_result == pingStatus.online)
-                {
-                    upCount++;
-                    consecutiveDownCount = 0;
-                    lastUpTimestamp = timestamp;
-
-                    avgPingTime = (upCount == 1) ? lastReply_time : ((avgPingTime * (upCount - 1)) + lastReply_time) / upCount;
-                    if (lastReply_time > maxPingTime)
-                    {
-                        maxPingTime = lastReply_time;
-                    }
-                    if (lastReply_time < minPingTime || minPingTime < 0)
-                    {
-                        minPingTime = lastReply_time;
-                    }
-                }
-                else
-                {
-                    downCount++;
-                    consecutiveDownCount++;
-                    lastDownTimestamp = timestamp;
-
-                    if (consecutiveDownCount >= maxConsecutiveDownCount)
-                    {
-                        maxConsecutiveDownCount = consecutiveDownCount;
-                        maxConsecutiveDownTimestamp = timestamp;
-                    }
-                }
-
-                percentDown = string.Format("{0:0.##}%", ((float)downCount / totalCount));
+                updateStat();
 
                 // todo: create log line
 
@@ -222,6 +193,41 @@ namespace Mother_of_Ping_CLI
             //Console.WriteLine(hostname + ": exiting...");
             Console.WriteLine(hostname + ": " + totalCount.ToString() + " total, " + upCount.ToString() + " up, " + downCount.ToString() + " down");
 
+        }
+
+        private void updateStat()
+        {
+            totalCount++;
+            if (lastReply_result == pingStatus.online)
+            {
+                upCount++;
+                consecutiveDownCount = 0;
+                lastUpTimestamp = threadLastActiveTimestamp;
+
+                avgPingTime = (upCount == 1) ? lastReply_time : ((avgPingTime * (upCount - 1)) + lastReply_time) / upCount;
+                if (lastReply_time > maxPingTime)
+                {
+                    maxPingTime = lastReply_time;
+                }
+                if (lastReply_time < minPingTime || minPingTime < 0)
+                {
+                    minPingTime = lastReply_time;
+                }
+            }
+            else
+            {
+                downCount++;
+                consecutiveDownCount++;
+                lastDownTimestamp = threadLastActiveTimestamp;
+
+                if (consecutiveDownCount >= maxConsecutiveDownCount)
+                {
+                    maxConsecutiveDownCount = consecutiveDownCount;
+                    maxConsecutiveDownTimestamp = threadLastActiveTimestamp;
+                }
+            }
+
+            percentDown = string.Format("{0:0.##}%", ((float)downCount / totalCount));
         }
 
         public void resetStat()
