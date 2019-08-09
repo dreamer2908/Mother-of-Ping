@@ -32,7 +32,7 @@ namespace Mother_of_Ping_CLI
         public string lastReply_address { get; private set; }
         public long lastReply_time { get; private set; }
         public int lastReply_ttl { get; private set; }
-        public long avgPingTime { get; private set; }
+        public float avgPingTime { get; private set; }
         public long minPingTime { get; private set; }
         public long maxPingTime { get; private set; }
         public string lastUpTimestamp { get; private set; }
@@ -168,6 +168,7 @@ namespace Mother_of_Ping_CLI
                     upCount++;
                     consecutiveDownCount = 0;
                     lastUpTimestamp = timestamp;
+                    avgPingTime = ((avgPingTime * (upCount - 1)) + lastReply_time) / upCount;
                 }
                 else
                 {
@@ -188,7 +189,6 @@ namespace Mother_of_Ping_CLI
                     maxPingTime = lastReply_time;
                 if (lastReply_time < minPingTime)
                     minPingTime = lastReply_time;
-                // todo: avgPingTime
 
                 // todo: create log line
 
