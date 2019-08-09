@@ -41,7 +41,7 @@ namespace Mother_of_Ping_CLI
                 int timeout = 1000;
                 int bufferSize = 32;
                 int ttl = 128;
-                var thread = new Thread(() => tools.backgroundPing(hostname, period, timeout, bufferSize, ttl, ref threadAliveSignal[threadId], ref fllushLogSignal[threadId], ref continueMonitor, ref actualHostList[threadId]));
+                var thread = new Thread(() => pingWork.backgroundPing(hostname, period, timeout, bufferSize, ttl, ref threadAliveSignal[threadId], ref fllushLogSignal[threadId], ref continueMonitor, ref actualHostList[threadId]));
                 thread.Start();
             }
 
