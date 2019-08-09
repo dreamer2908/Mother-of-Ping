@@ -11,6 +11,29 @@ namespace Mother_of_Ping_CLI
 {
     class pingWork
     {
+        public int id { get; set; }
+        public string hostname { get; set; }
+        public int period { get; set; }
+        public int timeout { get; set; }
+        public int bufferSize { get; set; }
+        public int ttl { get; set; }
+        public bool threadIsWorking { get; set; }
+        public bool flushLogSignal { get; set; }
+
+        public bool totalCount { get; }
+        public bool downCount { get; }
+        public bool upCount { get; }
+
+        private string _lastReply_address;
+        public string lastReply_address { get { return _lastReply_address; } }
+        private long _lastReply_time;
+        public long lastReply_time { get { return _lastReply_time; } }
+        private int _lastReply_ttl;
+        public int lastReply_ttl { get { return _lastReply_ttl; } }
+
+        private bool stopSignal = false;
+        private Thread thread;
+
         public enum pingStatus
         {
             online = 0,
@@ -64,9 +87,9 @@ namespace Mother_of_Ping_CLI
         /// <param name="timeout">Timeout limit in ms</param>
         /// <param name="limitRate">Cap the rate down to 1 per second</param>
         /// <param name="replyTime">Output Roundtrip Time</param>
-        public static pingStatus ping(string hostname, int timeout, int bufferSize, int ttl, out string replyAddr, out long replyTime, out int replyTtl, Boolean limitRate, int period)
+        public static pingStatus singlePing(string hostname, int timeout, int bufferSize, int ttl, out string replyAddr, out long replyTime, out int replyTtl, Boolean limitRate, int period)
         {
-            pingStatus pingResult = ping(hostname, timeout, bufferSize, ttl, out replyAddr, out replyTime, out replyTtl);
+            pingStatus pingResult = singlePing(hostname, timeout, bufferSize, ttl, out replyAddr, out replyTime, out replyTtl);
 
             // Reduce ping rate by delaying more if roundtrip time is less than 1000ms
             if (limitRate && replyTime < 1000) Thread.Sleep((int)(1000 - replyTime));
@@ -74,7 +97,7 @@ namespace Mother_of_Ping_CLI
             return pingResult;
         }
 
-        public static pingStatus ping(string hostname, int timeout, int bufferSize, int ttl, out string replyAddr, out long replyTime, out int replyTtl)
+        public static pingStatus singlePing(string hostname, int timeout, int bufferSize, int ttl, out string replyAddr, out long replyTime, out int replyTtl)
         {
             // Create a new instant
             Ping pingSender = new Ping();
@@ -109,23 +132,21 @@ namespace Mother_of_Ping_CLI
             return pingResult;
         }
 
-        public static void backgroundPing(string hostname, int period, int timeout, int bufferSize, int ttl, ref bool threadAlive, ref bool flushLogSignal, ref bool continueMonitor, ref string actualHost)
+        private void backgroundPing()
         {
-            actualHost = hostname;
-
             int totalCount = 0;
             int downCount = 0;
             int upCount = 0;
             int consecutiveDownCount = 0;
 
-            while (continueMonitor)
+            while (!stopSignal)
             {
-                threadAlive = true;
+                threadIsWorking = true;
 
                 // measure how much time ping and other works take
                 Stopwatch watch = Stopwatch.StartNew();
 
-                pingStatus result = ping(hostname, timeout, bufferSize, ttl, out string replyAddr, out long replyTime, out int replyTtl);
+                pingStatus result = singlePing(hostname, timeout, bufferSize, ttl, out _lastReply_address, out long _lastReply_time, out int _lastReply_ttl);
                 // Console.WriteLine(tools.pingStatusTable[result] + " " + replyAddr + " " + replyTime.ToString() + " " + replyTtl.ToString());
                 totalCount++;
                 if (result == pingStatus.online)
@@ -172,6 +193,17 @@ namespace Mother_of_Ping_CLI
             //Console.WriteLine(hostname + ": exiting...");
             Console.WriteLine(hostname + ": " + totalCount.ToString() + " total, " + upCount.ToString() + " up, " + downCount.ToString() + " down");
 
+        }
+
+        public void startPing()
+        {
+            thread = new Thread(() => this.backgroundPing());
+            thread.Start();
+        }
+
+        public void stopPing()
+        {
+            stopSignal = true;
         }
     }
 }

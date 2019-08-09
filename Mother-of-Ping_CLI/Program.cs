@@ -26,28 +26,35 @@ namespace Mother_of_Ping_CLI
             tools.printListOfStringArray(hostList);
 
             int numOfHost = hostList.Count;
-            bool[] threadAliveSignal = new bool[numOfHost];
-            bool[] fllushLogSignal = new bool[numOfHost];
-            string[] actualHostList = new string[numOfHost];
-            bool continueMonitor = true;
+            pingWork[] workForce = new pingWork[numOfHost];
 
             Console.WriteLine("numOfHost: " + numOfHost.ToString());
 
             for (int i = 0; i < numOfHost; i++)
             {
-                int threadId = i;
-                string hostname = hostList[i][0];
-                int period = 1000;
-                int timeout = 1000;
-                int bufferSize = 32;
-                int ttl = 128;
-                var thread = new Thread(() => pingWork.backgroundPing(hostname, period, timeout, bufferSize, ttl, ref threadAliveSignal[threadId], ref fllushLogSignal[threadId], ref continueMonitor, ref actualHostList[threadId]));
-                thread.Start();
+                pingWork work = new pingWork();
+                workForce[i] = work;
+
+                work.id = i;
+                work.hostname = hostList[i][0];
+                work.period = 1000;
+                work.timeout = 1000;
+                work.bufferSize = 32;
+                work.ttl = 128;
+
+                work.startPing();
             }
 
             for (int i = 0; i < 30; i++)
             {
                 Console.WriteLine("threadAliveSignal: ");
+                bool[] threadAliveSignal = new bool[numOfHost];
+                for (int j = 0; j < numOfHost; j++)
+                {
+                    threadAliveSignal[j] = workForce[j].threadIsWorking;
+                    workForce[j].threadIsWorking = false;
+                }
+
                 //tools.printBoolArray(threadAliveSignal);
                 Console.WriteLine("True: " + tools.countValueBoolArray(threadAliveSignal, true).ToString());
                 Console.WriteLine("False: " + tools.countValueBoolArray(threadAliveSignal, false).ToString());
@@ -56,16 +63,17 @@ namespace Mother_of_Ping_CLI
                 {
                     if (threadAliveSignal[j] == false)
                     {
-                        Console.WriteLine("Missed #" + j.ToString() + " of " + actualHostList[j]);
+                        Console.WriteLine("Missed #" + j.ToString() + " of " + hostList[j][0]);
                     }
                 }
-
-                tools.sanitizeBoolArray(threadAliveSignal);
 
                 Thread.Sleep(1000);
             }
 
-            continueMonitor = false;
+            for (int i = 0; i < numOfHost; i++)
+            {
+                workForce[i].stopPing();
+            }
 
             // check if the target threads received is the same as what main sended
             //for (int i = 0; i < numOfHost; i++)
