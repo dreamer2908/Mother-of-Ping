@@ -163,7 +163,16 @@ namespace Mother_of_Ping_CLI
                     upCount++;
                     consecutiveDownCount = 0;
                     lastUpTimestamp = timestamp;
-                    avgPingTime = ((avgPingTime * (upCount - 1)) + lastReply_time) / upCount;
+
+                    avgPingTime = (upCount == 1) ? lastReply_time : ((avgPingTime * (upCount - 1)) + lastReply_time) / upCount;
+                    if (lastReply_time > maxPingTime)
+                    {
+                        maxPingTime = lastReply_time;
+                    }
+                    if (lastReply_time < minPingTime || minPingTime < 0)
+                    {
+                        minPingTime = lastReply_time;
+                    }
                 }
                 else
                 {
@@ -179,11 +188,6 @@ namespace Mother_of_Ping_CLI
                 }
 
                 percentDown = string.Format("{0:0.##}%", ((float)downCount / totalCount));
-
-                if (lastReply_time > maxPingTime)
-                    maxPingTime = lastReply_time;
-                if (lastReply_time < minPingTime)
-                    minPingTime = lastReply_time;
 
                 // todo: create log line
 
@@ -243,6 +247,11 @@ namespace Mother_of_Ping_CLI
 
         public void startPing()
         {
+            if (thread == null) // reset stats at first run
+            {
+                resetStat();
+            }
+
             thread = new Thread(() => this.backgroundPing());
             thread.Start();
         }
