@@ -142,11 +142,6 @@ namespace Mother_of_Ping_CLI
 
         private void backgroundPing()
         {
-            totalCount = 0;
-            downCount = 0;
-            upCount = 0;
-            consecutiveDownCount = 0;
-
             while (!stopSignal)
             {
                 threadIsWorking = true;
@@ -223,6 +218,27 @@ namespace Mother_of_Ping_CLI
             //Console.WriteLine(hostname + ": exiting...");
             Console.WriteLine(hostname + ": " + totalCount.ToString() + " total, " + upCount.ToString() + " up, " + downCount.ToString() + " down");
 
+        }
+
+        public void resetStat()
+        {
+            maxConsecutiveDownCount = 0;
+            maxConsecutiveDownTimestamp = string.Empty;
+            percentDown = string.Empty;
+            lastReply_result = pingStatus.online;
+            lastReply_address = string.Empty;
+            lastReply_time = -1;
+            lastReply_ttl = -1;
+            avgPingTime = -1;
+            minPingTime = -1;
+            maxPingTime = -1;
+            lastUpTimestamp = string.Empty;
+            lastDownTimestamp = string.Empty;
+
+            totalCount = 0;
+            downCount = 0;
+            upCount = 0;
+            consecutiveDownCount = 0;
         }
 
         public void startPing()
