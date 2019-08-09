@@ -6,11 +6,17 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Threading;
+using System.Collections.Concurrent;
 
 namespace Mother_of_Ping_CLI
 {
     class pingWork
     {
+        public pingWork()
+        {
+            resetStat();
+        }
+
         public int id { get; set; }
         public string hostname { get; set; }
         public string description { get; set; }
@@ -42,6 +48,8 @@ namespace Mother_of_Ping_CLI
 
         private bool stopSignal = false;
         private Thread thread;
+
+        public ConcurrentQueue<string[]> log;
 
         public enum pingStatus
         {
@@ -160,7 +168,8 @@ namespace Mother_of_Ping_CLI
                 // stat update
                 updateStat();
 
-                // todo: create log line
+                // create log line
+                addLastPingToLog();
 
                 if (flushLogSignal)
                 {
@@ -193,6 +202,22 @@ namespace Mother_of_Ping_CLI
             //Console.WriteLine(hostname + ": exiting...");
             Console.WriteLine(hostname + ": " + totalCount.ToString() + " total, " + upCount.ToString() + " up, " + downCount.ToString() + " down");
 
+        }
+
+        private void addLastPingToLog()
+        {
+            // log format: 0<hostname>,1<timestamp>,2<result>,3<round trip in ms>,4<TTL>,5<consecutiveDownCount>,6<check me>
+            string[] line = new string[7] {
+                hostname,
+                threadLastActiveTimestamp,
+                pingStatusToText[lastReply_result],
+                lastReply_time.ToString(),
+                lastReply_ttl.ToString(),
+                consecutiveDownCount.ToString(),
+                (consecutiveDownCount >= 5) ? "x" : string.Empty
+            };
+
+            log.Enqueue(line);
         }
 
         private void updateStat()
@@ -249,15 +274,12 @@ namespace Mother_of_Ping_CLI
             downCount = 0;
             upCount = 0;
             consecutiveDownCount = 0;
+
+            log = new ConcurrentQueue<string[]>();
         }
 
         public void startPing()
         {
-            if (thread == null) // reset stats at first run
-            {
-                resetStat();
-            }
-
             thread = new Thread(() => this.backgroundPing());
             thread.Start();
         }

@@ -95,6 +95,15 @@ namespace Mother_of_Ping_CLI
             tools.printVariableNameAndValue(nameof(worker.lastDownTimestamp), worker.lastDownTimestamp);
             tools.printVariableNameAndValue(nameof(worker.order), worker.order);
 
+            int logCount = worker.log.Count;
+            for (int i = 0; i < logCount; i++)
+            {
+                if (worker.log.TryDequeue(out string[] logLine))
+                {
+                    tools.printObjectArray((object[])logLine);
+                }
+            }
+
             Console.ReadLine();
         }
     }
