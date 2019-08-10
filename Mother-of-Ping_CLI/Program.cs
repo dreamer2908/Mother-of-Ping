@@ -104,6 +104,18 @@ namespace Mother_of_Ping_CLI
                 }
             }
 
+            int globalLogCount = pingWork.globalLog.Count;
+            Console.WriteLine("\n\nGlobal log: {0}", globalLogCount);
+
+            for (int i = 0; i < globalLogCount; i++)
+            {
+                if (pingWork.globalLog.TryDequeue(out string[] logLine))
+                {
+                    Console.WriteLine("=== {0} ===", i);
+                    tools.printObjectArray((object[])logLine);
+                }
+            }
+
             Console.ReadLine();
         }
     }

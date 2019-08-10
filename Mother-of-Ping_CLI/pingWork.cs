@@ -17,6 +17,11 @@ namespace Mother_of_Ping_CLI
             resetStat();
         }
 
+        static pingWork()
+        {
+            globalLog = new ConcurrentQueue<string[]>();
+        }
+
         public int id { get; set; }
         public string hostname { get; set; }
         public string description { get; set; }
@@ -50,6 +55,7 @@ namespace Mother_of_Ping_CLI
         private Thread thread;
 
         public ConcurrentQueue<string[]> log;
+        public static ConcurrentQueue<string[]> globalLog;
 
         public enum pingStatus
         {
@@ -218,6 +224,7 @@ namespace Mother_of_Ping_CLI
             };
 
             log.Enqueue(line);
+            globalLog.Enqueue(line);
         }
 
         private void updateStat()
