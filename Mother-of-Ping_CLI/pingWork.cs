@@ -227,12 +227,12 @@ namespace Mother_of_Ping_CLI
                 consecutiveDownCount = 0;
                 lastUpTimestamp = threadLastActiveTimestamp;
 
-                avgPingTime = (upCount == 1) ? lastReply_time : ((avgPingTime * (upCount - 1)) + lastReply_time) / upCount;
-                if (lastReply_time > maxPingTime)
+                avgPingTime = ((avgPingTime * (upCount - 1)) + lastReply_time) / upCount;
+                if (lastReply_time > maxPingTime || upCount == 1)
                 {
                     maxPingTime = lastReply_time;
                 }
-                if (lastReply_time < minPingTime || minPingTime < 0)
+                if (lastReply_time < minPingTime || upCount == 1)
                 {
                     minPingTime = lastReply_time;
                 }
@@ -250,7 +250,7 @@ namespace Mother_of_Ping_CLI
                 }
             }
 
-            percentDown = string.Format("{0:0.##}%", ((float)downCount / totalCount));
+            percentDown = string.Format("{0:0.##}%", (100.0 * downCount / totalCount));
         }
 
         public void resetStat()
