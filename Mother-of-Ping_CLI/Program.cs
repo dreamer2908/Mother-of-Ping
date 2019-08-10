@@ -104,6 +104,8 @@ namespace Mother_of_Ping_CLI
                 }
             }
 
+            tools.writeCsv_ConcurrentQueue(pingWork.globalLog, "globalLog.csv");
+
             int globalLogCount = pingWork.globalLog.Count;
             Console.WriteLine("\n\nGlobal log: {0}", globalLogCount);
 

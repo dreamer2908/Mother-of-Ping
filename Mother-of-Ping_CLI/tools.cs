@@ -4,6 +4,8 @@ using System.IO;
 using Microsoft.VisualBasic.FileIO;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Collections.Concurrent;
+using System.Text;
 
 namespace Mother_of_Ping_CLI
 {
@@ -164,6 +166,39 @@ namespace Mother_of_Ping_CLI
                         result.Add(elements);
                 }
             }
+            return result;
+        }
+
+        public static void writeCsv_ConcurrentQueue(ConcurrentQueue<string[]> log, string filename)
+        {
+            StringBuilder sb = new StringBuilder();
+            int logCount = log.Count;
+            for (int i = 0; i < logCount; i++)
+            {
+                if (log.TryDequeue(out string[] logLine))
+                {
+                    for (int j = 0; j < logLine.Length; j++)
+                    {
+                        logLine[j] = quoteStringForCsv(logLine[j]);
+                    }
+                    sb.AppendLine(string.Join(",", logLine));
+                }
+            }
+
+            File.AppendAllText(filename, sb.ToString());
+        }
+
+        // see https://en.m.wikipedia.org/wiki/Comma-separated_values for what to quote
+        private static string quoteStringForCsv(string input)
+        {
+            string result = input;
+
+            if (result.Contains(",") || result.Contains("\"") || result.Contains("\n") || result.Contains("\r"))
+            {
+                result = result.Replace("\"", "\"\"");
+                result = "\"" + result + "\"";
+            }
+
             return result;
         }
 
