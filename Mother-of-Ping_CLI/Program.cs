@@ -76,7 +76,6 @@ namespace Mother_of_Ping_CLI
             tools.printVariableNameAndValue(nameof(worker.bufferSize), worker.bufferSize);
             tools.printVariableNameAndValue(nameof(worker.ttl), worker.ttl);
             tools.printVariableNameAndValue(nameof(worker.threadIsWorking), worker.threadIsWorking);
-            tools.printVariableNameAndValue(nameof(worker.flushLogSignal), worker.flushLogSignal);
             tools.printVariableNameAndValue(nameof(worker.totalCount), worker.totalCount);
             tools.printVariableNameAndValue(nameof(worker.downCount), worker.downCount);
             tools.printVariableNameAndValue(nameof(worker.upCount), worker.upCount);
@@ -104,7 +103,7 @@ namespace Mother_of_Ping_CLI
                 }
             }
 
-            tools.writeCsv_ConcurrentQueue(pingWork.globalLog, "globalLog.csv");
+            tools.writeCsv_ConcurrentQueue(pingWork.globalLog, "globalLog.csv", true);
 
             int globalLogCount = pingWork.globalLog.Count;
             Console.WriteLine("\n\nGlobal log: {0}", globalLogCount);
@@ -117,6 +116,8 @@ namespace Mother_of_Ping_CLI
                     tools.printObjectArray((object[])logLine);
                 }
             }
+
+            tools.generateCsvReport(workForce, "session_report.csv");
 
             Console.ReadLine();
         }

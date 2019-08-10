@@ -169,7 +169,7 @@ namespace Mother_of_Ping_CLI
             return result;
         }
 
-        public static void writeCsv_ConcurrentQueue(ConcurrentQueue<string[]> log, string filename)
+        public static void writeCsv_ConcurrentQueue(ConcurrentQueue<string[]> log, string filename, bool overwrite)
         {
             StringBuilder sb = new StringBuilder();
             int logCount = log.Count;
@@ -185,7 +185,14 @@ namespace Mother_of_Ping_CLI
                 }
             }
 
-            File.AppendAllText(filename, sb.ToString());
+            if (overwrite)
+            {
+                File.WriteAllText(filename, sb.ToString());
+            }
+            else
+            {
+                File.AppendAllText(filename, sb.ToString());
+            }
         }
 
         // see https://en.m.wikipedia.org/wiki/Comma-separated_values for what to quote
@@ -200,6 +207,58 @@ namespace Mother_of_Ping_CLI
             }
 
             return result;
+        }
+
+        #endregion
+
+        #region reports
+        public static void generateCsvReport(pingWork[] workForce, string filename)
+        {
+            ConcurrentQueue<string[]> contents = new ConcurrentQueue<string[]>();
+            string[] header = new string[] {
+                "Host Name", // 0
+                "Description", // 1
+                "Reply IP Address", // 2
+                "Succeed Count", // 3
+                "Failed Count", // 4
+                "Consecutive Failed Count", // 5
+                "Max Consecutive Failed Count", // 6
+                "Max Consecutive Failed Time", // 7
+                "% Failed", // 8
+                "Last Ping Status", // 9
+                "Last Ping Time", // 10
+                "Average Ping Time", // 11
+                "Last Succeed On", // 12
+                "Last Failed On", // 13
+                "Minimum Ping Time", // 14
+                "Maximum Ping Time" // 15
+            };
+            contents.Enqueue(header);
+
+            foreach (pingWork work in workForce)
+            {
+                string[] line = new string[] {
+                    work.hostname, // 0
+                    work.description, // 1
+                    work.lastReply_address, // 2
+                    work.upCount.ToString(), // 3
+                    work.downCount.ToString(), // 4
+                    work.consecutiveDownCount.ToString(), // 5
+                    work.maxConsecutiveDownCount.ToString(), // 6
+                    work.maxConsecutiveDownTimestamp, // 7
+                    work.percentDown, // 8
+                    pingWork.pingStatusToText[work.lastReply_result], // 9
+                    work.lastReply_time.ToString(), // 10
+                    string.Format("{0:0.#}", work.avgPingTime), // 11
+                    work.lastUpTimestamp, // 12
+                    work.lastDownTimestamp, // 13
+                    work.minPingTime.ToString(), // 14
+                    work.maxPingTime.ToString() // 15
+                };
+                contents.Enqueue(line);
+            }
+
+            writeCsv_ConcurrentQueue(contents, filename, true);
         }
 
         #endregion
