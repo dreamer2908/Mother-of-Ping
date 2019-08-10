@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Collections.Concurrent;
 using System.Text;
+using System.Xml;
 
 namespace Mother_of_Ping_CLI
 {
@@ -55,6 +56,23 @@ namespace Mother_of_Ping_CLI
 
             return count;
         }
+
+        private static string XmlEscape(string unescaped)
+        {
+            XmlDocument doc = new XmlDocument();
+            XmlNode node = doc.CreateElement("root");
+            node.InnerText = unescaped;
+            return node.InnerXml;
+        }
+
+        private static string XmlUnescape(string escaped)
+        {
+            XmlDocument doc = new XmlDocument();
+            XmlNode node = doc.CreateElement("root");
+            node.InnerXml = escaped;
+            return node.InnerText;
+        }
+
         #endregion
 
         #region printer
@@ -214,6 +232,13 @@ namespace Mother_of_Ping_CLI
         #region reports
         public static void generateCsvReport(pingWork[] workForce, string filename)
         {
+            ConcurrentQueue<string[]> contents = prepareReport(workForce);
+
+            writeCsv_ConcurrentQueue(contents, filename, true);
+        }
+
+        private static ConcurrentQueue<string[]> prepareReport(pingWork[] workForce)
+        {
             ConcurrentQueue<string[]> contents = new ConcurrentQueue<string[]>();
             string[] header = new string[] {
                 "Host Name", // 0
@@ -258,7 +283,45 @@ namespace Mother_of_Ping_CLI
                 contents.Enqueue(line);
             }
 
-            writeCsv_ConcurrentQueue(contents, filename, true);
+            return contents;
+        }
+
+        public static void generateHtmlReport(pingWork[] workForce, string filename)
+        {
+            ConcurrentQueue<string[]> contents = prepareReport(workForce);
+
+            writeHtmlReport(contents, filename);
+        }
+
+        private static void writeHtmlReport(ConcurrentQueue<string[]> contents, string filename)
+        {
+            StringBuilder sb = new StringBuilder();
+            string part1 = @"<?xml version=""1.0"" encoding=""utf-8""?><!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.1//EN"" ""http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd""><html xmlns=""http://www.w3.org/1999/xhtml""><head><title></title></head><body><h3>Pings List<br/></h3><h4>Created using Mother of Ping!<br/></h4><table border=""1"" cellpadding=""5""><tr style=""background-color: #E0E0E0;"">";
+            sb.Append(part1);
+
+            contents.TryDequeue(out string[] header);
+            foreach (string s in header)
+            {
+                sb.Append("<th>" + XmlEscape(s) + "</th>");
+            }
+
+            sb.Append(@"</tr>");
+
+            string[] row;
+            while (contents.TryDequeue(out row))
+            {
+                sb.Append(@"<tr style=""background-color: #FFFFFF; white-space: nowrap;"">");
+                foreach (string s in row)
+                {
+                    sb.Append("<td>" + XmlEscape(s) + "</td>");
+                }
+                sb.Append(@"</tr>");
+            }
+
+            sb.Append(@"</table></body></html>");
+
+            Encoding utf8WithoutBom = new UTF8Encoding(false);
+            File.WriteAllText(filename, sb.ToString(), utf8WithoutBom);
         }
 
         #endregion

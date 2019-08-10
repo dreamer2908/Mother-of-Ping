@@ -118,6 +118,7 @@ namespace Mother_of_Ping_CLI
             }
 
             tools.generateCsvReport(workForce, "session_report.csv");
+            tools.generateHtmlReport(workForce, "session_report.html");
 
             Console.ReadLine();
         }
