@@ -30,7 +30,6 @@ namespace Mother_of_Ping_CLI
         public int bufferSize { get; set; }
         public int ttl { get; set; }
         public bool threadIsWorking { get; set; }
-        public bool flushLogSignal { get; set; }
         public string threadLastActiveTimestamp { get; private set; }
 
         public int totalCount { get; private set; }
@@ -177,12 +176,6 @@ namespace Mother_of_Ping_CLI
                 // create log line
                 addLastPingToLog();
 
-                if (flushLogSignal)
-                {
-                    flushLogSignal = false;
-                    // todo: flush log
-                }
-
                 // then sleep for <period> - <time taken>
                 watch.Stop();
                 int elapsedMs = (int)watch.ElapsedMilliseconds;
@@ -202,8 +195,6 @@ namespace Mother_of_Ping_CLI
                 //    Console.WriteLine(hostname + " will NOT sleep: " + sleepTime.ToString());
                 //}
             }
-
-            // todo: flush log
 
             //Console.WriteLine(hostname + ": exiting...");
             Console.WriteLine(hostname + ": " + totalCount.ToString() + " total, " + upCount.ToString() + " up, " + downCount.ToString() + " down");
