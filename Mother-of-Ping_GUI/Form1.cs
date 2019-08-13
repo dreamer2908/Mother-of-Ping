@@ -71,13 +71,6 @@ namespace Mother_of_Ping_GUI
             stopPing();
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            //updateStats();
-            //bind.SuspendBinding();
-            startGridUpdate();
-        }
-
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             updateStats();
@@ -98,6 +91,30 @@ namespace Mother_of_Ping_GUI
         private void timer1_Tick(object sender, EventArgs e)
         {
             updateStats();
+        }
+
+        private void btnReport_Click(object sender, EventArgs e)
+        {
+            if (workForce == null)
+            {
+                MessageBox.Show("There's nothing to report.", "Report", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                switch (saveFileDialog1.FilterIndex)
+                {
+                    case 1:
+                        // selected csv
+                        tools.generateCsvReport(workForce, saveFileDialog1.FileName);
+                        break;
+                    case 2:
+                        //selected html
+                        tools.generateHtmlReport(workForce, saveFileDialog1.FileName);
+                        break;
+                }
+            }
         }
         #endregion
 
