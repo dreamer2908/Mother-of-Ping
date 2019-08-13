@@ -62,6 +62,7 @@ namespace Mother_of_Ping_GUI
         private void btnStart_Click(object sender, EventArgs e)
         {
             startPing();
+            startGridUpdate();
         }
 
         private void btnStop_Click(object sender, EventArgs e)
@@ -73,10 +74,7 @@ namespace Mother_of_Ping_GUI
         {
             //updateStats();
             //bind.SuspendBinding();
-            disableDgrAutoSize();
-            //backgroundWorker1.RunWorkerAsync();
-            timer1.Interval = 1000; // in miliseconds
-            timer1.Start();
+            startGridUpdate();
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
@@ -94,6 +92,11 @@ namespace Mother_of_Ping_GUI
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             stopPing();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            updateStats();
         }
         #endregion
 
@@ -116,7 +119,7 @@ namespace Mother_of_Ping_GUI
             dgvPing.DataSource = bigData;
             dgvPing.DataSource = bind;
 
-            bigData.Columns.Add(" ", typeof(Icon)); // 0
+            bigData.Columns.Add("   ", typeof(Icon)); // 0
             bigData.Columns.Add("Notice", typeof(bool)); // 1
             bigData.Columns.Add("No.", typeof(int)); // 2
             bigData.Columns.Add("Host Name", typeof(string)); // 3
@@ -142,7 +145,7 @@ namespace Mother_of_Ping_GUI
 
 
             // from https://10tec.com/articles/why-datagridview-slow.aspx
-            dgvPing.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+            dgvPing.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;
 
             // Double buffering can make DGV slow in remote desktop
             if (!System.Windows.Forms.SystemInformation.TerminalServerSession)
@@ -263,9 +266,12 @@ namespace Mother_of_Ping_GUI
             }
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
+        private void startGridUpdate()
         {
-            updateStats();
+            disableDgrAutoSize();
+            //backgroundWorker1.RunWorkerAsync();
+            timer1.Interval = 1000; // in miliseconds
+            timer1.Start();
         }
     }
 }
