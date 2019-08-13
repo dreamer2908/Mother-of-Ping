@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Mother_of_Ping_GUI
@@ -190,7 +191,10 @@ namespace Mother_of_Ping_GUI
                 workForce = new pingWork[hostList.Count];
             }
 
-            for (int i = 0; i < hostList.Count; i++)
+            int[] index = new int[hostList.Count];
+            for (int i = 0; i < index.Length; i++) index[i] = i;
+
+            Parallel.ForEach(index, (i) => 
             {
                 pingWork work = (workForce[i] == null) ? new pingWork() : workForce[i];
                 workForce[i] = work;
@@ -204,7 +208,7 @@ namespace Mother_of_Ping_GUI
                 work.ttl = pingPref_ttl;
 
                 work.startPing();
-            }
+            });
         }
 
         private void stopPing()
