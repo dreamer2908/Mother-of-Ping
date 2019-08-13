@@ -53,6 +53,7 @@ namespace Mother_of_Ping_GUI
                     hostList = tools.txtPinginfoviewParser(filename, false);
                 }
 
+                cleanUpOldThreads();
                 resetTable();
                 loadHostListToTable(hostList);
             }
@@ -95,6 +96,15 @@ namespace Mother_of_Ping_GUI
             stopPing();
         }
         #endregion
+
+        private void cleanUpOldThreads()
+        {
+            if (workForce != null)
+            {
+                stopPing();
+                workForce = null;
+            }
+        }
 
         private void resetTable()
         {
