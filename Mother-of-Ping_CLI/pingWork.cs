@@ -156,12 +156,11 @@ namespace Mother_of_Ping_CLI
 
         private void backgroundPing()
         {
+            DateTime startLine = DateTime.Now;
+
             while (!stopSignal)
             {
                 threadIsWorking = true;
-
-                // measure how much time ping and other works take
-                Stopwatch watch = Stopwatch.StartNew();
 
                 threadLastActiveTimestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                 lastReply_result = singlePing(hostname, timeout, bufferSize, ttl, out string replyAddr, out long replyTime, out int replyTtl);
@@ -176,16 +175,16 @@ namespace Mother_of_Ping_CLI
                 // create log line
                 addLastPingToLog();
 
-                // then sleep for <period> - <time taken>
-                watch.Stop();
-                int elapsedMs = (int)watch.ElapsedMilliseconds;
+                // calculate when should this loop ends from the reference start time: <start> + <count> * <period>
+                // sleep is not accurate, i.e may wake a few ms earlier or later than the requested span
+                // because the allocated CPU is shared among several threads
+                // so it might be unavailable or scheduled for others at the right time
+                // Windows is not real-time OS, so never expect timing to be precise
+                // the resolution is somewhere around 10ms
+                // it isn't guaranteed to do much of anything except 'approximately' this long
+                DateTime loopEndTime = startLine.AddMilliseconds(totalCount * period);
+                int sleepTime = (int)(loopEndTime - DateTime.Now).TotalMilliseconds;
 
-                //if (elapsedMs > timeout)
-                //{
-                //    Console.WriteLine(hostname + " missed: " + elapsedMs.ToString());
-                //}
-
-                int sleepTime = period - elapsedMs;
                 if (sleepTime > 0)
                 {
                     Thread.Sleep(sleepTime);
