@@ -179,7 +179,7 @@ namespace Mother_of_Ping_GUI
 
             for (int i = 0; i < hostList.Count; i++)
             {
-                pingWork work = new pingWork();
+                pingWork work = (workForce[i] == null) ? new pingWork() : workForce[i];
                 workForce[i] = work;
 
                 work.id = i;
