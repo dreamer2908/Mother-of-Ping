@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -71,9 +72,10 @@ namespace Mother_of_Ping_GUI
         {
             //updateStats();
             //bind.SuspendBinding();
-            backgroundWorker1.RunWorkerAsync();
-            //timer1.Interval = 1000; // in miliseconds
-            //timer1.Start();
+            disableDgrAutoSize();
+            //backgroundWorker1.RunWorkerAsync();
+            timer1.Interval = 1000; // in miliseconds
+            timer1.Start();
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
@@ -94,32 +96,8 @@ namespace Mother_of_Ping_GUI
         }
         #endregion
 
-        struct struct_bigData
-        {
-            Icon _0_icon;
-            bool _1_notice;
-            int _2_no;
-            string _3_hostname;
-            string _4_description;
-            string _5_replyIpAddr;
-            int _6_upCount;
-            int _7_downCount;
-            int _8_consecutiveDownCount;
-            int _9_maxConsecutiveDownCount;
-            string _10_maxConsecutiveDownTimestamp;
-            string _11_percentDown;
-            string _12_lastReply_result;
-            int _13_lastReply_time;
-            int _14_avg_PingTime;
-            string _15_lastUpTimestamp;
-            string _16_lastDownTimestamp;
-            int _17_minPingTime;
-            int _18_maxPingTime;
-        }
-
         private void resetTable()
         {
-
             bigData = new DataTable();
             bind = new SyncBindingSource();
             bind.DataSource = bigData;
@@ -149,19 +127,45 @@ namespace Mother_of_Ping_GUI
             bigData.Columns.Add("Maximum Ping Time", typeof(int)); // 18
 
             dgvPing.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
-            dgvPing.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
 
             dgvPing.Refresh();
+
+
+            // from https://10tec.com/articles/why-datagridview-slow.aspx
+            dgvPing.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+
+            // Double buffering can make DGV slow in remote desktop
+            if (!System.Windows.Forms.SystemInformation.TerminalServerSession)
+            {
+                Type dgvType = dgvPing.GetType();
+                PropertyInfo pi = dgvType.GetProperty("DoubleBuffered",
+                  BindingFlags.Instance | BindingFlags.NonPublic);
+                pi.SetValue(dgvPing, true, null);
+            }
+
+            workForce = null;
+        }
+
+        private void enableDgrAutoSize()
+        {
+            dgvPing.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+        }
+
+        private void disableDgrAutoSize()
+        {
+            dgvPing.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
         }
 
         private void loadHostListToTable(List<string[]> hostList)
         {
+            bigData.BeginLoadData();
             int numOfHost = hostList.Count;
 
             for (int i = 0; i < numOfHost; i++)
             {
                 bigData.Rows.Add(icon_blank, true, i, hostList[i][0], hostList[i][1]);
             }
+            bigData.EndLoadData();
         }
 
         private void startPing()
@@ -222,22 +226,29 @@ namespace Mother_of_Ping_GUI
 
                     pingWork.pingStatus lastReply_result = worker.lastReply_result;
 
-                    bigData.Rows[rowId][0] = (lastReply_result == pingWork.pingStatus.online) ? icon_ok : icon_warning;
+                    var row = bigData.Rows[rowId];
 
-                    bigData.Rows[rowId][5] = worker.lastReply_address;
-                    bigData.Rows[rowId][6] = worker.upCount;
-                    bigData.Rows[rowId][7] = worker.downCount;
-                    bigData.Rows[rowId][8] = worker.consecutiveDownCount;
-                    bigData.Rows[rowId][9] = worker.maxConsecutiveDownCount;
-                    bigData.Rows[rowId][10] = worker.maxConsecutiveDownTimestamp;
-                    bigData.Rows[rowId][11] = worker.percentDown;
-                    bigData.Rows[rowId][12] = pingWork.pingStatusToText[lastReply_result];
-                    bigData.Rows[rowId][13] = worker.lastReply_time;
-                    bigData.Rows[rowId][14] = string.Format("{0:0.#}", worker.avgPingTime);
-                    bigData.Rows[rowId][15] = worker.lastUpTimestamp;
-                    bigData.Rows[rowId][16] = worker.lastDownTimestamp;
-                    bigData.Rows[rowId][17] = worker.minPingTime;
-                    bigData.Rows[rowId][18] = worker.maxPingTime;
+                    row.BeginEdit();
+
+                    row[0] = (lastReply_result == pingWork.pingStatus.online) ? icon_ok : icon_warning;
+
+                    row[5] = worker.lastReply_address;
+                    row[6] = worker.upCount;
+                    row[7] = worker.downCount;
+                    row[8] = worker.consecutiveDownCount;
+                    row[9] = worker.maxConsecutiveDownCount;
+                    row[10] = worker.maxConsecutiveDownTimestamp;
+                    row[11] = worker.percentDown;
+                    row[12] = pingWork.pingStatusToText[lastReply_result];
+                    row[13] = worker.lastReply_time;
+                    row[14] = string.Format("{0:0.#}", worker.avgPingTime);
+                    row[15] = worker.lastUpTimestamp;
+                    row[16] = worker.lastDownTimestamp;
+                    row[17] = worker.minPingTime;
+                    row[18] = worker.maxPingTime;
+
+                    row.EndEdit();
+                    row.AcceptChanges();
                 }
             }
         }
