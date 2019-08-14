@@ -18,7 +18,6 @@ namespace Mother_of_Ping_GUI
         public Form1()
         {
             InitializeComponent();
-            resetTable();
         }
 
         DataTable bigData;
@@ -103,6 +102,13 @@ namespace Mother_of_Ping_GUI
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             stopPing();
+            saveSettings();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            resetTable();
+            loadSettings();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -368,6 +374,56 @@ namespace Mother_of_Ping_GUI
             //backgroundWorker1.RunWorkerAsync();
             timer1.Interval = 1000; // in miliseconds
             timer1.Start();
+        }
+
+        private void loadSettings()
+        {
+            pingPref_period = Settings.Get("pingPref_period", 1000);
+            pingPref_timeout = Settings.Get("pingPref_timeout", 1000);
+            pingPref_bufferSize = Settings.Get("pingPref_bufferSize", 32);
+            pingPref_ttl = Settings.Get("pingPref_ttl", 128);
+
+            appPref_autoStart = Settings.Get("appPref_autoStart", true);
+            appPref_saveHostList = Settings.Get("appPref_saveHostList", true);
+            appPref_autoLoadList = Settings.Get("appPref_autoLoadList", false);
+            appPref_autoLoadListFilename = Settings.Get("appPref_autoLoadListFilename", "hostlist.csv");
+
+            appPref_markHostConsFail = Settings.Get("appPref_markHostConsFail", true);
+            appPref_markHostConsFailThreshold = Settings.Get("appPref_markHostConsFailThreshold", 300);
+            appPref_sendTaskbarNotifications = Settings.Get("appPref_sendTaskbarNotifications", true);
+            appPref_sendLineNotifications = Settings.Get("appPref_sendLineNotifications", false);
+
+            appPref_saveGlobalLog = Settings.Get("appPref_saveGlobalLog", true);
+            appPref_saveIndividualLog = Settings.Get("appPref_saveIndividualLog", true);
+            appPref_globalLogFilename = Settings.Get("appPref_globalLogFilename", "0.0.0.0.csv");
+            appPref_logFolder = Settings.Get("appPref_logFolder", "");
+            appPref_useTodayFolder = Settings.Get("appPref_useTodayFolder", true);
+            appPref_flushLogPeriod = Settings.Get("appPref_flushLogPeriod", 600);
+        }
+
+        private void saveSettings()
+        {
+            Settings.Set("pingPref_period", pingPref_period.ToString());
+            Settings.Set("pingPref_timeout", pingPref_timeout.ToString());
+            Settings.Set("pingPref_bufferSize", pingPref_bufferSize.ToString());
+            Settings.Set("pingPref_ttl", pingPref_ttl.ToString());
+
+            Settings.Set("appPref_autoStart", appPref_autoStart.ToString());
+            Settings.Set("appPref_saveHostList", appPref_saveHostList.ToString());
+            Settings.Set("appPref_autoLoadList", appPref_autoLoadList.ToString());
+            Settings.Set("appPref_autoLoadListFilename", appPref_autoLoadListFilename);
+
+            Settings.Set("appPref_markHostConsFail", appPref_markHostConsFail.ToString());
+            Settings.Set("appPref_markHostConsFailThreshold", appPref_markHostConsFailThreshold.ToString());
+            Settings.Set("appPref_sendTaskbarNotifications", appPref_sendTaskbarNotifications.ToString());
+            Settings.Set("appPref_sendLineNotifications", appPref_sendLineNotifications.ToString());
+
+            Settings.Set("appPref_saveGlobalLog", appPref_saveGlobalLog.ToString());
+            Settings.Set("appPref_saveIndividualLog", appPref_saveIndividualLog.ToString());
+            Settings.Set("appPref_globalLogFilename", appPref_globalLogFilename);
+            Settings.Set("appPref_logFolder", appPref_logFolder);
+            Settings.Set("appPref_useTodayFolder", appPref_useTodayFolder.ToString());
+            Settings.Set("appPref_flushLogPeriod", appPref_flushLogPeriod.ToString());
         }
     }
 }
