@@ -70,6 +70,7 @@ namespace Mother_of_Ping_GUI
                     hostList = tools.txtPinginfoviewParser(filename, false);
                 }
 
+                timer1.Stop();
                 cleanUpOldThreads();
                 resetTable();
                 loadHostListToTable(hostList);
@@ -78,8 +79,14 @@ namespace Mother_of_Ping_GUI
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            startPing();
-            startGridUpdate();
+            if (hostList != null)
+            {
+                startPing();
+                startGridUpdate();
+            } else
+            {
+                MessageBox.Show("There's nothing to run.", "Start", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
 
         private void btnStop_Click(object sender, EventArgs e)
