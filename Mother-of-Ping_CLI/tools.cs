@@ -274,11 +274,11 @@ namespace Mother_of_Ping_CLI
                     work.percentDown, // 8
                     pingWork.pingStatusToText[work.lastReply_result], // 9
                     work.lastReply_time.ToString(), // 10
-                    string.Format("{0:0.#}", work.avgPingTime), // 11
+                    (work.upCount == 0) ? string.Empty : string.Format("{0:0.#}", work.avgPingTime), // 11
                     work.lastUpTimestamp, // 12
                     work.lastDownTimestamp, // 13
-                    work.minPingTime.ToString(), // 14
-                    work.maxPingTime.ToString() // 15
+                    (work.upCount == 0) ? string.Empty : work.minPingTime.ToString(), // 14
+                    (work.upCount == 0) ? string.Empty : work.maxPingTime.ToString() // 15
                 };
                 contents.Enqueue(line);
             }
