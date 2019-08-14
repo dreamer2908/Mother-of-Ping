@@ -248,15 +248,16 @@ namespace Mother_of_Ping_CLI
                 "Failed Count", // 4
                 "Consecutive Failed Count", // 5
                 "Max Consecutive Failed Count", // 6
-                "Max Consecutive Failed Time", // 7
-                "% Failed", // 8
-                "Last Ping Status", // 9
-                "Last Ping Time", // 10
-                "Average Ping Time", // 11
-                "Last Succeed On", // 12
-                "Last Failed On", // 13
-                "Minimum Ping Time", // 14
-                "Maximum Ping Time" // 15
+                "Max Consecutive Failed Start Time", // 7
+                "Max Consecutive Failed End Time", // 8
+                "% Failed", // 9
+                "Last Ping Status", // 10
+                "Last Ping Time", // 11
+                "Average Ping Time", // 12
+                "Last Succeed On", // 13
+                "Last Failed On", // 14
+                "Minimum Ping Time", // 15
+                "Maximum Ping Time" // 16
             };
             contents.Enqueue(header);
 
@@ -270,15 +271,16 @@ namespace Mother_of_Ping_CLI
                     work.downCount.ToString(), // 4
                     work.consecutiveDownCount.ToString(), // 5
                     work.maxConsecutiveDownCount.ToString(), // 6
-                    work.maxConsecutiveDownTimestamp, // 7
-                    work.percentDown, // 8
-                    pingWork.pingStatusToText[work.lastReply_result], // 9
-                    work.lastReply_time.ToString(), // 10
-                    (work.upCount == 0) ? string.Empty : string.Format("{0:0.#}", work.avgPingTime), // 11
-                    work.lastUpTimestamp, // 12
-                    work.lastDownTimestamp, // 13
-                    (work.upCount == 0) ? string.Empty : work.minPingTime.ToString(), // 14
-                    (work.upCount == 0) ? string.Empty : work.maxPingTime.ToString() // 15
+                    work.maxConsecutiveDownTimestampStart, // 7
+                    work.maxConsecutiveDownTimestampEnd, // 8
+                    work.percentDown, // 9
+                    pingWork.pingStatusToText[work.lastReply_result], // 10
+                    work.lastReply_time.ToString(), // 11
+                    (work.upCount == 0) ? string.Empty : string.Format("{0:0.#}", work.avgPingTime), // 12
+                    work.lastUpTimestamp, // 13
+                    work.lastDownTimestamp, // 14
+                    (work.upCount == 0) ? string.Empty : work.minPingTime.ToString(), // 15
+                    (work.upCount == 0) ? string.Empty : work.maxPingTime.ToString() // 16
                 };
                 contents.Enqueue(line);
             }

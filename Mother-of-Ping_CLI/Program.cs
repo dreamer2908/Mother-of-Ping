@@ -81,7 +81,7 @@ namespace Mother_of_Ping_CLI
             tools.printVariableNameAndValue(nameof(worker.upCount), worker.upCount);
             tools.printVariableNameAndValue(nameof(worker.consecutiveDownCount), worker.consecutiveDownCount);
             tools.printVariableNameAndValue(nameof(worker.maxConsecutiveDownCount), worker.maxConsecutiveDownCount);
-            tools.printVariableNameAndValue(nameof(worker.maxConsecutiveDownTimestamp), worker.maxConsecutiveDownTimestamp);
+            tools.printVariableNameAndValue(nameof(worker.maxConsecutiveDownTimestampEnd), worker.maxConsecutiveDownTimestampEnd);
             tools.printVariableNameAndValue(nameof(worker.percentDown), worker.percentDown);
             tools.printVariableNameAndValue(nameof(worker.lastReply_result), worker.lastReply_result);
             tools.printVariableNameAndValue(nameof(worker.lastReply_address), worker.lastReply_address);

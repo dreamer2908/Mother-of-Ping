@@ -37,7 +37,9 @@ namespace Mother_of_Ping_CLI
         public int upCount { get; private set; }
         public int consecutiveDownCount { get; private set; }
         public int maxConsecutiveDownCount { get; private set; }
-        public string maxConsecutiveDownTimestamp { get; private set; }
+        private string lastDownTimestampStart;
+        public string maxConsecutiveDownTimestampStart { get; private set; }
+        public string maxConsecutiveDownTimestampEnd { get; private set; }
         public string percentDown { get; private set; }
         public pingStatus lastReply_result { get; private set; }
         public string lastReply_address { get; private set; }
@@ -242,10 +244,16 @@ namespace Mother_of_Ping_CLI
                 consecutiveDownCount++;
                 lastDownTimestamp = threadLastActiveTimestamp;
 
+                if (consecutiveDownCount == 1)
+                {
+                    lastDownTimestampStart = lastDownTimestamp;
+                }
+
                 if (consecutiveDownCount >= maxConsecutiveDownCount)
                 {
                     maxConsecutiveDownCount = consecutiveDownCount;
-                    maxConsecutiveDownTimestamp = threadLastActiveTimestamp;
+                    maxConsecutiveDownTimestampEnd = threadLastActiveTimestamp;
+                    maxConsecutiveDownTimestampStart = lastDownTimestampStart;
                 }
             }
 
@@ -255,7 +263,8 @@ namespace Mother_of_Ping_CLI
         public void resetStat()
         {
             maxConsecutiveDownCount = 0;
-            maxConsecutiveDownTimestamp = string.Empty;
+            maxConsecutiveDownTimestampStart = string.Empty;
+            maxConsecutiveDownTimestampEnd = string.Empty;
             percentDown = string.Empty;
             lastReply_result = pingStatus.online;
             lastReply_address = string.Empty;
