@@ -114,6 +114,7 @@ namespace Mother_of_Ping_GUI
         private void timer1_Tick(object sender, EventArgs e)
         {
             updateStats();
+            updateRowColor();
         }
 
         private void btnReport_Click(object sender, EventArgs e)
@@ -424,6 +425,25 @@ namespace Mother_of_Ping_GUI
             Settings.Set("appPref_logFolder", appPref_logFolder);
             Settings.Set("appPref_useTodayFolder", appPref_useTodayFolder.ToString());
             Settings.Set("appPref_flushLogPeriod", appPref_flushLogPeriod.ToString());
+        }
+
+        private void updateRowColor()
+        {
+            foreach (DataGridViewRow row in dgvPing.Rows)
+            {
+                if (appPref_markHostConsFail && Convert.ToInt32(row.Cells[8].Value) > appPref_markHostConsFailThreshold)
+                {
+                    row.DefaultCellStyle.BackColor = Color.Red;
+                }
+                else if (row.Cells[12].Value.ToString() != pingWork.pingStatusToText[pingWork.pingStatus.online])
+                {
+                    row.DefaultCellStyle.BackColor = Color.White;
+                }
+                else
+                {
+                    row.DefaultCellStyle.BackColor = Color.White;
+                }
+            }
         }
     }
 }
