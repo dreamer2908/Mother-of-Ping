@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -51,6 +52,9 @@ namespace Mother_of_Ping_GUI
         string appPref_logFolder = "";
         bool appPref_useTodayFolder = true;
         int appPref_flushLogPeriod = 600;
+        string actualLogFolder = "";
+
+        Mutex mutexLogFlush = new Mutex();
 
         #region events
 
@@ -71,6 +75,7 @@ namespace Mother_of_Ping_GUI
                 }
 
                 timer1.Stop();
+                stopLogFlushing();
                 cleanUpOldThreads();
                 resetTable();
                 loadHostListToTable(hostList);
@@ -83,6 +88,7 @@ namespace Mother_of_Ping_GUI
             {
                 startPing();
                 startGridUpdate();
+                startLogFlushing();
             } else
             {
                 MessageBox.Show("There's nothing to run.", "Start", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -92,6 +98,7 @@ namespace Mother_of_Ping_GUI
         private void btnStop_Click(object sender, EventArgs e)
         {
             stopPing();
+            stopLogFlushing();
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
@@ -110,6 +117,7 @@ namespace Mother_of_Ping_GUI
         {
             stopPing();
             saveSettings();
+            flushLogToDisk();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -202,8 +210,18 @@ namespace Mother_of_Ping_GUI
                 appPref_globalLogFilename = options.appPref_globalLogFilename;
                 appPref_logFolder = options.appPref_logFolder;
                 appPref_useTodayFolder = options.appPref_useTodayFolder;
+
+                if (appPref_flushLogPeriod != options.appPref_flushLogPeriod)
+                {
+                    refreshTimer(timer2, appPref_flushLogPeriod);
+                }
                 appPref_flushLogPeriod = options.appPref_flushLogPeriod;
             }
+        }
+
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+            flushLogToDisk();
         }
         #endregion
 
@@ -451,6 +469,81 @@ namespace Mother_of_Ping_GUI
                     row.DefaultCellStyle.BackColor = Color.White;
                 }
             }
+        }
+
+        private void startLogFlushing()
+        {
+            timer2.Interval = appPref_flushLogPeriod * 1000; // note interval is ms and period is second
+            timer2.Start();
+        }
+
+        private void stopLogFlushing()
+        {
+            timer2.Stop();
+        }
+
+        private void flushLogToDisk()
+        {
+            if (workForce == null) return;
+
+            mutexLogFlush.WaitOne();
+
+            if (appPref_useTodayFolder)
+            {
+                string today = DateTime.Now.ToString("yyyy-MM-dd");
+                actualLogFolder = Path.Combine(appPref_logFolder, today);
+                Directory.CreateDirectory(actualLogFolder);
+            }
+
+            if (appPref_saveGlobalLog)
+            {
+                string globalFilePath = appPref_globalLogFilename;
+
+                // if appPref_useTodayFolder, ignore path in appPref_globalLogFilename and put the log in today folder
+                if (appPref_useTodayFolder)
+                {
+                    string filename = Path.GetFileName(appPref_globalLogFilename);
+                    globalFilePath = Path.Combine(actualLogFolder, filename);
+                }
+
+                tools.writeCsv_ConcurrentQueue(pingWork.globalLog, globalFilePath, false);
+            }
+            else
+            {
+                // clear log if not to save
+                tools.clearConcurrentQueue(pingWork.globalLog);
+            }
+
+            if (appPref_saveIndividualLog)
+            {
+                foreach(var worker in workForce)
+                {
+                    string filePath = worker.hostname + ".csv";
+                    if (appPref_useTodayFolder)
+                    {
+                        filePath = Path.Combine(actualLogFolder, filePath);
+                    }
+
+                    tools.writeCsv_ConcurrentQueue(worker.log, filePath, false);
+                };
+            }
+            else
+            {
+                // clear log if not to save
+                Parallel.ForEach(workForce, (worker) =>
+                {
+                    tools.clearConcurrentQueue(worker.log);
+                });
+            }
+
+            mutexLogFlush.ReleaseMutex();
+        }
+
+        private void refreshTimer(System.Windows.Forms.Timer timer, int interval)
+        {
+            timer.Stop();
+            timer.Interval = interval;
+            timer.Start();
         }
     }
 }

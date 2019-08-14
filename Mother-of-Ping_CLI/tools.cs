@@ -325,5 +325,14 @@ namespace Mother_of_Ping_CLI
         }
 
         #endregion
+
+        public static void clearConcurrentQueue(ConcurrentQueue<string[]> log)
+        {
+            int logCount = log.Count;
+            for (int i = 0; i < logCount; i++)
+            {
+                log.TryDequeue(out string[] logLine);
+            }
+        }
     }
 }
