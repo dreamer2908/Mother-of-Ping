@@ -68,6 +68,7 @@
             this.label11 = new System.Windows.Forms.Label();
             this.chbMarkHostConsFail = new System.Windows.Forms.CheckBox();
             this.txtFailToMark = new System.Windows.Forms.TextBox();
+            this.chbGenerateReportAtExit = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -268,6 +269,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.chbGenerateReportAtExit);
             this.groupBox3.Controls.Add(this.label10);
             this.groupBox3.Controls.Add(this.label9);
             this.groupBox3.Controls.Add(this.chbUseTodayFolder);
@@ -280,7 +282,7 @@
             this.groupBox3.Controls.Add(this.chbSaveGlobalLog);
             this.groupBox3.Location = new System.Drawing.Point(15, 220);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(456, 92);
+            this.groupBox3.Size = new System.Drawing.Size(456, 115);
             this.groupBox3.TabIndex = 4;
             this.groupBox3.TabStop = false;
             // 
@@ -391,7 +393,7 @@
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.Location = new System.Drawing.Point(395, 322);
+            this.btnCancel.Location = new System.Drawing.Point(395, 341);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 5;
@@ -402,7 +404,7 @@
             // btnOK
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOK.Location = new System.Drawing.Point(314, 322);
+            this.btnOK.Location = new System.Drawing.Point(314, 341);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 5;
@@ -438,7 +440,7 @@
             // 
             this.chbSendNotificationsLine.AutoSize = true;
             this.chbSendNotificationsLine.Enabled = false;
-            this.chbSendNotificationsLine.Location = new System.Drawing.Point(225, 43);
+            this.chbSendNotificationsLine.Location = new System.Drawing.Point(255, 43);
             this.chbSendNotificationsLine.Name = "chbSendNotificationsLine";
             this.chbSendNotificationsLine.Size = new System.Drawing.Size(180, 17);
             this.chbSendNotificationsLine.TabIndex = 5;
@@ -488,11 +490,23 @@
             this.txtFailToMark.TabIndex = 2;
             this.txtFailToMark.Text = "300";
             // 
+            // chbGenerateReportAtExit
+            // 
+            this.chbGenerateReportAtExit.AutoSize = true;
+            this.chbGenerateReportAtExit.Checked = true;
+            this.chbGenerateReportAtExit.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chbGenerateReportAtExit.Location = new System.Drawing.Point(9, 91);
+            this.chbGenerateReportAtExit.Name = "chbGenerateReportAtExit";
+            this.chbGenerateReportAtExit.Size = new System.Drawing.Size(200, 17);
+            this.chbGenerateReportAtExit.TabIndex = 7;
+            this.chbGenerateReportAtExit.Text = "Generate reports automatically at exit";
+            this.chbGenerateReportAtExit.UseVisualStyleBackColor = true;
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(483, 357);
+            this.ClientSize = new System.Drawing.Size(483, 376);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.btnCancel);
@@ -556,5 +570,6 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.CheckBox chbMarkHostConsFail;
         private System.Windows.Forms.TextBox txtFailToMark;
+        private System.Windows.Forms.CheckBox chbGenerateReportAtExit;
     }
 }

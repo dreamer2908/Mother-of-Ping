@@ -39,6 +39,8 @@ namespace Mother_of_Ping_GUI
         public bool appPref_useTodayFolder = true;
         public int appPref_flushLogPeriod = 600;
 
+        public bool appPref_generateReportAtExit = true;
+
         private void btnOK_Click(object sender, EventArgs e)
         {
             storeSettings();
@@ -84,6 +86,8 @@ namespace Mother_of_Ping_GUI
             appPref_useTodayFolder = chbUseTodayFolder.Checked;
 
             int.TryParse(txtFlushLogPeriod.Text, out appPref_flushLogPeriod);
+
+            appPref_generateReportAtExit = chbGenerateReportAtExit.Checked;
         }
 
         private void loadSettings()
@@ -115,6 +119,8 @@ namespace Mother_of_Ping_GUI
             chbUseTodayFolder.Checked = appPref_useTodayFolder;
 
             txtFlushLogPeriod.Text = appPref_flushLogPeriod.ToString();
+
+            chbGenerateReportAtExit.Checked = appPref_generateReportAtExit;
         }
     }
 }

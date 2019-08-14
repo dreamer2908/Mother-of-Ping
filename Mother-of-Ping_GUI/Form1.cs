@@ -56,6 +56,8 @@ namespace Mother_of_Ping_GUI
         int appPref_flushLogPeriod = 600;
         string actualLogFolder = "";
 
+        bool appPref_generateReportAtExit = true;
+
         Mutex mutexLogFlush = new Mutex();
 
         #region events
@@ -106,6 +108,15 @@ namespace Mother_of_Ping_GUI
             stopPing();
             saveSettings();
             flushLogToDisk();
+
+            if (appPref_generateReportAtExit && workForce != null)
+            {
+                string today = getTodayString();
+                string filename1 = Path.Combine(actualLogFolder, string.Format("ping_session_report_{0}.csv", today));
+                string filename2 = Path.Combine(actualLogFolder, string.Format("ping_session_report_{0}.html", today));
+                tools.generateCsvReport(workForce, filename1);
+                tools.generateHtmlReport(workForce, filename2);
+            }
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -177,7 +188,8 @@ namespace Mother_of_Ping_GUI
                 appPref_globalLogFilename = appPref_globalLogFilename,
                 appPref_logFolder = appPref_logFolder,
                 appPref_useTodayFolder = appPref_useTodayFolder,
-                appPref_flushLogPeriod = appPref_flushLogPeriod
+                appPref_flushLogPeriod = appPref_flushLogPeriod,
+                appPref_generateReportAtExit = appPref_generateReportAtExit
             };
 
             if (options.ShowDialog() == DialogResult.OK)
@@ -208,6 +220,8 @@ namespace Mother_of_Ping_GUI
                     refreshTimer(timer2, appPref_flushLogPeriod);
                 }
                 appPref_flushLogPeriod = options.appPref_flushLogPeriod;
+
+                appPref_generateReportAtExit = options.appPref_generateReportAtExit;
             }
         }
 
@@ -448,6 +462,8 @@ namespace Mother_of_Ping_GUI
             appPref_useTodayFolder = Settings.Get("appPref_useTodayFolder", true);
             appPref_flushLogPeriod = Settings.Get("appPref_flushLogPeriod", 600);
 
+            appPref_generateReportAtExit = Settings.Get("appPref_generateReportAtExit", true);
+
             if (appPref_saveHostList)
             {
                 if (File.Exists(defaultHostListPath))
@@ -487,6 +503,7 @@ namespace Mother_of_Ping_GUI
             Settings.Set("appPref_logFolder", appPref_logFolder);
             Settings.Set("appPref_useTodayFolder", appPref_useTodayFolder.ToString());
             Settings.Set("appPref_flushLogPeriod", appPref_flushLogPeriod.ToString());
+            Settings.Set("appPref_generateReportAtExit", appPref_generateReportAtExit);
 
             // save host list
             if (appPref_saveHostList)
@@ -535,7 +552,7 @@ namespace Mother_of_Ping_GUI
 
             if (appPref_useTodayFolder)
             {
-                string today = DateTime.Now.ToString("yyyy-MM-dd");
+                string today = getTodayString();
                 actualLogFolder = Path.Combine(appPref_logFolder, today);
                 Directory.CreateDirectory(actualLogFolder);
             }
@@ -589,6 +606,11 @@ namespace Mother_of_Ping_GUI
             timer.Stop();
             timer.Interval = interval;
             timer.Start();
+        }
+
+        private static string getTodayString()
+        {
+            return DateTime.Now.ToString("yyyy-MM-dd");
         }
     }
 }
