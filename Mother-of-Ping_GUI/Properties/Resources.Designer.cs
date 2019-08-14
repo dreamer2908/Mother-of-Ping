@@ -73,6 +73,16 @@ namespace Mother_of_Ping_GUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
+        internal static System.Drawing.Icon icon_main {
+            get {
+                object obj = ResourceManager.GetObject("icon_main", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
         internal static System.Drawing.Icon icon_ok {
             get {
                 object obj = ResourceManager.GetObject("icon_ok", resourceCulture);

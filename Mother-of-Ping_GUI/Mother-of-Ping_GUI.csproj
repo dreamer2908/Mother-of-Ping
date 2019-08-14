@@ -107,5 +107,8 @@
   <ItemGroup>
     <None Include="Resources\blank-16.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\freq_icon.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

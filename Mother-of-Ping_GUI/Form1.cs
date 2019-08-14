@@ -229,6 +229,11 @@ namespace Mother_of_Ping_GUI
         {
             flushLogToDisk();
         }
+
+        private void timer3_Tick(object sender, EventArgs e)
+        {
+            notifyOfflineHost();
+        }
         #endregion
 
         private void startPingAio()
@@ -431,11 +436,15 @@ namespace Mother_of_Ping_GUI
             //backgroundWorker1.RunWorkerAsync();
             timer1.Interval = 1000; // in miliseconds
             timer1.Start();
+
+            timer3.Interval = 60000;
+            timer3.Start();
         }
 
         private void stopGridUpdate()
         {
             timer1.Stop();
+            timer3.Stop();
         }
 
         private void loadSettings()
@@ -520,7 +529,7 @@ namespace Mother_of_Ping_GUI
             {
                 if (appPref_markHostConsFail && Convert.ToInt32(row.Cells[8].Value) > appPref_markHostConsFailThreshold)
                 {
-                    row.DefaultCellStyle.BackColor = Color.Red;
+                    row.DefaultCellStyle.BackColor = Color.OrangeRed;
                 }
                 else if (row.Cells[12].Value.ToString() != pingWork.pingStatusToText[pingWork.pingStatus.online])
                 {
@@ -531,6 +540,45 @@ namespace Mother_of_Ping_GUI
                     row.DefaultCellStyle.BackColor = Color.White;
                 }
             }
+        }
+
+        private void notifyOfflineHost()
+        {
+            List<string> mess = new List<string>();
+            foreach (DataGridViewRow row in dgvPing.Rows)
+            {
+                if (row.DefaultCellStyle.BackColor == Color.OrangeRed)
+                {
+                    string message = string.Format("{0} is offline for {1:0} seconds", row.Cells[3].Value, Convert.ToInt32(row.Cells[8].Value) * pingPref_period / 1000);
+                    //sendTrayNotification(message);
+                    mess.Add(message);
+                }
+            }
+
+            if (mess.Count > 0)
+            {
+                string message = String.Join("\n", mess);
+                sendTrayNotification(message, 5000);
+            }
+        }
+
+        private void sendTrayNotification(string message, int duration)
+        {
+            var notification = new System.Windows.Forms.NotifyIcon()
+            {
+                Visible = true,
+                Icon = System.Drawing.SystemIcons.Information,
+                BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info,
+                BalloonTipText = message,
+            };
+
+            // eliminate the notification when clicked or closed
+            notification.BalloonTipClosed += (sender, args) => notification.Dispose();
+            notification.BalloonTipClicked += (sender, args) => notification.Dispose();
+
+            // display for x miliseconds
+            // note that duration > 5s is ignored in vista+
+            notification.ShowBalloonTip(duration);
         }
 
         private void startLogFlushing()
