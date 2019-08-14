@@ -1,5 +1,6 @@
 ﻿using Mother_of_Ping_CLI;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -40,6 +41,7 @@ namespace Mother_of_Ping_GUI
         bool appPref_saveHostList = true;
         bool appPref_autoLoadList = false;
         string appPref_autoLoadListFilename = "";
+        string defaultHostListPath = Path.Combine(Application.StartupPath.ToString(), "hostlist.csv");
 
         bool appPref_markHostConsFail = true;
         int appPref_markHostConsFailThreshold = 300;
@@ -65,20 +67,7 @@ namespace Mother_of_Ping_GUI
             {
                 filename = openFileDialog1.FileName;
 
-                if (filename.ToLower().EndsWith(".csv"))
-                {
-                    hostList = tools.csvHostListParser(filename, false);
-                }
-                else
-                {
-                    hostList = tools.txtPinginfoviewParser(filename, false);
-                }
-
-                stopGridUpdate();
-                stopLogFlushing();
-                cleanUpOldThreads();
-                resetTable();
-                loadHostListToTable(hostList);
+                loadNewHostListAio(filename);
             }
         }
 
@@ -86,10 +75,9 @@ namespace Mother_of_Ping_GUI
         {
             if (hostList != null)
             {
-                startPing();
-                startGridUpdate();
-                startLogFlushing();
-            } else
+                startPingAio();
+            }
+            else
             {
                 MessageBox.Show("There's nothing to run.", "Start", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -124,6 +112,10 @@ namespace Mother_of_Ping_GUI
         {
             resetTable();
             loadSettings();
+            if (appPref_autoStart)
+            {
+                startPingAio();
+            }
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -224,6 +216,31 @@ namespace Mother_of_Ping_GUI
             flushLogToDisk();
         }
         #endregion
+
+        private void startPingAio()
+        {
+            startPing();
+            startGridUpdate();
+            startLogFlushing();
+        }
+
+        private void loadNewHostListAio(string filename)
+        {
+            if (filename.ToLower().EndsWith(".csv"))
+            {
+                hostList = tools.csvHostListParser(filename, false);
+            }
+            else
+            {
+                hostList = tools.txtPinginfoviewParser(filename, false);
+            }
+
+            stopGridUpdate();
+            stopLogFlushing();
+            cleanUpOldThreads();
+            resetTable();
+            loadHostListToTable(hostList);
+        }
 
         private void cleanUpOldThreads()
         {
@@ -430,6 +447,21 @@ namespace Mother_of_Ping_GUI
             appPref_logFolder = Settings.Get("appPref_logFolder", "");
             appPref_useTodayFolder = Settings.Get("appPref_useTodayFolder", true);
             appPref_flushLogPeriod = Settings.Get("appPref_flushLogPeriod", 600);
+
+            if (appPref_saveHostList)
+            {
+                if (File.Exists(defaultHostListPath))
+                {
+                    loadNewHostListAio(defaultHostListPath);
+                }
+            }
+            else if (appPref_autoLoadList)
+            {
+                if (File.Exists(appPref_autoLoadListFilename))
+                {
+                    loadNewHostListAio(appPref_autoLoadListFilename);
+                }
+            }
         }
 
         private void saveSettings()
@@ -455,6 +487,14 @@ namespace Mother_of_Ping_GUI
             Settings.Set("appPref_logFolder", appPref_logFolder);
             Settings.Set("appPref_useTodayFolder", appPref_useTodayFolder.ToString());
             Settings.Set("appPref_flushLogPeriod", appPref_flushLogPeriod.ToString());
+
+            // save host list
+            if (appPref_saveHostList)
+            {
+                // convert to ConcurrentQueue<string[]> then write down
+                ConcurrentQueue<string[]> tmp = new ConcurrentQueue<string[]>(hostList);
+                tools.writeCsv_ConcurrentQueue(tmp, defaultHostListPath, true);
+            }
         }
 
         private void updateRowColor()
