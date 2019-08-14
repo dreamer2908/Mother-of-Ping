@@ -39,6 +39,7 @@
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.btnExit = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPing)).BeginInit();
             this.SuspendLayout();
             // 
@@ -90,12 +91,13 @@
             // 
             // btnOptions
             // 
-            this.btnOptions.Location = new System.Drawing.Point(259, 26);
+            this.btnOptions.Location = new System.Drawing.Point(339, 26);
             this.btnOptions.Name = "btnOptions";
             this.btnOptions.Size = new System.Drawing.Size(75, 23);
             this.btnOptions.TabIndex = 4;
-            this.btnOptions.Text = "Options";
+            this.btnOptions.Text = "Options...";
             this.btnOptions.UseVisualStyleBackColor = true;
+            this.btnOptions.Click += new System.EventHandler(this.btnOptions_Click);
             // 
             // openFileDialog1
             // 
@@ -104,7 +106,7 @@
             // 
             // btnReport
             // 
-            this.btnReport.Location = new System.Drawing.Point(341, 26);
+            this.btnReport.Location = new System.Drawing.Point(258, 26);
             this.btnReport.Name = "btnReport";
             this.btnReport.Size = new System.Drawing.Size(75, 23);
             this.btnReport.TabIndex = 5;
@@ -128,11 +130,22 @@
             this.saveFileDialog1.FileName = "report.csv";
             this.saveFileDialog1.Filter = "CSV files|*.csv|HTML files|*.html";
             // 
+            // btnExit
+            // 
+            this.btnExit.Location = new System.Drawing.Point(420, 26);
+            this.btnExit.Name = "btnExit";
+            this.btnExit.Size = new System.Drawing.Size(75, 23);
+            this.btnExit.TabIndex = 6;
+            this.btnExit.Text = "Exit";
+            this.btnExit.UseVisualStyleBackColor = true;
+            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnReport);
             this.Controls.Add(this.btnOptions);
             this.Controls.Add(this.btnStop);
@@ -159,6 +172,7 @@
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.Button btnExit;
     }
 }
 

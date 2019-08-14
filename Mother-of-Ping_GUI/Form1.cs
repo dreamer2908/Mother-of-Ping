@@ -36,6 +36,23 @@ namespace Mother_of_Ping_GUI
         int pingPref_bufferSize = 32;
         int pingPref_ttl = 128;
 
+        bool appPref_autoStart = true;
+        bool appPref_saveHostList = true;
+        bool appPref_autoLoadList = false;
+        string appPref_autoLoadListFilename = "";
+
+        bool appPref_markHostConsFail = true;
+        int appPref_markHostConsFailThreshold = 300;
+        bool appPref_sendTaskbarNotifications = true;
+        bool appPref_sendLineNotifications = true;
+
+        bool appPref_saveGlobalLog = true;
+        bool appPref_saveIndividualLog = true;
+        string appPref_globalLogFilename = "0.0.0.0.csv";
+        string appPref_logFolder = "";
+        bool appPref_useTodayFolder = true;
+        int appPref_flushLogPeriod = 600;
+
         #region events
 
         private void btnLoad_Click(object sender, EventArgs e)
@@ -114,6 +131,64 @@ namespace Mother_of_Ping_GUI
                         tools.generateHtmlReport(workForce, saveFileDialog1.FileName);
                         break;
                 }
+            }
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void btnOptions_Click(object sender, EventArgs e)
+        {
+            var options = new Form2
+            {
+                pingPref_period = pingPref_period,
+                pingPref_timeout = pingPref_timeout,
+                pingPref_bufferSize = pingPref_bufferSize,
+                pingPref_ttl = pingPref_ttl,
+
+                appPref_autoStart = appPref_autoStart,
+                appPref_saveHostList = appPref_saveHostList,
+                appPref_autoLoadList = appPref_autoLoadList,
+                appPref_autoLoadListFilename = appPref_autoLoadListFilename,
+
+                appPref_markHostConsFail = appPref_markHostConsFail,
+                appPref_markHostConsFailThreshold = appPref_markHostConsFailThreshold,
+                appPref_sendTaskbarNotifications = appPref_sendTaskbarNotifications,
+                appPref_sendLineNotifications = appPref_sendLineNotifications,
+
+                appPref_saveGlobalLog = appPref_saveGlobalLog,
+                appPref_saveIndividualLog = appPref_saveIndividualLog,
+                appPref_globalLogFilename = appPref_globalLogFilename,
+                appPref_logFolder = appPref_logFolder,
+                appPref_useTodayFolder = appPref_useTodayFolder,
+                appPref_flushLogPeriod = appPref_flushLogPeriod
+            };
+
+            if (options.ShowDialog() == DialogResult.OK)
+            {
+                pingPref_period = options.pingPref_period;
+                pingPref_timeout = options.pingPref_timeout;
+                pingPref_bufferSize = options.pingPref_bufferSize;
+                pingPref_ttl = options.pingPref_ttl;
+
+                appPref_autoStart = options.appPref_autoStart;
+                appPref_saveHostList = options.appPref_saveHostList;
+                appPref_autoLoadList = options.appPref_autoLoadList;
+                appPref_autoLoadListFilename = options.appPref_autoLoadListFilename;
+
+                appPref_markHostConsFail = options.appPref_markHostConsFail;
+                appPref_markHostConsFailThreshold = options.appPref_markHostConsFailThreshold;
+                appPref_sendTaskbarNotifications = options.appPref_sendTaskbarNotifications;
+                appPref_sendLineNotifications = options.appPref_sendLineNotifications;
+
+                appPref_saveGlobalLog = options.appPref_saveGlobalLog;
+                appPref_saveIndividualLog = options.appPref_saveIndividualLog;
+                appPref_globalLogFilename = options.appPref_globalLogFilename;
+                appPref_logFolder = options.appPref_logFolder;
+                appPref_useTodayFolder = options.appPref_useTodayFolder;
+                appPref_flushLogPeriod = options.appPref_flushLogPeriod;
             }
         }
         #endregion
