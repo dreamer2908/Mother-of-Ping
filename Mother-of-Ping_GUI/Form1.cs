@@ -74,7 +74,7 @@ namespace Mother_of_Ping_GUI
                     hostList = tools.txtPinginfoviewParser(filename, false);
                 }
 
-                timer1.Stop();
+                stopGridUpdate();
                 stopLogFlushing();
                 cleanUpOldThreads();
                 resetTable();
@@ -281,7 +281,7 @@ namespace Mother_of_Ping_GUI
                 pi.SetValue(dgvPing, true, null);
             }
 
-            workForce = null;
+            cleanUpOldThreads();
         }
 
         private void enableDgrAutoSize()
@@ -396,10 +396,15 @@ namespace Mother_of_Ping_GUI
 
         private void startGridUpdate()
         {
-            disableDgrAutoSize();
+            //disableDgrAutoSize();
             //backgroundWorker1.RunWorkerAsync();
             timer1.Interval = 1000; // in miliseconds
             timer1.Start();
+        }
+
+        private void stopGridUpdate()
+        {
+            timer1.Stop();
         }
 
         private void loadSettings()
