@@ -44,7 +44,14 @@
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.timer3 = new System.Windows.Forms.Timer(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.dgvLowerPanel = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPing)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvLowerPanel)).BeginInit();
             this.SuspendLayout();
             // 
             // dgvPing
@@ -52,20 +59,19 @@
             this.dgvPing.AllowUserToAddRows = false;
             this.dgvPing.AllowUserToDeleteRows = false;
             this.dgvPing.AllowUserToResizeRows = false;
-            this.dgvPing.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgvPing.Location = new System.Drawing.Point(12, 55);
+            this.dgvPing.BackgroundColor = System.Drawing.SystemColors.Control;
+            this.dgvPing.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvPing.Location = new System.Drawing.Point(0, 0);
             this.dgvPing.Name = "dgvPing";
             this.dgvPing.ReadOnly = true;
             this.dgvPing.RowHeadersVisible = false;
             this.dgvPing.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvPing.Size = new System.Drawing.Size(776, 383);
+            this.dgvPing.Size = new System.Drawing.Size(776, 298);
             this.dgvPing.TabIndex = 0;
             // 
             // btnLoad
             // 
-            this.btnLoad.Location = new System.Drawing.Point(13, 26);
+            this.btnLoad.Location = new System.Drawing.Point(12, 12);
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.Size = new System.Drawing.Size(75, 23);
             this.btnLoad.TabIndex = 1;
@@ -75,7 +81,7 @@
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(95, 26);
+            this.btnStart.Location = new System.Drawing.Point(94, 12);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(75, 23);
             this.btnStart.TabIndex = 2;
@@ -85,7 +91,7 @@
             // 
             // btnStop
             // 
-            this.btnStop.Location = new System.Drawing.Point(177, 26);
+            this.btnStop.Location = new System.Drawing.Point(176, 12);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(75, 23);
             this.btnStop.TabIndex = 3;
@@ -95,7 +101,7 @@
             // 
             // btnOptions
             // 
-            this.btnOptions.Location = new System.Drawing.Point(339, 26);
+            this.btnOptions.Location = new System.Drawing.Point(338, 12);
             this.btnOptions.Name = "btnOptions";
             this.btnOptions.Size = new System.Drawing.Size(75, 23);
             this.btnOptions.TabIndex = 4;
@@ -110,7 +116,7 @@
             // 
             // btnReport
             // 
-            this.btnReport.Location = new System.Drawing.Point(258, 26);
+            this.btnReport.Location = new System.Drawing.Point(257, 12);
             this.btnReport.Name = "btnReport";
             this.btnReport.Size = new System.Drawing.Size(75, 23);
             this.btnReport.TabIndex = 5;
@@ -136,7 +142,7 @@
             // 
             // btnExit
             // 
-            this.btnExit.Location = new System.Drawing.Point(420, 26);
+            this.btnExit.Location = new System.Drawing.Point(419, 12);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(75, 23);
             this.btnExit.TabIndex = 6;
@@ -158,24 +164,64 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer1.Location = new System.Drawing.Point(12, 41);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.dgvPing);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.dgvLowerPanel);
+            this.splitContainer1.Size = new System.Drawing.Size(776, 397);
+            this.splitContainer1.SplitterDistance = 298;
+            this.splitContainer1.TabIndex = 8;
+            // 
+            // dgvLowerPanel
+            // 
+            this.dgvLowerPanel.AllowUserToAddRows = false;
+            this.dgvLowerPanel.AllowUserToDeleteRows = false;
+            this.dgvLowerPanel.AllowUserToResizeRows = false;
+            this.dgvLowerPanel.BackgroundColor = System.Drawing.SystemColors.Control;
+            this.dgvLowerPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvLowerPanel.Location = new System.Drawing.Point(0, 0);
+            this.dgvLowerPanel.Name = "dgvLowerPanel";
+            this.dgvLowerPanel.ReadOnly = true;
+            this.dgvLowerPanel.RowHeadersVisible = false;
+            this.dgvLowerPanel.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvLowerPanel.Size = new System.Drawing.Size(776, 95);
+            this.dgvLowerPanel.TabIndex = 0;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnReport);
             this.Controls.Add(this.btnOptions);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.btnLoad);
-            this.Controls.Add(this.dgvPing);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Mother of Ping";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvPing)).EndInit();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvLowerPanel)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -196,6 +242,8 @@
         private System.Windows.Forms.Timer timer2;
         private System.Windows.Forms.Timer timer3;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.DataGridView dgvLowerPanel;
     }
 }
 

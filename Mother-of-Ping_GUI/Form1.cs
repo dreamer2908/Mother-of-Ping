@@ -25,6 +25,9 @@ namespace Mother_of_Ping_GUI
         DataTable bigData;
         SyncBindingSource bind;
 
+        DataTable smallData;
+        SyncBindingSource smallBind;
+
         Icon icon_ok = Mother_of_Ping_GUI.Properties.Resources.icon_ok;
         Icon icon_warning = Mother_of_Ping_GUI.Properties.Resources.icon_warning;
         Icon icon_blank = Mother_of_Ping_GUI.Properties.Resources.icon_blank;
@@ -138,6 +141,7 @@ namespace Mother_of_Ping_GUI
         {
             updateStats();
             updateRowColor();
+            updateLowerPanel();
         }
 
         private void btnReport_Click(object sender, EventArgs e)
@@ -234,11 +238,10 @@ namespace Mother_of_Ping_GUI
                 appPref_showLowerPanel = options.appPref_showLowerPanel;
                 appPref_showLowerPanel_onlyFailed = options.appPref_showLowerPanel_onlyFailed;
 
-                if (appPref_showLowerPanel_limit != options.appPref_showLowerPanel_limit)
-                {
-                    updateLatestLogSizeLimit();
-                    appPref_showLowerPanel_limit = options.appPref_showLowerPanel_limit;
-                }
+                appPref_showLowerPanel_limit = options.appPref_showLowerPanel_limit;
+                updateLatestLogSizeLimit();
+
+                showHideLowerPanel();
             }
         }
 
@@ -276,6 +279,7 @@ namespace Mother_of_Ping_GUI
             cleanUpOldThreads();
             resetTable();
             loadHostListToTable(hostList);
+            resetLowerPanel();
         }
 
         private void cleanUpOldThreads()
@@ -386,6 +390,7 @@ namespace Mother_of_Ping_GUI
                 work.timeout = pingPref_timeout;
                 work.bufferSize = pingPref_bufferSize;
                 work.ttl = pingPref_ttl;
+                work.latestLogSizeLimit = appPref_showLowerPanel_limit;
 
                 work.startPing();
             });
@@ -518,6 +523,8 @@ namespace Mother_of_Ping_GUI
                     loadNewHostListAio(appPref_autoLoadListFilename);
                 }
             }
+
+            showHideLowerPanel();
         }
 
         private void saveSettings()
@@ -704,6 +711,117 @@ namespace Mother_of_Ping_GUI
                     worker.latestLogSizeLimit = appPref_showLowerPanel_limit;
                 }
             }
+        }
+
+        private void showHideLowerPanel()
+        {
+            showHideLowerPanel(appPref_showLowerPanel);
+        }
+
+        private void showHideLowerPanel(bool show)
+        {
+            if (!show)
+            {
+                splitContainer1.Panel2Collapsed = true;
+                splitContainer1.Panel2.Hide();
+            }
+            else
+            {
+                splitContainer1.Panel2Collapsed = false;
+                splitContainer1.Panel2.Show();
+            }
+        }
+
+        private void updateLowerPanel()
+        {
+            // update the lower pannel even if it's hidden
+            if (dgvPing.SelectedRows.Count > 0)
+            {
+                var selectedRow = dgvPing.SelectedRows[0];
+                int id = Convert.ToInt32(selectedRow.Cells[2].Value);
+                var worker = workForce[id];
+
+                clearLowerPanel();
+
+                smallData.BeginLoadData();
+
+                string[][] data;
+
+                if (appPref_showLowerPanel_onlyFailed)
+                {
+                    data = worker.latestLog_down.ToArray();
+                } 
+                else
+                {
+                    data = worker.latestLog_all.ToArray();
+                }
+
+                for (int i = 0; i < data.Length; i++)
+                {
+                    string[] line = data[data.Length - i - 1];
+                    smallData.Rows.Add();
+                    var row = smallData.Rows[i];
+
+                    row[0] = (line[2] == pingWork.pingStatusToText[pingWork.pingStatus.online]) ? icon_ok : icon_warning;
+                    row[1] = line[0];
+                    row[2] = line[1];
+                    row[3] = line[2];
+                    row[4] = line[3];
+                    row[5] = line[4];
+                    row[6] = line[5];
+                    row[7] = line[6];
+                }
+
+                smallData.EndLoadData();
+
+                showHideLowerPanel();
+            } 
+            else
+            {
+                showHideLowerPanel(false);
+            }
+        }
+
+        private void resetLowerPanel()
+        {
+            smallData = new DataTable();
+            smallBind = new SyncBindingSource();
+            smallBind.DataSource = smallData;
+
+            //dgvPing.AutoGenerateColumns = false;
+            dgvLowerPanel.DataSource = smallData;
+            dgvLowerPanel.DataSource = smallBind;
+
+            smallData.Columns.Add("   ", typeof(Icon)); // 0
+            smallData.Columns.Add("Host Name", typeof(string)); // 1
+            smallData.Columns.Add("Timestamp", typeof(string)); // 2
+            smallData.Columns.Add("Result", typeof(string)); // 3
+            smallData.Columns.Add("Round Trip", typeof(string)); // 4
+            smallData.Columns.Add("TTL", typeof(string)); // 5
+            smallData.Columns.Add("Consecutive Down Count", typeof(string)); // 6
+            smallData.Columns.Add("Check Me", typeof(string)); // 7
+
+            dgvLowerPanel.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
+
+            dgvLowerPanel.Refresh();
+
+            // from https://10tec.com/articles/why-datagridview-slow.aspx
+            dgvLowerPanel.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+            dgvLowerPanel.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+
+            // Double buffering can make DGV slow in remote desktop
+            if (!System.Windows.Forms.SystemInformation.TerminalServerSession)
+            {
+                Type dgvType = dgvLowerPanel.GetType();
+                PropertyInfo pi = dgvType.GetProperty("DoubleBuffered",
+                  BindingFlags.Instance | BindingFlags.NonPublic);
+                pi.SetValue(dgvLowerPanel, true, null);
+            }
+        }
+
+        private void clearLowerPanel()
+        {
+            smallData.Rows.Clear();
         }
     }
 }

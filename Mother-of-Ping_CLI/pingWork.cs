@@ -307,7 +307,10 @@ namespace Mother_of_Ping_CLI
             latestLog_all = new ConcurrentQueue<string[]>();
             latestLog_down = new ConcurrentQueue<string[]>();
 
-            if (latestLogSizeLimit < 10) latestLogSizeLimit = 10; // enforce the minimum size
+            if (latestLogSizeLimit < 10)
+            {
+                latestLogSizeLimit = 10; // enforce the minimum size
+            }
         }
 
         public void startPing()
