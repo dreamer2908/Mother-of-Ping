@@ -395,5 +395,14 @@ namespace Mother_of_Ping_CLI
                 log.TryDequeue(out string[] logLine);
             }
         }
+
+        public static void trimConcurrentQueue(ConcurrentQueue<string[]> log, int sizeLimit)
+        {
+            int logCount = log.Count;
+            for (int i = 0; i < (logCount - sizeLimit); i++)
+            {
+                log.TryDequeue(out string[] logLine);
+            }
+        }
     }
 }

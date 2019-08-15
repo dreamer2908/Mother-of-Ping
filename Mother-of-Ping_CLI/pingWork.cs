@@ -61,6 +61,10 @@ namespace Mother_of_Ping_CLI
         public ConcurrentQueue<string[]> log;
         public static ConcurrentQueue<string[]> globalLog;
 
+        public int latestLogSizeLimit { get; set; }
+        public ConcurrentQueue<string[]> latestLog_all;
+        public ConcurrentQueue<string[]> latestLog_down;
+
         public enum pingStatus
         {
             online = 0,
@@ -221,6 +225,15 @@ namespace Mother_of_Ping_CLI
 
             log.Enqueue(line);
             globalLog.Enqueue(line);
+
+            latestLog_all.Enqueue(line);
+            tools.trimConcurrentQueue(latestLog_all, latestLogSizeLimit);
+
+            if (lastReply_result != pingStatus.online)
+            {
+                latestLog_down.Enqueue(line);
+                tools.trimConcurrentQueue(latestLog_down, latestLogSizeLimit);
+            }
         }
 
         private void updateStat()
@@ -291,6 +304,10 @@ namespace Mother_of_Ping_CLI
             consecutiveDownCount = 0;
 
             log = new ConcurrentQueue<string[]>();
+            latestLog_all = new ConcurrentQueue<string[]>();
+            latestLog_down = new ConcurrentQueue<string[]>();
+
+            if (latestLogSizeLimit < 10) latestLogSizeLimit = 10; // enforce the minimum size
         }
 
         public void startPing()

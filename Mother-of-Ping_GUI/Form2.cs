@@ -41,6 +41,10 @@ namespace Mother_of_Ping_GUI
 
         public bool appPref_generateReportAtExit = true;
 
+        public bool appPref_showLowerPanel = true;
+        public bool appPref_showLowerPanel_onlyFailed = false;
+        public int appPref_showLowerPanel_limit = 50;
+
         private void btnOK_Click(object sender, EventArgs e)
         {
             storeSettings();
@@ -88,6 +92,10 @@ namespace Mother_of_Ping_GUI
             int.TryParse(txtFlushLogPeriod.Text, out appPref_flushLogPeriod);
 
             appPref_generateReportAtExit = chbGenerateReportAtExit.Checked;
+
+            appPref_showLowerPanel = chbShowLowerPanel.Checked;
+            appPref_showLowerPanel_onlyFailed = radbtnchbShowLowerPanel_failed.Checked;
+            int.TryParse(txtShowLowerPanel_limit.Text, out appPref_showLowerPanel_limit);
         }
 
         private void loadSettings()
@@ -121,6 +129,11 @@ namespace Mother_of_Ping_GUI
             txtFlushLogPeriod.Text = appPref_flushLogPeriod.ToString();
 
             chbGenerateReportAtExit.Checked = appPref_generateReportAtExit;
+
+            chbShowLowerPanel.Checked = appPref_showLowerPanel;
+            radbtnchbShowLowerPanel_failed.Checked = appPref_showLowerPanel_onlyFailed;
+            radbtnchbShowLowerPanel_all.Checked = !radbtnchbShowLowerPanel_failed.Checked;
+            txtShowLowerPanel_limit.Text = appPref_showLowerPanel_limit.ToString();
         }
     }
 }

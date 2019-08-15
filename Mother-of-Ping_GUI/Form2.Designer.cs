@@ -69,10 +69,17 @@
             this.label11 = new System.Windows.Forms.Label();
             this.chbMarkHostConsFail = new System.Windows.Forms.CheckBox();
             this.txtFailToMark = new System.Windows.Forms.TextBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.chbShowLowerPanel = new System.Windows.Forms.CheckBox();
+            this.radbtnchbShowLowerPanel_failed = new System.Windows.Forms.RadioButton();
+            this.radbtnchbShowLowerPanel_all = new System.Windows.Forms.RadioButton();
+            this.txtShowLowerPanel_limit = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -405,7 +412,7 @@
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.Location = new System.Drawing.Point(395, 341);
+            this.btnCancel.Location = new System.Drawing.Point(395, 425);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 5;
@@ -416,7 +423,7 @@
             // btnOK
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOK.Location = new System.Drawing.Point(314, 341);
+            this.btnOK.Location = new System.Drawing.Point(314, 425);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 5;
@@ -502,11 +509,74 @@
             this.txtFailToMark.TabIndex = 2;
             this.txtFailToMark.Text = "300";
             // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.label12);
+            this.groupBox5.Controls.Add(this.txtShowLowerPanel_limit);
+            this.groupBox5.Controls.Add(this.radbtnchbShowLowerPanel_all);
+            this.groupBox5.Controls.Add(this.radbtnchbShowLowerPanel_failed);
+            this.groupBox5.Controls.Add(this.chbShowLowerPanel);
+            this.groupBox5.Location = new System.Drawing.Point(15, 342);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(455, 75);
+            this.groupBox5.TabIndex = 7;
+            this.groupBox5.TabStop = false;
+            // 
+            // chbShowLowerPanel
+            // 
+            this.chbShowLowerPanel.AutoSize = true;
+            this.chbShowLowerPanel.Location = new System.Drawing.Point(7, 20);
+            this.chbShowLowerPanel.Name = "chbShowLowerPanel";
+            this.chbShowLowerPanel.Size = new System.Drawing.Size(194, 17);
+            this.chbShowLowerPanel.TabIndex = 0;
+            this.chbShowLowerPanel.Text = "Show recent logs in the lower panel";
+            this.chbShowLowerPanel.UseVisualStyleBackColor = true;
+            // 
+            // radbtnchbShowLowerPanel_failed
+            // 
+            this.radbtnchbShowLowerPanel_failed.AutoSize = true;
+            this.radbtnchbShowLowerPanel_failed.Checked = true;
+            this.radbtnchbShowLowerPanel_failed.Location = new System.Drawing.Point(346, 20);
+            this.radbtnchbShowLowerPanel_failed.Name = "radbtnchbShowLowerPanel_failed";
+            this.radbtnchbShowLowerPanel_failed.Size = new System.Drawing.Size(102, 17);
+            this.radbtnchbShowLowerPanel_failed.TabIndex = 1;
+            this.radbtnchbShowLowerPanel_failed.TabStop = true;
+            this.radbtnchbShowLowerPanel_failed.Text = "Only failed pings";
+            this.radbtnchbShowLowerPanel_failed.UseVisualStyleBackColor = true;
+            // 
+            // radbtnchbShowLowerPanel_all
+            // 
+            this.radbtnchbShowLowerPanel_all.AutoSize = true;
+            this.radbtnchbShowLowerPanel_all.Location = new System.Drawing.Point(276, 20);
+            this.radbtnchbShowLowerPanel_all.Name = "radbtnchbShowLowerPanel_all";
+            this.radbtnchbShowLowerPanel_all.Size = new System.Drawing.Size(64, 17);
+            this.radbtnchbShowLowerPanel_all.TabIndex = 1;
+            this.radbtnchbShowLowerPanel_all.Text = "All pings";
+            this.radbtnchbShowLowerPanel_all.UseVisualStyleBackColor = true;
+            // 
+            // txtShowLowerPanel_limit
+            // 
+            this.txtShowLowerPanel_limit.Location = new System.Drawing.Point(172, 43);
+            this.txtShowLowerPanel_limit.Name = "txtShowLowerPanel_limit";
+            this.txtShowLowerPanel_limit.Size = new System.Drawing.Size(100, 20);
+            this.txtShowLowerPanel_limit.TabIndex = 2;
+            this.txtShowLowerPanel_limit.Text = "50";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(29, 46);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(132, 13);
+            this.label12.TabIndex = 3;
+            this.label12.Text = "Limit the number of lines to";
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(483, 376);
+            this.ClientSize = new System.Drawing.Size(483, 460);
+            this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.btnCancel);
@@ -524,6 +594,8 @@
             this.groupBox3.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -571,5 +643,11 @@
         private System.Windows.Forms.CheckBox chbMarkHostConsFail;
         private System.Windows.Forms.TextBox txtFailToMark;
         private System.Windows.Forms.CheckBox chbGenerateReportAtExit;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox txtShowLowerPanel_limit;
+        private System.Windows.Forms.RadioButton radbtnchbShowLowerPanel_all;
+        private System.Windows.Forms.RadioButton radbtnchbShowLowerPanel_failed;
+        private System.Windows.Forms.CheckBox chbShowLowerPanel;
     }
 }

@@ -58,6 +58,10 @@ namespace Mother_of_Ping_GUI
 
         bool appPref_generateReportAtExit = true;
 
+        bool appPref_showLowerPanel = true;
+        bool appPref_showLowerPanel_onlyFailed = false;
+        int appPref_showLowerPanel_limit = 50;
+
         Mutex mutexLogFlush = new Mutex();
 
         #region events
@@ -190,7 +194,10 @@ namespace Mother_of_Ping_GUI
                 appPref_logFolder = appPref_logFolder,
                 appPref_useTodayFolder = appPref_useTodayFolder,
                 appPref_flushLogPeriod = appPref_flushLogPeriod,
-                appPref_generateReportAtExit = appPref_generateReportAtExit
+                appPref_generateReportAtExit = appPref_generateReportAtExit,
+                appPref_showLowerPanel = appPref_showLowerPanel,
+                appPref_showLowerPanel_onlyFailed = appPref_showLowerPanel_onlyFailed,
+                appPref_showLowerPanel_limit = appPref_showLowerPanel_limit,
             };
 
             if (options.ShowDialog() == DialogResult.OK)
@@ -223,6 +230,15 @@ namespace Mother_of_Ping_GUI
                 appPref_flushLogPeriod = options.appPref_flushLogPeriod;
 
                 appPref_generateReportAtExit = options.appPref_generateReportAtExit;
+
+                appPref_showLowerPanel = options.appPref_showLowerPanel;
+                appPref_showLowerPanel_onlyFailed = options.appPref_showLowerPanel_onlyFailed;
+
+                if (appPref_showLowerPanel_limit != options.appPref_showLowerPanel_limit)
+                {
+                    updateLatestLogSizeLimit();
+                    appPref_showLowerPanel_limit = options.appPref_showLowerPanel_limit;
+                }
             }
         }
 
@@ -482,6 +498,10 @@ namespace Mother_of_Ping_GUI
             appPref_useTodayFolder = Settings.Get("appPref_useTodayFolder", true);
             appPref_flushLogPeriod = Settings.Get("appPref_flushLogPeriod", 600);
 
+            appPref_showLowerPanel = Settings.Get("appPref_showLowerPanel", true);
+            appPref_showLowerPanel_onlyFailed = Settings.Get("appPref_showLowerPanel_onlyFailed", true);
+            appPref_showLowerPanel_limit = Settings.Get("appPref_showLowerPanel_limit", 50);
+
             appPref_generateReportAtExit = Settings.Get("appPref_generateReportAtExit", true);
 
             if (appPref_saveHostList)
@@ -524,6 +544,10 @@ namespace Mother_of_Ping_GUI
             Settings.Set("appPref_useTodayFolder", appPref_useTodayFolder.ToString());
             Settings.Set("appPref_flushLogPeriod", appPref_flushLogPeriod.ToString());
             Settings.Set("appPref_generateReportAtExit", appPref_generateReportAtExit);
+
+            Settings.Set("appPref_showLowerPanel", appPref_showLowerPanel);
+            Settings.Set("appPref_showLowerPanel_onlyFailed", appPref_showLowerPanel_onlyFailed);
+            Settings.Set("appPref_showLowerPanel_limit", appPref_showLowerPanel_limit);
 
             // save host list
             if (appPref_saveHostList)
@@ -669,6 +693,17 @@ namespace Mother_of_Ping_GUI
         private static string getTodayString()
         {
             return DateTime.Now.ToString("yyyy-MM-dd");
+        }
+
+        private void updateLatestLogSizeLimit()
+        {
+            if (workForce != null)
+            {
+                foreach (var worker in workForce)
+                {
+                    worker.latestLogSizeLimit = appPref_showLowerPanel_limit;
+                }
+            }
         }
     }
 }
