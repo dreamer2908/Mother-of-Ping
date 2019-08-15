@@ -47,6 +47,7 @@
             this.radbtnSaveList = new System.Windows.Forms.RadioButton();
             this.chbAutoStart = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.chbGenerateReportAtExit = new System.Windows.Forms.CheckBox();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.chbUseTodayFolder = new System.Windows.Forms.CheckBox();
@@ -68,7 +69,6 @@
             this.label11 = new System.Windows.Forms.Label();
             this.chbMarkHostConsFail = new System.Windows.Forms.CheckBox();
             this.txtFailToMark = new System.Windows.Forms.TextBox();
-            this.chbGenerateReportAtExit = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -286,6 +286,18 @@
             this.groupBox3.TabIndex = 4;
             this.groupBox3.TabStop = false;
             // 
+            // chbGenerateReportAtExit
+            // 
+            this.chbGenerateReportAtExit.AutoSize = true;
+            this.chbGenerateReportAtExit.Checked = true;
+            this.chbGenerateReportAtExit.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chbGenerateReportAtExit.Location = new System.Drawing.Point(9, 91);
+            this.chbGenerateReportAtExit.Name = "chbGenerateReportAtExit";
+            this.chbGenerateReportAtExit.Size = new System.Drawing.Size(200, 17);
+            this.chbGenerateReportAtExit.TabIndex = 7;
+            this.chbGenerateReportAtExit.Text = "Generate reports automatically at exit";
+            this.chbGenerateReportAtExit.UseVisualStyleBackColor = true;
+            // 
             // label10
             // 
             this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -465,9 +477,9 @@
             this.label11.AutoSize = true;
             this.label11.Location = new System.Drawing.Point(403, 20);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(31, 13);
+            this.label11.Size = new System.Drawing.Size(47, 13);
             this.label11.TabIndex = 3;
-            this.label11.Text = "times";
+            this.label11.Text = "seconds";
             // 
             // chbMarkHostConsFail
             // 
@@ -489,18 +501,6 @@
             this.txtFailToMark.Size = new System.Drawing.Size(64, 20);
             this.txtFailToMark.TabIndex = 2;
             this.txtFailToMark.Text = "300";
-            // 
-            // chbGenerateReportAtExit
-            // 
-            this.chbGenerateReportAtExit.AutoSize = true;
-            this.chbGenerateReportAtExit.Checked = true;
-            this.chbGenerateReportAtExit.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chbGenerateReportAtExit.Location = new System.Drawing.Point(9, 91);
-            this.chbGenerateReportAtExit.Name = "chbGenerateReportAtExit";
-            this.chbGenerateReportAtExit.Size = new System.Drawing.Size(200, 17);
-            this.chbGenerateReportAtExit.TabIndex = 7;
-            this.chbGenerateReportAtExit.Text = "Generate reports automatically at exit";
-            this.chbGenerateReportAtExit.UseVisualStyleBackColor = true;
             // 
             // Form2
             // 

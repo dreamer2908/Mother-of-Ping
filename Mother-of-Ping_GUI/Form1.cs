@@ -531,13 +531,12 @@ namespace Mother_of_Ping_GUI
         {
             foreach (DataGridViewRow row in dgvPing.Rows)
             {
-                if (appPref_markHostConsFail && Convert.ToInt32(row.Cells[8].Value) > appPref_markHostConsFailThreshold)
+                if ((row.Cells[13].Value.ToString() != pingWork.pingStatusToText[pingWork.pingStatus.online]) && (TimeSpan.Parse(row.Cells[18].Value.ToString()).TotalSeconds >= appPref_markHostConsFailThreshold))
                 {
-                    row.DefaultCellStyle.BackColor = Color.OrangeRed;
-                }
-                else if (row.Cells[13].Value.ToString() != pingWork.pingStatusToText[pingWork.pingStatus.online])
-                {
-                    row.DefaultCellStyle.BackColor = Color.White;
+                    if (appPref_markHostConsFail)
+                    {
+                        row.DefaultCellStyle.BackColor = Color.OrangeRed;
+                    }
                 }
                 else
                 {
@@ -553,7 +552,7 @@ namespace Mother_of_Ping_GUI
             {
                 if (row.DefaultCellStyle.BackColor == Color.OrangeRed)
                 {
-                    string message = string.Format("{0} is offline for {1:0} seconds", row.Cells[3].Value, Convert.ToInt32(row.Cells[8].Value) * pingPref_period / 1000);
+                    string message = string.Format("{0} is offline for {1}", row.Cells[3].Value, row.Cells[18].Value.ToString());
                     //sendTrayNotification(message);
                     mess.Add(message);
                 }
