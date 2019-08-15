@@ -557,7 +557,7 @@ namespace Mother_of_Ping_GUI
                 }
             }
 
-            if (mess.Count > 0)
+            if (mess.Count > 0 && appPref_sendTaskbarNotifications)
             {
                 string message = String.Join("\n", mess);
                 sendTrayNotification(message, 5000);
