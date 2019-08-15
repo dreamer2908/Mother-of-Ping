@@ -150,9 +150,9 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(169, 44);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(47, 13);
+            this.label4.Size = new System.Drawing.Size(63, 13);
             this.label4.TabIndex = 3;
-            this.label4.Text = "seconds";
+            this.label4.Text = "milliseconds";
             // 
             // txtTTL
             // 
@@ -186,7 +186,7 @@
             this.txtPeriod.Name = "txtPeriod";
             this.txtPeriod.Size = new System.Drawing.Size(64, 20);
             this.txtPeriod.TabIndex = 2;
-            this.txtPeriod.Text = "1";
+            this.txtPeriod.Text = "1000";
             // 
             // label3
             // 
@@ -466,9 +466,9 @@
             this.chbSendNotifications.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chbSendNotifications.Location = new System.Drawing.Point(9, 43);
             this.chbSendNotifications.Name = "chbSendNotifications";
-            this.chbSendNotifications.Size = new System.Drawing.Size(148, 17);
+            this.chbSendNotifications.Size = new System.Drawing.Size(211, 17);
             this.chbSendNotifications.TabIndex = 4;
-            this.chbSendNotifications.Text = "Send taskbar notifications";
+            this.chbSendNotifications.Text = "Send taskbar notifications every minute";
             this.chbSendNotifications.UseVisualStyleBackColor = true;
             // 
             // label11

@@ -7,7 +7,7 @@
     <ProjectGuid>{49CE5A91-C87E-4F3B-9103-B518F97E748A}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Mother_of_Ping_GUI</RootNamespace>
-    <AssemblyName>Mother-of-Ping_GUI</AssemblyName>
+    <AssemblyName>Mother-of-Ping</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -33,6 +33,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\freq_icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />

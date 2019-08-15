@@ -89,6 +89,7 @@ namespace Mother_of_Ping_GUI
         {
             stopPing();
             stopLogFlushing();
+            stopNotifyOfflineHost();
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
@@ -308,7 +309,10 @@ namespace Mother_of_Ping_GUI
 
 
             // from https://10tec.com/articles/why-datagridview-slow.aspx
-            dgvPing.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.ColumnHeader;
+            dgvPing.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+            dgvPing.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+            dgvPing.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+            dgvPing.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
 
             // Double buffering can make DGV slow in remote desktop
             if (!System.Windows.Forms.SystemInformation.TerminalServerSession)
@@ -318,8 +322,6 @@ namespace Mother_of_Ping_GUI
                   BindingFlags.Instance | BindingFlags.NonPublic);
                 pi.SetValue(dgvPing, true, null);
             }
-
-            cleanUpOldThreads();
         }
 
         private void enableDgrAutoSize()
@@ -448,6 +450,11 @@ namespace Mother_of_Ping_GUI
         private void stopGridUpdate()
         {
             timer1.Stop();
+            timer3.Stop();
+        }
+
+        private void stopNotifyOfflineHost()
+        {
             timer3.Stop();
         }
 
