@@ -294,13 +294,13 @@ namespace Mother_of_Ping_GUI
             bigData.Columns.Add("Max Consecutive Failed Duration", typeof(string)); // 11
             bigData.Columns.Add("% Failed", typeof(string)); // 12
             bigData.Columns.Add("Last Ping Status", typeof(string)); // 13
-            bigData.Columns.Add("Last Ping Time", typeof(int)); // 14
+            bigData.Columns.Add("Last Ping Time", typeof(string)); // 14
             bigData.Columns.Add("Average Ping Time", typeof(string)); // 15
             bigData.Columns.Add("Last Succeed On", typeof(string)); // 16
             bigData.Columns.Add("Last Failed On", typeof(string)); // 17
             bigData.Columns.Add("Last Failed Duration", typeof(string)); // 18
-            bigData.Columns.Add("Minimum Ping Time", typeof(int)); // 19
-            bigData.Columns.Add("Maximum Ping Time", typeof(int)); // 20
+            bigData.Columns.Add("Minimum Ping Time", typeof(string)); // 19
+            bigData.Columns.Add("Maximum Ping Time", typeof(string)); // 20
 
             dgvPing.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
 
@@ -420,13 +420,13 @@ namespace Mother_of_Ping_GUI
                     row[11] = tools.formatTimeSpanForGridView(worker.maxConsecutiveDownDuration);
                     row[12] = worker.percentDown;
                     row[13] = pingWork.pingStatusToText[lastReply_result];
-                    row[14] = worker.lastReply_time;
-                    row[15] = string.Format("{0:0.#}", worker.avgPingTime);
+                    row[14] = tools.formatPingTimeForGridView(worker.lastReply_time, worker.upCount);
+                    row[15] = tools.formatPingTimeForGridView(worker.avgPingTime, worker.upCount);
                     row[16] = tools.formatDateTimeForGridView(worker.lastUpTimestamp);
                     row[17] = tools.formatDateTimeForGridView(worker.lastDownTimestamp);
                     row[18] = tools.formatTimeSpanForGridView(worker.lastDownDuration);
-                    row[19] = worker.minPingTime;
-                    row[20] = worker.maxPingTime;
+                    row[19] = tools.formatPingTimeForGridView(worker.minPingTime, worker.upCount);
+                    row[20] = tools.formatPingTimeForGridView(worker.maxPingTime, worker.upCount);
 
                     row.EndEdit();
                     row.AcceptChanges();

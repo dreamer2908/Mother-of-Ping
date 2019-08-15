@@ -276,13 +276,13 @@ namespace Mother_of_Ping_CLI
                     formatTimeSpanForGridView(work.maxConsecutiveDownDuration), // 8
                     work.percentDown, // 9
                     pingWork.pingStatusToText[work.lastReply_result], // 10
-                    work.lastReply_time.ToString(), // 11
-                    (work.upCount == 0) ? string.Empty : string.Format("{0:0.#}", work.avgPingTime), // 12
+                    formatPingTimeForGridView(work.lastReply_time, work.upCount), // 11
+                    formatPingTimeForGridView(work.avgPingTime, work.upCount), // 12
                     formatDateTimeForGridView(work.lastUpTimestamp), // 13
                     formatDateTimeForGridView(work.lastDownTimestamp), // 14
                     formatTimeSpanForGridView(work.lastDownDuration), // 15
-                    (work.upCount == 0) ? string.Empty : work.minPingTime.ToString(), // 16
-                    (work.upCount == 0) ? string.Empty : work.maxPingTime.ToString() // 17
+                    formatPingTimeForGridView(work.minPingTime, work.upCount), // 16
+                    formatPingTimeForGridView(work.maxPingTime, work.upCount) // 17
                 };
                 contents.Enqueue(line);
             }
@@ -335,6 +335,16 @@ namespace Mother_of_Ping_CLI
             {
                 return formatTimeSpan(s);
             }
+        }
+
+        public static string formatPingTimeForGridView(float t)
+        {
+            return (t < 0) ? string.Empty : string.Format("{0:0.#}", t);
+        }
+
+        public static string formatPingTimeForGridView(float t, int upCount)
+        {
+            return (t < 0 || upCount == 0) ? string.Empty : string.Format("{0:0.#}", t);
         }
 
         public static void generateHtmlReport(pingWork[] workForce, string filename)
