@@ -30,26 +30,29 @@ namespace Mother_of_Ping_CLI
         public int bufferSize { get; set; }
         public int ttl { get; set; }
         public bool threadIsWorking { get; set; }
-        public string threadLastActiveTimestamp { get; private set; }
+        public DateTime threadLastActiveTimestamp { get; private set; }
 
         public int totalCount { get; private set; }
         public int downCount { get; private set; }
         public int upCount { get; private set; }
         public int consecutiveDownCount { get; private set; }
         public int maxConsecutiveDownCount { get; private set; }
-        private string lastDownTimestampStart;
-        public string maxConsecutiveDownTimestampStart { get; private set; }
-        public string maxConsecutiveDownTimestampEnd { get; private set; }
+        private DateTime lastDownTimestampStart;
+        public DateTime maxConsecutiveDownTimestampStart { get; private set; }
+        public DateTime maxConsecutiveDownTimestampEnd { get; private set; }
+        public TimeSpan maxConsecutiveDownDuration { get; private set; }
         public string percentDown { get; private set; }
         public pingStatus lastReply_result { get; private set; }
         public string lastReply_address { get; private set; }
         public long lastReply_time { get; private set; }
         public int lastReply_ttl { get; private set; }
+        public DateTime lastReply_timestamp { get; private set; }
         public float avgPingTime { get; private set; }
         public long minPingTime { get; private set; }
         public long maxPingTime { get; private set; }
-        public string lastUpTimestamp { get; private set; }
-        public string lastDownTimestamp { get; private set; }
+        public DateTime lastUpTimestamp { get; private set; }
+        public DateTime lastDownTimestamp { get; private set; }
+        public TimeSpan lastDownDuration { get; private set; }
         public int order { get { return id; } }
 
         private bool stopSignal = false;
@@ -164,11 +167,12 @@ namespace Mother_of_Ping_CLI
             {
                 threadIsWorking = true;
 
-                threadLastActiveTimestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                threadLastActiveTimestamp = DateTime.Now;
                 lastReply_result = singlePing(hostname, timeout, bufferSize, ttl, out string replyAddr, out long replyTime, out int replyTtl);
                 lastReply_address = replyAddr;
                 lastReply_time = replyTime;
                 lastReply_ttl = replyTtl;
+                lastReply_timestamp = DateTime.Now;
                 // Console.WriteLine(tools.pingStatusTable[result] + " " + replyAddr + " " + replyTime.ToString() + " " + replyTtl.ToString());
 
                 // stat update
@@ -207,7 +211,7 @@ namespace Mother_of_Ping_CLI
             // log format: 0<hostname>,1<timestamp>,2<result>,3<round trip in ms>,4<TTL>,5<consecutiveDownCount>,6<check me>
             string[] line = new string[7] {
                 hostname,
-                threadLastActiveTimestamp,
+                tools.formatDateTime(lastReply_timestamp),
                 pingStatusToText[lastReply_result],
                 lastReply_time.ToString(),
                 lastReply_ttl.ToString(),
@@ -226,7 +230,7 @@ namespace Mother_of_Ping_CLI
             {
                 upCount++;
                 consecutiveDownCount = 0;
-                lastUpTimestamp = threadLastActiveTimestamp;
+                lastUpTimestamp = lastReply_timestamp;
 
                 avgPingTime = ((avgPingTime * (upCount - 1)) + lastReply_time) / upCount;
                 if (lastReply_time > maxPingTime || upCount == 1)
@@ -242,18 +246,21 @@ namespace Mother_of_Ping_CLI
             {
                 downCount++;
                 consecutiveDownCount++;
-                lastDownTimestamp = threadLastActiveTimestamp;
+                lastDownTimestamp = lastReply_timestamp;
 
                 if (consecutiveDownCount == 1)
                 {
-                    lastDownTimestampStart = lastDownTimestamp;
+                    lastDownTimestampStart = threadLastActiveTimestamp;
                 }
+
+                lastDownDuration = lastDownTimestamp - lastDownTimestampStart;
 
                 if (consecutiveDownCount >= maxConsecutiveDownCount)
                 {
                     maxConsecutiveDownCount = consecutiveDownCount;
-                    maxConsecutiveDownTimestampEnd = threadLastActiveTimestamp;
+                    maxConsecutiveDownTimestampEnd = lastReply_timestamp;
                     maxConsecutiveDownTimestampStart = lastDownTimestampStart;
+                    maxConsecutiveDownDuration = maxConsecutiveDownTimestampEnd - maxConsecutiveDownTimestampStart;
                 }
             }
 
@@ -263,8 +270,9 @@ namespace Mother_of_Ping_CLI
         public void resetStat()
         {
             maxConsecutiveDownCount = 0;
-            maxConsecutiveDownTimestampStart = string.Empty;
-            maxConsecutiveDownTimestampEnd = string.Empty;
+            maxConsecutiveDownTimestampStart = DateTime.MinValue;
+            maxConsecutiveDownTimestampEnd = DateTime.MinValue;
+            maxConsecutiveDownDuration = TimeSpan.MinValue;
             percentDown = string.Empty;
             lastReply_result = pingStatus.online;
             lastReply_address = string.Empty;
@@ -273,8 +281,9 @@ namespace Mother_of_Ping_CLI
             avgPingTime = -1;
             minPingTime = -1;
             maxPingTime = -1;
-            lastUpTimestamp = string.Empty;
-            lastDownTimestamp = string.Empty;
+            lastUpTimestamp = DateTime.MinValue;
+            lastDownTimestamp = DateTime.MinValue;
+            lastDownDuration = TimeSpan.MinValue;
 
             totalCount = 0;
             downCount = 0;

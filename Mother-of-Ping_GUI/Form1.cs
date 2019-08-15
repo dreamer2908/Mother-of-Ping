@@ -290,16 +290,17 @@ namespace Mother_of_Ping_GUI
             bigData.Columns.Add("Failed Count", typeof(int)); // 7
             bigData.Columns.Add("Consecutive Failed Count", typeof(int)); // 8
             bigData.Columns.Add("Max Consecutive Failed Count", typeof(int)); // 9
-            bigData.Columns.Add("Max Consecutive Failed Start Time", typeof(string)); // 10
-            bigData.Columns.Add("Max Consecutive Failed End Time", typeof(string)); // 11
+            bigData.Columns.Add("Max Consecutive Failed On", typeof(string)); // 10
+            bigData.Columns.Add("Max Consecutive Failed Duration", typeof(string)); // 11
             bigData.Columns.Add("% Failed", typeof(string)); // 12
             bigData.Columns.Add("Last Ping Status", typeof(string)); // 13
             bigData.Columns.Add("Last Ping Time", typeof(int)); // 14
             bigData.Columns.Add("Average Ping Time", typeof(string)); // 15
             bigData.Columns.Add("Last Succeed On", typeof(string)); // 16
             bigData.Columns.Add("Last Failed On", typeof(string)); // 17
-            bigData.Columns.Add("Minimum Ping Time", typeof(int)); // 18
-            bigData.Columns.Add("Maximum Ping Time", typeof(int)); // 19
+            bigData.Columns.Add("Last Failed Duration", typeof(string)); // 18
+            bigData.Columns.Add("Minimum Ping Time", typeof(int)); // 19
+            bigData.Columns.Add("Maximum Ping Time", typeof(int)); // 20
 
             dgvPing.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
 
@@ -415,16 +416,17 @@ namespace Mother_of_Ping_GUI
                     row[7] = worker.downCount;
                     row[8] = worker.consecutiveDownCount;
                     row[9] = worker.maxConsecutiveDownCount;
-                    row[10] = worker.maxConsecutiveDownTimestampStart;
-                    row[11] = worker.maxConsecutiveDownTimestampEnd;
+                    row[10] = tools.formatDateTimeForGridView(worker.maxConsecutiveDownTimestampEnd);
+                    row[11] = tools.formatTimeSpanForGridView(worker.maxConsecutiveDownDuration);
                     row[12] = worker.percentDown;
                     row[13] = pingWork.pingStatusToText[lastReply_result];
                     row[14] = worker.lastReply_time;
                     row[15] = string.Format("{0:0.#}", worker.avgPingTime);
-                    row[16] = worker.lastUpTimestamp;
-                    row[17] = worker.lastDownTimestamp;
-                    row[18] = worker.minPingTime;
-                    row[19] = worker.maxPingTime;
+                    row[16] = tools.formatDateTimeForGridView(worker.lastUpTimestamp);
+                    row[17] = tools.formatDateTimeForGridView(worker.lastDownTimestamp);
+                    row[18] = tools.formatTimeSpanForGridView(worker.lastDownDuration);
+                    row[19] = worker.minPingTime;
+                    row[20] = worker.maxPingTime;
 
                     row.EndEdit();
                     row.AcceptChanges();
