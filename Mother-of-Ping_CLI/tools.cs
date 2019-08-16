@@ -404,5 +404,10 @@ namespace Mother_of_Ping_CLI
                 log.TryDequeue(out string[] logLine);
             }
         }
+
+        public static TimeSpan roundTimeSpanToSecond(TimeSpan tmspan)
+        {
+            return new TimeSpan(tmspan.Days, tmspan.Hours, tmspan.Minutes, tmspan.Seconds + (int)Math.Round(1.0 * tmspan.Milliseconds / 1000, MidpointRounding.AwayFromZero));
+        }
     }
 }

@@ -266,14 +266,14 @@ namespace Mother_of_Ping_CLI
                     lastDownTimestampStart = threadLastActiveTimestamp;
                 }
 
-                lastDownDuration = lastDownTimestamp - lastDownTimestampStart;
+                lastDownDuration = tools.roundTimeSpanToSecond(lastDownTimestamp - lastDownTimestampStart);
 
                 if (consecutiveDownCount >= maxConsecutiveDownCount)
                 {
                     maxConsecutiveDownCount = consecutiveDownCount;
                     maxConsecutiveDownTimestampEnd = lastReply_timestamp;
                     maxConsecutiveDownTimestampStart = lastDownTimestampStart;
-                    maxConsecutiveDownDuration = maxConsecutiveDownTimestampEnd - maxConsecutiveDownTimestampStart;
+                    maxConsecutiveDownDuration = tools.roundTimeSpanToSecond(maxConsecutiveDownTimestampEnd - maxConsecutiveDownTimestampStart);
                 }
             }
 
