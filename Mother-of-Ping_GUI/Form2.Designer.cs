@@ -70,11 +70,11 @@
             this.chbMarkHostConsFail = new System.Windows.Forms.CheckBox();
             this.txtFailToMark = new System.Windows.Forms.TextBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.chbShowLowerPanel = new System.Windows.Forms.CheckBox();
-            this.radbtnchbShowLowerPanel_failed = new System.Windows.Forms.RadioButton();
-            this.radbtnchbShowLowerPanel_all = new System.Windows.Forms.RadioButton();
-            this.txtShowLowerPanel_limit = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
+            this.txtShowLowerPanel_limit = new System.Windows.Forms.TextBox();
+            this.radbtnchbShowLowerPanel_all = new System.Windows.Forms.RadioButton();
+            this.radbtnchbShowLowerPanel_failed = new System.Windows.Forms.RadioButton();
+            this.chbShowLowerPanel = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -97,9 +97,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(278, 16);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(49, 13);
+            this.label2.Size = new System.Drawing.Size(53, 13);
             this.label2.TabIndex = 0;
-            this.label2.Text = "Ping size";
+            this.label2.Text = "Bufer size";
             // 
             // groupBox1
             // 
@@ -522,15 +522,32 @@
             this.groupBox5.TabIndex = 7;
             this.groupBox5.TabStop = false;
             // 
-            // chbShowLowerPanel
+            // label12
             // 
-            this.chbShowLowerPanel.AutoSize = true;
-            this.chbShowLowerPanel.Location = new System.Drawing.Point(7, 20);
-            this.chbShowLowerPanel.Name = "chbShowLowerPanel";
-            this.chbShowLowerPanel.Size = new System.Drawing.Size(194, 17);
-            this.chbShowLowerPanel.TabIndex = 0;
-            this.chbShowLowerPanel.Text = "Show recent logs in the lower panel";
-            this.chbShowLowerPanel.UseVisualStyleBackColor = true;
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(29, 46);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(132, 13);
+            this.label12.TabIndex = 3;
+            this.label12.Text = "Limit the number of lines to";
+            // 
+            // txtShowLowerPanel_limit
+            // 
+            this.txtShowLowerPanel_limit.Location = new System.Drawing.Point(172, 43);
+            this.txtShowLowerPanel_limit.Name = "txtShowLowerPanel_limit";
+            this.txtShowLowerPanel_limit.Size = new System.Drawing.Size(100, 20);
+            this.txtShowLowerPanel_limit.TabIndex = 2;
+            this.txtShowLowerPanel_limit.Text = "50";
+            // 
+            // radbtnchbShowLowerPanel_all
+            // 
+            this.radbtnchbShowLowerPanel_all.AutoSize = true;
+            this.radbtnchbShowLowerPanel_all.Location = new System.Drawing.Point(276, 20);
+            this.radbtnchbShowLowerPanel_all.Name = "radbtnchbShowLowerPanel_all";
+            this.radbtnchbShowLowerPanel_all.Size = new System.Drawing.Size(64, 17);
+            this.radbtnchbShowLowerPanel_all.TabIndex = 1;
+            this.radbtnchbShowLowerPanel_all.Text = "All pings";
+            this.radbtnchbShowLowerPanel_all.UseVisualStyleBackColor = true;
             // 
             // radbtnchbShowLowerPanel_failed
             // 
@@ -544,32 +561,15 @@
             this.radbtnchbShowLowerPanel_failed.Text = "Only failed pings";
             this.radbtnchbShowLowerPanel_failed.UseVisualStyleBackColor = true;
             // 
-            // radbtnchbShowLowerPanel_all
+            // chbShowLowerPanel
             // 
-            this.radbtnchbShowLowerPanel_all.AutoSize = true;
-            this.radbtnchbShowLowerPanel_all.Location = new System.Drawing.Point(276, 20);
-            this.radbtnchbShowLowerPanel_all.Name = "radbtnchbShowLowerPanel_all";
-            this.radbtnchbShowLowerPanel_all.Size = new System.Drawing.Size(64, 17);
-            this.radbtnchbShowLowerPanel_all.TabIndex = 1;
-            this.radbtnchbShowLowerPanel_all.Text = "All pings";
-            this.radbtnchbShowLowerPanel_all.UseVisualStyleBackColor = true;
-            // 
-            // txtShowLowerPanel_limit
-            // 
-            this.txtShowLowerPanel_limit.Location = new System.Drawing.Point(172, 43);
-            this.txtShowLowerPanel_limit.Name = "txtShowLowerPanel_limit";
-            this.txtShowLowerPanel_limit.Size = new System.Drawing.Size(100, 20);
-            this.txtShowLowerPanel_limit.TabIndex = 2;
-            this.txtShowLowerPanel_limit.Text = "50";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(29, 46);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(132, 13);
-            this.label12.TabIndex = 3;
-            this.label12.Text = "Limit the number of lines to";
+            this.chbShowLowerPanel.AutoSize = true;
+            this.chbShowLowerPanel.Location = new System.Drawing.Point(7, 20);
+            this.chbShowLowerPanel.Name = "chbShowLowerPanel";
+            this.chbShowLowerPanel.Size = new System.Drawing.Size(194, 17);
+            this.chbShowLowerPanel.TabIndex = 0;
+            this.chbShowLowerPanel.Text = "Show recent logs in the lower panel";
+            this.chbShowLowerPanel.UseVisualStyleBackColor = true;
             // 
             // Form2
             // 
