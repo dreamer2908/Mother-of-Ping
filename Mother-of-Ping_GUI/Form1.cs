@@ -129,7 +129,9 @@ namespace Mother_of_Ping_GUI
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            resetTable();
+            resetPingPanel();
+            resetLowerPanel();
+
             loadSettings();
             if (appPref_autoStart)
             {
@@ -277,9 +279,9 @@ namespace Mother_of_Ping_GUI
             stopGridUpdate();
             stopLogFlushing();
             cleanUpOldThreads();
-            resetTable();
+            clearPingPanel();
             loadHostListToTable(hostList);
-            resetLowerPanel();
+            clearLowerPanel();
         }
 
         private void cleanUpOldThreads()
@@ -291,7 +293,7 @@ namespace Mother_of_Ping_GUI
             }
         }
 
-        private void resetTable()
+        private void resetPingPanel()
         {
             bigData = new DataTable();
             bind = new SyncBindingSource();
@@ -342,6 +344,11 @@ namespace Mother_of_Ping_GUI
                   BindingFlags.Instance | BindingFlags.NonPublic);
                 pi.SetValue(dgvPing, true, null);
             }
+        }
+
+        private void clearPingPanel()
+        {
+            bigData.Rows.Clear();
         }
 
         private void enableDgrAutoSize()
