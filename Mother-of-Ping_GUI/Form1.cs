@@ -66,6 +66,9 @@ namespace Mother_of_Ping_GUI
         int appPref_showLowerPanel_limit = 50;
 
         Mutex mutexLogFlush = new Mutex();
+        Mutex mutexStopPing = new Mutex();
+
+        bool pingStarted = false;
 
         #region events
 
@@ -94,26 +97,19 @@ namespace Mother_of_Ping_GUI
 
         private void btnStop_Click(object sender, EventArgs e)
         {
-            stopPing();
+            stopPing(false);
             stopLogFlushing();
             stopNotifyOfflineHost();
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
-            updateStats();
-        }
-
-        private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            //bind.ResumeBinding();
-            Thread.Sleep(1000);
-            backgroundWorker1.RunWorkerAsync();
+            resetStats();
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            stopPing();
+            stopPing(false);
             saveSettings();
             flushLogToDisk();
 
@@ -256,6 +252,14 @@ namespace Mother_of_Ping_GUI
         {
             notifyOfflineHost();
         }
+
+        private void btnReset_Click(object sender, EventArgs e)
+        {
+            if (!backgroundWorker1.IsBusy)
+            {
+                backgroundWorker1.RunWorkerAsync();
+            }
+        }
         #endregion
 
         private void startPingAio()
@@ -288,7 +292,7 @@ namespace Mother_of_Ping_GUI
         {
             if (workForce != null)
             {
-                stopPing();
+                stopPing(false);
                 workForce = null;
             }
         }
@@ -375,7 +379,9 @@ namespace Mother_of_Ping_GUI
 
         private void startPing()
         {
-            stopPing(); // stop all ongoing workers
+            stopPing(false); // stop all ongoing workers
+
+            pingStarted = true;
 
             if (workForce == null)
             {
@@ -403,15 +409,28 @@ namespace Mother_of_Ping_GUI
             });
         }
 
-        private void stopPing()
+        private void stopPing(bool wait)
         {
+            mutexStopPing.WaitOne();
+
             if (workForce != null)
             {
-                foreach (pingWork worker in workForce)
+                Parallel.ForEach(workForce, (worker) =>
                 {
-                    worker.stopPing();
-                }
+                    if (wait)
+                    {
+                        worker.stopPingWait();
+                    }
+                    else
+                    {
+                        worker.stopPing();
+                    }
+                });
             }
+
+            pingStarted = false;
+
+            mutexStopPing.ReleaseMutex();
         }
 
         private void resetPing()
@@ -439,7 +458,7 @@ namespace Mother_of_Ping_GUI
 
                     row.BeginEdit();
 
-                    row[0] = (lastReply_result == pingWork.pingStatus.online) ? icon_ok : icon_warning;
+                    row[0] = pingStatusToIcon(lastReply_result);
 
                     row[5] = worker.lastReply_address;
                     row[6] = worker.upCount;
@@ -461,6 +480,22 @@ namespace Mother_of_Ping_GUI
                     row.EndEdit();
                     row.AcceptChanges();
                 }
+            }
+        }
+
+        private Icon pingStatusToIcon(pingWork.pingStatus lastReply_result)
+        {
+            if (lastReply_result == pingWork.pingStatus.online)
+            {
+                return icon_ok;
+            }
+            else if (lastReply_result == pingWork.pingStatus.none)
+            {
+                return icon_blank;
+            }
+            else
+            {
+                return icon_warning;
             }
         }
 
@@ -576,7 +611,7 @@ namespace Mother_of_Ping_GUI
         {
             foreach (DataGridViewRow row in dgvPing.Rows)
             {
-                if ((row.Cells[13].Value.ToString() != pingWork.pingStatusToText[pingWork.pingStatus.online]) && (TimeSpan.Parse(row.Cells[18].Value.ToString()).TotalSeconds >= appPref_markHostConsFailThreshold))
+                if ((row.Cells[13].Value.ToString() != pingWork.pingStatusToText[pingWork.pingStatus.online]) && (row.Cells[18].Value.ToString().Length > 0) && (TimeSpan.Parse(row.Cells[18].Value.ToString()).TotalSeconds >= appPref_markHostConsFailThreshold))
                 {
                     if (appPref_markHostConsFail)
                     {
@@ -769,7 +804,7 @@ namespace Mother_of_Ping_GUI
                     smallData.Rows.Add();
                     var row = smallData.Rows[i];
 
-                    row[0] = (line[2] == pingWork.pingStatusToText[pingWork.pingStatus.online]) ? icon_ok : icon_warning;
+                    row[0] = pingStatusToIcon(pingWork.textToPingStatus[line[2]]);
                     row[1] = line[0];
                     row[2] = line[1];
                     row[3] = line[2];
@@ -829,6 +864,31 @@ namespace Mother_of_Ping_GUI
         private void clearLowerPanel()
         {
             smallData.Rows.Clear();
+        }
+
+        private void resetStats()
+        {
+            if (workForce != null)
+            {
+                mutexStopPing.WaitOne();
+                bool _pingStarted = this.pingStarted;
+                mutexStopPing.ReleaseMutex();
+
+                if (_pingStarted)
+                {
+                    stopPing(true);
+                }
+
+                Parallel.ForEach(workForce, (worker) =>
+                {
+                    worker.resetStat();
+                });
+
+                if (_pingStarted)
+                {
+                    startPingAio();
+                }
+            }
         }
     }
 }

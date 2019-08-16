@@ -65,13 +65,17 @@ namespace Mother_of_Ping_CLI
         public ConcurrentQueue<string[]> latestLog_all;
         public ConcurrentQueue<string[]> latestLog_down;
 
+        Mutex mutex = new Mutex();
+
         public enum pingStatus
         {
             online = 0,
             timeout = 1,
             unreachable = 2,
             ttlExpired = 3,
-            generalFailure = 4
+            generalFailure = 4,
+            invalid = -1,
+            none = -2,
         }
 
         public static readonly Dictionary<pingStatus, string> pingStatusToText = new Dictionary<pingStatus, string>()
@@ -81,6 +85,19 @@ namespace Mother_of_Ping_CLI
             { pingStatus.unreachable, "Unreachable" },
             { pingStatus.ttlExpired, "TTL expired" },
             { pingStatus.generalFailure, "General failure" },
+            { pingStatus.invalid, "Invalid" },
+            { pingStatus.none, string.Empty },
+        };
+
+        public static readonly Dictionary<string, pingStatus> textToPingStatus = new Dictionary<string, pingStatus>()
+        {
+            { "Online", pingStatus.online },
+            { "Timed out", pingStatus.timeout },
+            { "Unreachable", pingStatus.unreachable },
+            { "TTL expired", pingStatus.ttlExpired },
+            { "General failure", pingStatus.generalFailure },
+            { "Invalid", pingStatus.invalid },
+            { string.Empty, pingStatus.none },
         };
 
         private static readonly Dictionary<IPStatus, pingStatus> ipStatusToPingStatus = new Dictionary<IPStatus, pingStatus>()
@@ -165,6 +182,8 @@ namespace Mother_of_Ping_CLI
 
         private void backgroundPing()
         {
+            mutex.WaitOne();
+
             DateTime startLine = DateTime.Now;
 
             while (!stopSignal)
@@ -208,6 +227,8 @@ namespace Mother_of_Ping_CLI
             //Console.WriteLine(hostname + ": exiting...");
             Console.WriteLine(hostname + ": " + totalCount.ToString() + " total, " + upCount.ToString() + " up, " + downCount.ToString() + " down");
 
+            mutex.ReleaseMutex();
+            threadIsWorking = false;
         }
 
         private void addLastPingToLog()
@@ -287,7 +308,7 @@ namespace Mother_of_Ping_CLI
             maxConsecutiveDownTimestampEnd = DateTime.MinValue;
             maxConsecutiveDownDuration = TimeSpan.MinValue;
             percentDown = string.Empty;
-            lastReply_result = pingStatus.online;
+            lastReply_result = pingStatus.none;
             lastReply_address = string.Empty;
             lastReply_time = -1;
             lastReply_ttl = -1;
@@ -323,6 +344,13 @@ namespace Mother_of_Ping_CLI
         public void stopPing()
         {
             stopSignal = true;
+        }
+
+        public void stopPingWait()
+        {
+            stopPing();
+            mutex.WaitOne();
+            mutex.ReleaseMutex();
         }
     }
 }

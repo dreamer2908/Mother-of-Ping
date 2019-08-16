@@ -46,6 +46,7 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.dgvLowerPanel = new System.Windows.Forms.DataGridView();
+            this.btnReset = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPing)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -101,7 +102,7 @@
             // 
             // btnOptions
             // 
-            this.btnOptions.Location = new System.Drawing.Point(338, 12);
+            this.btnOptions.Location = new System.Drawing.Point(420, 12);
             this.btnOptions.Name = "btnOptions";
             this.btnOptions.Size = new System.Drawing.Size(75, 23);
             this.btnOptions.TabIndex = 4;
@@ -116,7 +117,7 @@
             // 
             // btnReport
             // 
-            this.btnReport.Location = new System.Drawing.Point(257, 12);
+            this.btnReport.Location = new System.Drawing.Point(339, 12);
             this.btnReport.Name = "btnReport";
             this.btnReport.Size = new System.Drawing.Size(75, 23);
             this.btnReport.TabIndex = 5;
@@ -127,7 +128,6 @@
             // backgroundWorker1
             // 
             this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
-            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
             // 
             // timer1
             // 
@@ -142,7 +142,7 @@
             // 
             // btnExit
             // 
-            this.btnExit.Location = new System.Drawing.Point(419, 12);
+            this.btnExit.Location = new System.Drawing.Point(501, 12);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(75, 23);
             this.btnExit.TabIndex = 6;
@@ -199,11 +199,22 @@
             this.dgvLowerPanel.Size = new System.Drawing.Size(776, 95);
             this.dgvLowerPanel.TabIndex = 0;
             // 
+            // btnReset
+            // 
+            this.btnReset.Location = new System.Drawing.Point(258, 11);
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Size = new System.Drawing.Size(75, 23);
+            this.btnReset.TabIndex = 9;
+            this.btnReset.Text = "Reset";
+            this.btnReset.UseVisualStyleBackColor = true;
+            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnReset);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnReport);
@@ -244,6 +255,7 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.DataGridView dgvLowerPanel;
+        private System.Windows.Forms.Button btnReset;
     }
 }
 
