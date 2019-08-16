@@ -35,7 +35,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\freq_icon.ico</ApplicationIcon>
+    <ApplicationIcon>Resources\zen_icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
@@ -112,6 +112,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\freq_icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\zen_icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
