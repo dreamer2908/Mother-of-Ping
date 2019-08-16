@@ -264,9 +264,12 @@ namespace Mother_of_Ping_GUI
 
         private void startPingAio()
         {
-            startPing();
-            startGridUpdate();
-            startLogFlushing();
+            if (hostList != null && hostList.Count > 0)
+            {
+                startPing();
+                startGridUpdate();
+                startLogFlushing();
+            }
         }
 
         private void loadNewHostListAio(string filename)
@@ -599,7 +602,7 @@ namespace Mother_of_Ping_GUI
             Settings.Set("appPref_showLowerPanel_limit", appPref_showLowerPanel_limit);
 
             // save host list
-            if (appPref_saveHostList)
+            if (appPref_saveHostList && hostList != null)
             {
                 // convert to ConcurrentQueue<string[]> then write down
                 ConcurrentQueue<string[]> tmp = new ConcurrentQueue<string[]>(hostList);
