@@ -47,12 +47,19 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.dgvLowerPanel = new System.Windows.Forms.DataGridView();
             this.btnReset = new System.Windows.Forms.Button();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.dgvOfflinePanel = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPing)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLowerPanel)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvOfflinePanel)).BeginInit();
             this.SuspendLayout();
             // 
             // dgvPing
@@ -179,7 +186,7 @@
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.dgvLowerPanel);
+            this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
             this.splitContainer1.Size = new System.Drawing.Size(776, 397);
             this.splitContainer1.SplitterDistance = 298;
             this.splitContainer1.TabIndex = 8;
@@ -196,7 +203,7 @@
             this.dgvLowerPanel.ReadOnly = true;
             this.dgvLowerPanel.RowHeadersVisible = false;
             this.dgvLowerPanel.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvLowerPanel.Size = new System.Drawing.Size(776, 95);
+            this.dgvLowerPanel.Size = new System.Drawing.Size(450, 95);
             this.dgvLowerPanel.TabIndex = 0;
             // 
             // btnReset
@@ -208,6 +215,39 @@
             this.btnReset.Text = "Reset";
             this.btnReset.UseVisualStyleBackColor = true;
             this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
+            // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer2.Name = "splitContainer2";
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.dgvLowerPanel);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.dgvOfflinePanel);
+            this.splitContainer2.Size = new System.Drawing.Size(776, 95);
+            this.splitContainer2.SplitterDistance = 450;
+            this.splitContainer2.TabIndex = 0;
+            // 
+            // dgvOfflinePanel
+            // 
+            this.dgvOfflinePanel.AllowUserToAddRows = false;
+            this.dgvOfflinePanel.AllowUserToDeleteRows = false;
+            this.dgvOfflinePanel.AllowUserToResizeRows = false;
+            this.dgvOfflinePanel.BackgroundColor = System.Drawing.SystemColors.Control;
+            this.dgvOfflinePanel.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvOfflinePanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvOfflinePanel.Location = new System.Drawing.Point(0, 0);
+            this.dgvOfflinePanel.Name = "dgvOfflinePanel";
+            this.dgvOfflinePanel.ReadOnly = true;
+            this.dgvOfflinePanel.RowHeadersVisible = false;
+            this.dgvOfflinePanel.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvOfflinePanel.Size = new System.Drawing.Size(322, 95);
+            this.dgvOfflinePanel.TabIndex = 0;
             // 
             // Form1
             // 
@@ -233,6 +273,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvLowerPanel)).EndInit();
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.splitContainer2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvOfflinePanel)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -256,6 +301,8 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.DataGridView dgvLowerPanel;
         private System.Windows.Forms.Button btnReset;
+        private System.Windows.Forms.SplitContainer splitContainer2;
+        private System.Windows.Forms.DataGridView dgvOfflinePanel;
     }
 }
 

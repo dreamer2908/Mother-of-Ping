@@ -28,6 +28,9 @@ namespace Mother_of_Ping_GUI
         DataTable smallData;
         SyncBindingSource smallBind;
 
+        DataTable tinyData;
+        SyncBindingSource tinyBind;
+
         Icon icon_ok = Mother_of_Ping_GUI.Properties.Resources.icon_ok;
         Icon icon_warning = Mother_of_Ping_GUI.Properties.Resources.icon_warning;
         Icon icon_blank = Mother_of_Ping_GUI.Properties.Resources.icon_blank;
@@ -127,6 +130,7 @@ namespace Mother_of_Ping_GUI
         {
             resetPingPanel();
             resetLowerPanel();
+            resetOfflinePanel();
 
             loadSettings();
             if (appPref_autoStart)
@@ -140,6 +144,7 @@ namespace Mother_of_Ping_GUI
             updateStats();
             updateRowColor();
             updateLowerPanel();
+            updateOfflinePanel();
         }
 
         private void btnReport_Click(object sender, EventArgs e)
@@ -294,6 +299,7 @@ namespace Mother_of_Ping_GUI
             clearPingPanel();
             loadHostListToTable(hostList);
             clearLowerPanel();
+            clearOfflinePanel();
         }
 
         private void cleanUpOldThreads()
@@ -897,6 +903,72 @@ namespace Mother_of_Ping_GUI
                     startPingAio();
                 }
             }
+        }
+
+        private void resetOfflinePanel()
+        {
+            tinyData = new DataTable();
+            tinyBind = new SyncBindingSource();
+            tinyBind.DataSource = tinyData;
+
+            dgvOfflinePanel.DataSource = tinyData;
+            dgvOfflinePanel.DataSource = tinyBind;
+
+            tinyData.Columns.Add("   ", typeof(Icon)); // 0
+            tinyData.Columns.Add("No.", typeof(string)); // 1
+            tinyData.Columns.Add("Host Name", typeof(string)); // 2
+            tinyData.Columns.Add("Last Failed On", typeof(string)); // 3
+            tinyData.Columns.Add("Duration", typeof(string)); // 4
+            tinyData.Columns.Add("Last Ping Status", typeof(string)); // 5
+
+            dgvOfflinePanel.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
+
+            dgvOfflinePanel.Refresh();
+
+            // from https://10tec.com/articles/why-datagridview-slow.aspx
+            dgvOfflinePanel.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+            dgvOfflinePanel.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+            dgvOfflinePanel.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+
+            // Double buffering can make DGV slow in remote desktop
+            if (!System.Windows.Forms.SystemInformation.TerminalServerSession)
+            {
+                Type dgvType = dgvOfflinePanel.GetType();
+                PropertyInfo pi = dgvType.GetProperty("DoubleBuffered",
+                  BindingFlags.Instance | BindingFlags.NonPublic);
+                pi.SetValue(dgvOfflinePanel, true, null);
+            }
+        }
+
+        private void clearOfflinePanel()
+        {
+            tinyData.Rows.Clear();
+        }
+
+        private void updateOfflinePanel()
+        {
+            clearOfflinePanel();
+
+            tinyData.BeginLoadData();
+
+            foreach (DataGridViewRow mainRow in dgvPing.Rows)
+            {
+                if (mainRow.DefaultCellStyle.BackColor == Color.OrangeRed)
+                {
+                    tinyData.Rows.Add();
+
+                    var offRow = tinyData.Rows[tinyData.Rows.Count - 1];
+
+                    offRow[0] = mainRow.Cells[0].Value;
+                    offRow[1] = mainRow.Cells[2].Value;
+                    offRow[2] = mainRow.Cells[3].Value;
+                    offRow[3] = mainRow.Cells[17].Value;
+                    offRow[4] = mainRow.Cells[18].Value;
+                    offRow[5] = mainRow.Cells[13].Value;
+                }
+            }
+
+            tinyData.EndLoadData();
         }
     }
 }
