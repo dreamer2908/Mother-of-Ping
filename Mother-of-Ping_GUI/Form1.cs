@@ -163,6 +163,11 @@ namespace Mother_of_Ping_GUI
                         tools.generateHtmlReport(workForce, saveFileDialog1.FileName);
                         break;
                 }
+
+                if (File.Exists(saveFileDialog1.FileName))
+                {
+                    System.Diagnostics.Process.Start(saveFileDialog1.FileName);
+                }
             }
         }
 
