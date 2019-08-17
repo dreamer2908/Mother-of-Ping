@@ -32,7 +32,7 @@ namespace Mother_of_Ping_GUI
         Icon icon_warning = Mother_of_Ping_GUI.Properties.Resources.icon_warning;
         Icon icon_blank = Mother_of_Ping_GUI.Properties.Resources.icon_blank;
 
-        List<string[]> hostList;
+        List<string[]> hostList = new List<string[]>();
         pingWork[] workForce;
 
         int pingPref_period = 1000;
@@ -85,7 +85,7 @@ namespace Mother_of_Ping_GUI
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            if (hostList != null)
+            if (hostList.Count > 0)
             {
                 startPingAio();
             }
@@ -264,7 +264,7 @@ namespace Mother_of_Ping_GUI
 
         private void startPingAio()
         {
-            if (hostList != null && hostList.Count > 0)
+            if (hostList.Count > 0)
             {
                 startPing();
                 startGridUpdate();
@@ -602,7 +602,7 @@ namespace Mother_of_Ping_GUI
             Settings.Set("appPref_showLowerPanel_limit", appPref_showLowerPanel_limit);
 
             // save host list
-            if (appPref_saveHostList && hostList != null)
+            if (appPref_saveHostList)
             {
                 // convert to ConcurrentQueue<string[]> then write down
                 ConcurrentQueue<string[]> tmp = new ConcurrentQueue<string[]>(hostList);
