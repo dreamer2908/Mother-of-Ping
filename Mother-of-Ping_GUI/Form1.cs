@@ -348,6 +348,10 @@ namespace Mother_of_Ping_GUI
             dgvPing.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
             dgvPing.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
 
+            //dgvPing.Columns[0].Width = 32;
+            dgvPing.Columns[0].SortMode = DataGridViewColumnSortMode.Automatic;
+            dgvPing.Columns[1].SortMode = DataGridViewColumnSortMode.Automatic;
+
             // Double buffering can make DGV slow in remote desktop
             if (!System.Windows.Forms.SystemInformation.TerminalServerSession)
             {
