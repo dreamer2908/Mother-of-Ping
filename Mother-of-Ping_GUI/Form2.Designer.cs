@@ -51,9 +51,9 @@
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.chbUseTodayFolder = new System.Windows.Forms.CheckBox();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnBrowseLogFolder = new System.Windows.Forms.Button();
             this.txtFlushLogPeriod = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnBrowseGlobalLogOutput = new System.Windows.Forms.Button();
             this.txtLogFolder = new System.Windows.Forms.TextBox();
             this.txtGlobalLogPath = new System.Windows.Forms.TextBox();
             this.chbSaveIndividualLog = new System.Windows.Forms.CheckBox();
@@ -237,6 +237,7 @@
             this.btnBrowseDefaultList.TabIndex = 8;
             this.btnBrowseDefaultList.Text = "Browse...";
             this.btnBrowseDefaultList.UseVisualStyleBackColor = true;
+            this.btnBrowseDefaultList.Click += new System.EventHandler(this.btnBrowseDefaultList_Click);
             // 
             // radbtnLoadFile
             // 
@@ -280,9 +281,9 @@
             this.groupBox3.Controls.Add(this.label10);
             this.groupBox3.Controls.Add(this.label9);
             this.groupBox3.Controls.Add(this.chbUseTodayFolder);
-            this.groupBox3.Controls.Add(this.button2);
+            this.groupBox3.Controls.Add(this.btnBrowseLogFolder);
             this.groupBox3.Controls.Add(this.txtFlushLogPeriod);
-            this.groupBox3.Controls.Add(this.button1);
+            this.groupBox3.Controls.Add(this.btnBrowseGlobalLogOutput);
             this.groupBox3.Controls.Add(this.txtLogFolder);
             this.groupBox3.Controls.Add(this.txtGlobalLogPath);
             this.groupBox3.Controls.Add(this.chbSaveIndividualLog);
@@ -337,15 +338,16 @@
             this.chbUseTodayFolder.Text = "Use <yyyy-MM-dd> sub-folder";
             this.chbUseTodayFolder.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // btnBrowseLogFolder
             // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(373, 37);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 18;
-            this.button2.Text = "Browse...";
-            this.button2.UseVisualStyleBackColor = true;
+            this.btnBrowseLogFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnBrowseLogFolder.Location = new System.Drawing.Point(373, 37);
+            this.btnBrowseLogFolder.Name = "btnBrowseLogFolder";
+            this.btnBrowseLogFolder.Size = new System.Drawing.Size(75, 23);
+            this.btnBrowseLogFolder.TabIndex = 18;
+            this.btnBrowseLogFolder.Text = "Browse...";
+            this.btnBrowseLogFolder.UseVisualStyleBackColor = true;
+            this.btnBrowseLogFolder.Click += new System.EventHandler(this.btnBrowseLogFolder_Click);
             // 
             // txtFlushLogPeriod
             // 
@@ -356,15 +358,16 @@
             this.txtFlushLogPeriod.TabIndex = 20;
             this.txtFlushLogPeriod.Text = "600";
             // 
-            // button1
+            // btnBrowseGlobalLogOutput
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(373, 13);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 15;
-            this.button1.Text = "Browse...";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnBrowseGlobalLogOutput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnBrowseGlobalLogOutput.Location = new System.Drawing.Point(373, 13);
+            this.btnBrowseGlobalLogOutput.Name = "btnBrowseGlobalLogOutput";
+            this.btnBrowseGlobalLogOutput.Size = new System.Drawing.Size(75, 23);
+            this.btnBrowseGlobalLogOutput.TabIndex = 15;
+            this.btnBrowseGlobalLogOutput.Text = "Browse...";
+            this.btnBrowseGlobalLogOutput.UseVisualStyleBackColor = true;
+            this.btnBrowseGlobalLogOutput.Click += new System.EventHandler(this.btnBrowseGlobalLogOutput_Click);
             // 
             // txtLogFolder
             // 
@@ -383,7 +386,6 @@
             this.txtGlobalLogPath.Name = "txtGlobalLogPath";
             this.txtGlobalLogPath.Size = new System.Drawing.Size(213, 20);
             this.txtGlobalLogPath.TabIndex = 14;
-            this.txtGlobalLogPath.Text = "0.0.0.0.csv";
             // 
             // chbSaveIndividualLog
             // 
@@ -630,9 +632,9 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.CheckBox chbUseTodayFolder;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnBrowseLogFolder;
         private System.Windows.Forms.TextBox txtFlushLogPeriod;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnBrowseGlobalLogOutput;
         private System.Windows.Forms.TextBox txtLogFolder;
         private System.Windows.Forms.TextBox txtGlobalLogPath;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;

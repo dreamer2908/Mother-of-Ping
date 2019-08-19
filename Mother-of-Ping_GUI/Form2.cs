@@ -34,7 +34,7 @@ namespace Mother_of_Ping_GUI
 
         public bool appPref_saveGlobalLog = true;
         public bool appPref_saveIndividualLog = true;
-        public string appPref_globalLogFilename = "0.0.0.0.csv";
+        public string appPref_globalLogFilename = "";
         public string appPref_logFolder = "";
         public bool appPref_useTodayFolder = true;
         public int appPref_flushLogPeriod = 600;
@@ -144,6 +144,29 @@ namespace Mother_of_Ping_GUI
                 return true;
             }
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void btnBrowseDefaultList_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+            }
+        }
+
+        private void btnBrowseGlobalLogOutput_Click(object sender, EventArgs e)
+        {
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                txtGlobalLogPath.Text = saveFileDialog1.FileName;
+            }
+        }
+
+        private void btnBrowseLogFolder_Click(object sender, EventArgs e)
+        {
+            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+            {
+                txtLogFolder.Text = folderBrowserDialog1.SelectedPath;
+            }
         }
     }
 }

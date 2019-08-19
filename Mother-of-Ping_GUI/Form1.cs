@@ -53,7 +53,7 @@ namespace Mother_of_Ping_GUI
 
         bool appPref_saveGlobalLog = true;
         bool appPref_saveIndividualLog = true;
-        string appPref_globalLogFilename = "0.0.0.0.csv";
+        string appPref_globalLogFilename = "";
         string appPref_logFolder = "";
         bool appPref_useTodayFolder = true;
         int appPref_flushLogPeriod = 600;
@@ -555,7 +555,7 @@ namespace Mother_of_Ping_GUI
 
             appPref_saveGlobalLog = Settings.Get("appPref_saveGlobalLog", true);
             appPref_saveIndividualLog = Settings.Get("appPref_saveIndividualLog", true);
-            appPref_globalLogFilename = Settings.Get("appPref_globalLogFilename", "0.0.0.0.csv");
+            appPref_globalLogFilename = Settings.Get("appPref_globalLogFilename", "");
             appPref_logFolder = Settings.Get("appPref_logFolder", "");
             appPref_useTodayFolder = Settings.Get("appPref_useTodayFolder", true);
             appPref_flushLogPeriod = Settings.Get("appPref_flushLogPeriod", 600);
@@ -734,12 +734,13 @@ namespace Mother_of_Ping_GUI
 
             if (appPref_saveGlobalLog)
             {
-                string globalFilePath = appPref_globalLogFilename;
+                string globalFilePath = (appPref_globalLogFilename.Length < 1) ? "0.0.0.0.csv" : appPref_globalLogFilename;
 
-                // if appPref_useTodayFolder, ignore path in appPref_globalLogFilename and put the log in today folder
-                if (appPref_useTodayFolder)
+                // put global log in actualLogFolder if globalFilePath contains only filename
+                // otherwise keep it in globalFilePath
+                string filename = Path.GetFileName(globalFilePath);
+                if (filename == globalFilePath)
                 {
-                    string filename = Path.GetFileName(appPref_globalLogFilename);
                     globalFilePath = Path.Combine(actualLogFolder, filename);
                 }
 
