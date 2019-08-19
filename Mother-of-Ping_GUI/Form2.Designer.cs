@@ -120,7 +120,7 @@
             this.groupBox1.Location = new System.Drawing.Point(15, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(456, 70);
-            this.groupBox1.TabIndex = 2;
+            this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             // 
             // label8
@@ -167,7 +167,7 @@
             this.txtTTL.Location = new System.Drawing.Point(333, 40);
             this.txtTTL.Name = "txtTTL";
             this.txtTTL.Size = new System.Drawing.Size(64, 20);
-            this.txtTTL.TabIndex = 2;
+            this.txtTTL.TabIndex = 4;
             this.txtTTL.Text = "128";
             // 
             // txtSize
@@ -176,7 +176,7 @@
             this.txtSize.Location = new System.Drawing.Point(333, 13);
             this.txtSize.Name = "txtSize";
             this.txtSize.Size = new System.Drawing.Size(64, 20);
-            this.txtSize.TabIndex = 2;
+            this.txtSize.TabIndex = 3;
             this.txtSize.Text = "32";
             // 
             // txtTimeout
@@ -184,7 +184,7 @@
             this.txtTimeout.Location = new System.Drawing.Point(99, 13);
             this.txtTimeout.Name = "txtTimeout";
             this.txtTimeout.Size = new System.Drawing.Size(64, 20);
-            this.txtTimeout.TabIndex = 2;
+            this.txtTimeout.TabIndex = 1;
             this.txtTimeout.Text = "1000";
             // 
             // txtPeriod
@@ -225,7 +225,7 @@
             this.groupBox2.Location = new System.Drawing.Point(15, 89);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(456, 48);
-            this.groupBox2.TabIndex = 3;
+            this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             // 
             // btnBrowseDefaultList
@@ -234,7 +234,7 @@
             this.btnBrowseDefaultList.Location = new System.Drawing.Point(373, 17);
             this.btnBrowseDefaultList.Name = "btnBrowseDefaultList";
             this.btnBrowseDefaultList.Size = new System.Drawing.Size(75, 23);
-            this.btnBrowseDefaultList.TabIndex = 4;
+            this.btnBrowseDefaultList.TabIndex = 8;
             this.btnBrowseDefaultList.Text = "Browse...";
             this.btnBrowseDefaultList.UseVisualStyleBackColor = true;
             // 
@@ -245,7 +245,7 @@
             this.radbtnLoadFile.Location = new System.Drawing.Point(284, 20);
             this.radbtnLoadFile.Name = "radbtnLoadFile";
             this.radbtnLoadFile.Size = new System.Drawing.Size(84, 17);
-            this.radbtnLoadFile.TabIndex = 6;
+            this.radbtnLoadFile.TabIndex = 7;
             this.radbtnLoadFile.Text = "Load this file";
             this.radbtnLoadFile.UseVisualStyleBackColor = true;
             // 
@@ -257,7 +257,7 @@
             this.radbtnSaveList.Location = new System.Drawing.Point(172, 19);
             this.radbtnSaveList.Name = "radbtnSaveList";
             this.radbtnSaveList.Size = new System.Drawing.Size(105, 17);
-            this.radbtnSaveList.TabIndex = 5;
+            this.radbtnSaveList.TabIndex = 6;
             this.radbtnSaveList.TabStop = true;
             this.radbtnSaveList.Text = "Save address list";
             this.radbtnSaveList.UseVisualStyleBackColor = true;
@@ -270,7 +270,7 @@
             this.chbAutoStart.Location = new System.Drawing.Point(9, 19);
             this.chbAutoStart.Name = "chbAutoStart";
             this.chbAutoStart.Size = new System.Drawing.Size(132, 17);
-            this.chbAutoStart.TabIndex = 4;
+            this.chbAutoStart.TabIndex = 5;
             this.chbAutoStart.Text = "Start pinging at startup";
             this.chbAutoStart.UseVisualStyleBackColor = true;
             // 
@@ -301,7 +301,7 @@
             this.chbGenerateReportAtExit.Location = new System.Drawing.Point(9, 91);
             this.chbGenerateReportAtExit.Name = "chbGenerateReportAtExit";
             this.chbGenerateReportAtExit.Size = new System.Drawing.Size(200, 17);
-            this.chbGenerateReportAtExit.TabIndex = 7;
+            this.chbGenerateReportAtExit.TabIndex = 21;
             this.chbGenerateReportAtExit.Text = "Generate reports automatically at exit";
             this.chbGenerateReportAtExit.UseVisualStyleBackColor = true;
             // 
@@ -333,7 +333,7 @@
             this.chbUseTodayFolder.Location = new System.Drawing.Point(9, 67);
             this.chbUseTodayFolder.Name = "chbUseTodayFolder";
             this.chbUseTodayFolder.Size = new System.Drawing.Size(165, 17);
-            this.chbUseTodayFolder.TabIndex = 5;
+            this.chbUseTodayFolder.TabIndex = 19;
             this.chbUseTodayFolder.Text = "Use <yyyy-MM-dd> sub-folder";
             this.chbUseTodayFolder.UseVisualStyleBackColor = true;
             // 
@@ -343,7 +343,7 @@
             this.button2.Location = new System.Drawing.Point(373, 37);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 4;
+            this.button2.TabIndex = 18;
             this.button2.Text = "Browse...";
             this.button2.UseVisualStyleBackColor = true;
             // 
@@ -353,7 +353,7 @@
             this.txtFlushLogPeriod.Location = new System.Drawing.Point(333, 64);
             this.txtFlushLogPeriod.Name = "txtFlushLogPeriod";
             this.txtFlushLogPeriod.Size = new System.Drawing.Size(64, 20);
-            this.txtFlushLogPeriod.TabIndex = 2;
+            this.txtFlushLogPeriod.TabIndex = 20;
             this.txtFlushLogPeriod.Text = "600";
             // 
             // button1
@@ -362,7 +362,7 @@
             this.button1.Location = new System.Drawing.Point(373, 13);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 4;
+            this.button1.TabIndex = 15;
             this.button1.Text = "Browse...";
             this.button1.UseVisualStyleBackColor = true;
             // 
@@ -373,7 +373,7 @@
             this.txtLogFolder.Location = new System.Drawing.Point(155, 39);
             this.txtLogFolder.Name = "txtLogFolder";
             this.txtLogFolder.Size = new System.Drawing.Size(213, 20);
-            this.txtLogFolder.TabIndex = 2;
+            this.txtLogFolder.TabIndex = 17;
             // 
             // txtGlobalLogPath
             // 
@@ -382,7 +382,7 @@
             this.txtGlobalLogPath.Location = new System.Drawing.Point(155, 16);
             this.txtGlobalLogPath.Name = "txtGlobalLogPath";
             this.txtGlobalLogPath.Size = new System.Drawing.Size(213, 20);
-            this.txtGlobalLogPath.TabIndex = 2;
+            this.txtGlobalLogPath.TabIndex = 14;
             this.txtGlobalLogPath.Text = "0.0.0.0.csv";
             // 
             // chbSaveIndividualLog
@@ -393,7 +393,7 @@
             this.chbSaveIndividualLog.Location = new System.Drawing.Point(9, 43);
             this.chbSaveIndividualLog.Name = "chbSaveIndividualLog";
             this.chbSaveIndividualLog.Size = new System.Drawing.Size(138, 17);
-            this.chbSaveIndividualLog.TabIndex = 1;
+            this.chbSaveIndividualLog.TabIndex = 16;
             this.chbSaveIndividualLog.Text = "Save logs for each host";
             this.chbSaveIndividualLog.UseVisualStyleBackColor = true;
             // 
@@ -405,7 +405,7 @@
             this.chbSaveGlobalLog.Location = new System.Drawing.Point(9, 19);
             this.chbSaveGlobalLog.Name = "chbSaveGlobalLog";
             this.chbSaveGlobalLog.Size = new System.Drawing.Size(140, 17);
-            this.chbSaveGlobalLog.TabIndex = 0;
+            this.chbSaveGlobalLog.TabIndex = 13;
             this.chbSaveGlobalLog.Text = "Save the global ping log";
             this.chbSaveGlobalLog.UseVisualStyleBackColor = true;
             // 
@@ -415,8 +415,8 @@
             this.btnCancel.Location = new System.Drawing.Point(395, 425);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 5;
-            this.btnCancel.Text = "Cancel";
+            this.btnCancel.TabIndex = 27;
+            this.btnCancel.Text = "&Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
@@ -426,8 +426,8 @@
             this.btnOK.Location = new System.Drawing.Point(314, 425);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
-            this.btnOK.TabIndex = 5;
-            this.btnOK.Text = "Save";
+            this.btnOK.TabIndex = 26;
+            this.btnOK.Text = "&Save";
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
@@ -452,7 +452,7 @@
             this.groupBox4.Location = new System.Drawing.Point(15, 144);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(456, 70);
-            this.groupBox4.TabIndex = 6;
+            this.groupBox4.TabIndex = 3;
             this.groupBox4.TabStop = false;
             // 
             // chbSendNotificationsLine
@@ -462,7 +462,7 @@
             this.chbSendNotificationsLine.Location = new System.Drawing.Point(255, 43);
             this.chbSendNotificationsLine.Name = "chbSendNotificationsLine";
             this.chbSendNotificationsLine.Size = new System.Drawing.Size(180, 17);
-            this.chbSendNotificationsLine.TabIndex = 5;
+            this.chbSendNotificationsLine.TabIndex = 12;
             this.chbSendNotificationsLine.Text = "Send notifications via LINE (n/a)";
             this.chbSendNotificationsLine.UseVisualStyleBackColor = true;
             // 
@@ -474,7 +474,7 @@
             this.chbSendNotifications.Location = new System.Drawing.Point(9, 43);
             this.chbSendNotifications.Name = "chbSendNotifications";
             this.chbSendNotifications.Size = new System.Drawing.Size(211, 17);
-            this.chbSendNotifications.TabIndex = 4;
+            this.chbSendNotifications.TabIndex = 11;
             this.chbSendNotifications.Text = "Send taskbar notifications every minute";
             this.chbSendNotifications.UseVisualStyleBackColor = true;
             // 
@@ -496,7 +496,7 @@
             this.chbMarkHostConsFail.Location = new System.Drawing.Point(9, 19);
             this.chbMarkHostConsFail.Name = "chbMarkHostConsFail";
             this.chbMarkHostConsFail.Size = new System.Drawing.Size(236, 17);
-            this.chbMarkHostConsFail.TabIndex = 0;
+            this.chbMarkHostConsFail.TabIndex = 9;
             this.chbMarkHostConsFail.Text = "Mark hosts that fail consecutively more than ";
             this.chbMarkHostConsFail.UseVisualStyleBackColor = true;
             // 
@@ -506,7 +506,7 @@
             this.txtFailToMark.Location = new System.Drawing.Point(333, 17);
             this.txtFailToMark.Name = "txtFailToMark";
             this.txtFailToMark.Size = new System.Drawing.Size(64, 20);
-            this.txtFailToMark.TabIndex = 2;
+            this.txtFailToMark.TabIndex = 10;
             this.txtFailToMark.Text = "300";
             // 
             // groupBox5
@@ -519,7 +519,7 @@
             this.groupBox5.Location = new System.Drawing.Point(15, 342);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(455, 75);
-            this.groupBox5.TabIndex = 7;
+            this.groupBox5.TabIndex = 5;
             this.groupBox5.TabStop = false;
             // 
             // label12
@@ -536,7 +536,7 @@
             this.txtShowLowerPanel_limit.Location = new System.Drawing.Point(172, 43);
             this.txtShowLowerPanel_limit.Name = "txtShowLowerPanel_limit";
             this.txtShowLowerPanel_limit.Size = new System.Drawing.Size(100, 20);
-            this.txtShowLowerPanel_limit.TabIndex = 2;
+            this.txtShowLowerPanel_limit.TabIndex = 25;
             this.txtShowLowerPanel_limit.Text = "50";
             // 
             // radbtnchbShowLowerPanel_all
@@ -545,7 +545,7 @@
             this.radbtnchbShowLowerPanel_all.Location = new System.Drawing.Point(276, 20);
             this.radbtnchbShowLowerPanel_all.Name = "radbtnchbShowLowerPanel_all";
             this.radbtnchbShowLowerPanel_all.Size = new System.Drawing.Size(64, 17);
-            this.radbtnchbShowLowerPanel_all.TabIndex = 1;
+            this.radbtnchbShowLowerPanel_all.TabIndex = 23;
             this.radbtnchbShowLowerPanel_all.Text = "All pings";
             this.radbtnchbShowLowerPanel_all.UseVisualStyleBackColor = true;
             // 
@@ -556,7 +556,7 @@
             this.radbtnchbShowLowerPanel_failed.Location = new System.Drawing.Point(346, 20);
             this.radbtnchbShowLowerPanel_failed.Name = "radbtnchbShowLowerPanel_failed";
             this.radbtnchbShowLowerPanel_failed.Size = new System.Drawing.Size(102, 17);
-            this.radbtnchbShowLowerPanel_failed.TabIndex = 1;
+            this.radbtnchbShowLowerPanel_failed.TabIndex = 24;
             this.radbtnchbShowLowerPanel_failed.TabStop = true;
             this.radbtnchbShowLowerPanel_failed.Text = "Only failed pings";
             this.radbtnchbShowLowerPanel_failed.UseVisualStyleBackColor = true;
@@ -564,10 +564,12 @@
             // chbShowLowerPanel
             // 
             this.chbShowLowerPanel.AutoSize = true;
+            this.chbShowLowerPanel.Checked = true;
+            this.chbShowLowerPanel.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chbShowLowerPanel.Location = new System.Drawing.Point(7, 20);
             this.chbShowLowerPanel.Name = "chbShowLowerPanel";
             this.chbShowLowerPanel.Size = new System.Drawing.Size(194, 17);
-            this.chbShowLowerPanel.TabIndex = 0;
+            this.chbShowLowerPanel.TabIndex = 22;
             this.chbShowLowerPanel.Text = "Show recent logs in the lower panel";
             this.chbShowLowerPanel.UseVisualStyleBackColor = true;
             // 

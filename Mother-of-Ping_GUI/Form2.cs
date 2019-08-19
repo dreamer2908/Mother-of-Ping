@@ -135,5 +135,15 @@ namespace Mother_of_Ping_GUI
             radbtnchbShowLowerPanel_all.Checked = !radbtnchbShowLowerPanel_failed.Checked;
             txtShowLowerPanel_limit.Text = appPref_showLowerPanel_limit.ToString();
         }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Escape)
+            {
+                this.Close();
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
     }
 }

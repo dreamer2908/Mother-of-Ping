@@ -76,7 +76,7 @@
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.Size = new System.Drawing.Size(75, 23);
             this.btnLoad.TabIndex = 1;
-            this.btnLoad.Text = "Load...";
+            this.btnLoad.Text = "&Load...";
             this.btnLoad.UseVisualStyleBackColor = true;
             this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
             // 
@@ -86,7 +86,7 @@
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(75, 23);
             this.btnStart.TabIndex = 2;
-            this.btnStart.Text = "Start";
+            this.btnStart.Text = "&Start";
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
@@ -96,7 +96,7 @@
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(75, 23);
             this.btnStop.TabIndex = 3;
-            this.btnStop.Text = "Stop";
+            this.btnStop.Text = "S&top";
             this.btnStop.UseVisualStyleBackColor = true;
             this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
             // 
@@ -105,8 +105,8 @@
             this.btnOptions.Location = new System.Drawing.Point(420, 12);
             this.btnOptions.Name = "btnOptions";
             this.btnOptions.Size = new System.Drawing.Size(75, 23);
-            this.btnOptions.TabIndex = 4;
-            this.btnOptions.Text = "Options...";
+            this.btnOptions.TabIndex = 6;
+            this.btnOptions.Text = "&Options...";
             this.btnOptions.UseVisualStyleBackColor = true;
             this.btnOptions.Click += new System.EventHandler(this.btnOptions_Click);
             // 
@@ -121,7 +121,7 @@
             this.btnReport.Name = "btnReport";
             this.btnReport.Size = new System.Drawing.Size(75, 23);
             this.btnReport.TabIndex = 5;
-            this.btnReport.Text = "Report...";
+            this.btnReport.Text = "R&eport...";
             this.btnReport.UseVisualStyleBackColor = true;
             this.btnReport.Click += new System.EventHandler(this.btnReport_Click);
             // 
@@ -145,8 +145,8 @@
             this.btnExit.Location = new System.Drawing.Point(501, 12);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(75, 23);
-            this.btnExit.TabIndex = 6;
-            this.btnExit.Text = "Exit";
+            this.btnExit.TabIndex = 7;
+            this.btnExit.Text = "E&xit";
             this.btnExit.UseVisualStyleBackColor = true;
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
@@ -204,8 +204,8 @@
             this.btnReset.Location = new System.Drawing.Point(258, 11);
             this.btnReset.Name = "btnReset";
             this.btnReset.Size = new System.Drawing.Size(75, 23);
-            this.btnReset.TabIndex = 9;
-            this.btnReset.Text = "Reset";
+            this.btnReset.TabIndex = 4;
+            this.btnReset.Text = "&Reset";
             this.btnReset.UseVisualStyleBackColor = true;
             this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
             // 
