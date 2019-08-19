@@ -623,7 +623,7 @@ namespace Mother_of_Ping_GUI
                 {
                     if (appPref_markHostConsFail)
                     {
-                        row.DefaultCellStyle.BackColor = Color.OrangeRed;
+                        row.DefaultCellStyle.BackColor = Color.Orange;
                     }
                 }
                 else
@@ -638,7 +638,7 @@ namespace Mother_of_Ping_GUI
             List<string> mess = new List<string>();
             foreach (DataGridViewRow row in dgvPing.Rows)
             {
-                if (row.DefaultCellStyle.BackColor == Color.OrangeRed)
+                if (row.DefaultCellStyle.BackColor == Color.Orange)
                 {
                     string message = string.Format("{0} is offline for {1}", row.Cells[3].Value, row.Cells[18].Value.ToString());
                     //sendTrayNotification(message);
