@@ -47,6 +47,8 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.dgvLowerPanel = new System.Windows.Forms.DataGridView();
             this.btnReset = new System.Windows.Forms.Button();
+            this.cbbShowHide = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPing)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -209,11 +211,38 @@
             this.btnReset.UseVisualStyleBackColor = true;
             this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
             // 
+            // cbbShowHide
+            // 
+            this.cbbShowHide.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbbShowHide.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbbShowHide.FormattingEnabled = true;
+            this.cbbShowHide.Items.AddRange(new object[] {
+            "All Hosts",
+            "Only Online",
+            "Only Offline",
+            "Only Orange"});
+            this.cbbShowHide.Location = new System.Drawing.Point(667, 12);
+            this.cbbShowHide.Name = "cbbShowHide";
+            this.cbbShowHide.Size = new System.Drawing.Size(121, 21);
+            this.cbbShowHide.TabIndex = 8;
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(626, 17);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(34, 13);
+            this.label1.TabIndex = 9;
+            this.label1.Text = "Show";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.cbbShowHide);
             this.Controls.Add(this.btnReset);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.btnExit);
@@ -234,6 +263,7 @@
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvLowerPanel)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -256,6 +286,8 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.DataGridView dgvLowerPanel;
         private System.Windows.Forms.Button btnReset;
+        private System.Windows.Forms.ComboBox cbbShowHide;
+        private System.Windows.Forms.Label label1;
     }
 }
 

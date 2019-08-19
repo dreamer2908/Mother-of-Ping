@@ -125,6 +125,8 @@ namespace Mother_of_Ping_GUI
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            cbbShowHide.SelectedIndex = 0;
+
             resetPingPanel();
             resetLowerPanel();
 
@@ -139,6 +141,7 @@ namespace Mother_of_Ping_GUI
         {
             updateStats();
             updateRowColor();
+            showHideRow();
             updateLowerPanel();
         }
 
@@ -637,6 +640,35 @@ namespace Mother_of_Ping_GUI
             }
         }
 
+        private void showHideRow()
+        {
+            int showHideMode = cbbShowHide.SelectedIndex;
+            if (showHideMode < 0) return;
+
+            // you need to suspend data binding before show/hide rows, otherwise it will throw exception
+            bind.SuspendBinding();
+
+            foreach (DataGridViewRow row in dgvPing.Rows)
+            {
+                bool online = row.Cells[0].Value == icon_ok || row.Cells[0].Value == icon_blank;
+                bool orange = row.DefaultCellStyle.BackColor == Color.Orange;
+
+                bool show = (showHideMode == 0) || (showHideMode == 1 && online) || (showHideMode == 2 && !online) || (showHideMode == 3 && orange);
+
+                if (show)
+                {
+                    row.Visible = true;
+                }
+                else
+                {
+                    row.Selected = false; // note that selected row can't be hidden
+                    row.Visible = false;
+                }
+            }
+
+            bind.ResumeBinding();
+        }
+
         private void notifyOfflineHost()
         {
             List<string> mess = new List<string>();
@@ -832,7 +864,8 @@ namespace Mother_of_Ping_GUI
             } 
             else
             {
-                showHideLowerPanel(false);
+                clearLowerPanel();
+                // showHideLowerPanel(false);
             }
         }
 
