@@ -70,6 +70,17 @@ namespace Mother_of_Ping_GUI
 
         bool pingStarted = false;
 
+        bool appPref_schedulerEnable = false;
+        bool appPref_schedulerEnable_start = false;
+        bool appPref_schedulerEnable_stop = false;
+        bool appPref_schedulerEnable_report = false;
+        bool appPref_schedulerEnable_reset = false;
+
+        string appPref_schedulerTime_start = "7:29";
+        string appPref_schedulerTime_stop = "16:29";
+        string appPref_schedulerTime_report = "16:30";
+        string appPref_schedulerTime_reset = "7:28";
+
         #region events
 
         private void btnLoad_Click(object sender, EventArgs e)
@@ -100,6 +111,7 @@ namespace Mother_of_Ping_GUI
             stopPing(false);
             stopLogFlushing();
             stopNotifyOfflineHost();
+            flushLogToDisk();
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
@@ -208,6 +220,17 @@ namespace Mother_of_Ping_GUI
                 appPref_showLowerPanel = appPref_showLowerPanel,
                 appPref_showLowerPanel_onlyFailed = appPref_showLowerPanel_onlyFailed,
                 appPref_showLowerPanel_limit = appPref_showLowerPanel_limit,
+
+                appPref_schedulerEnable = appPref_schedulerEnable,
+                appPref_schedulerEnable_start = appPref_schedulerEnable_start,
+                appPref_schedulerEnable_stop = appPref_schedulerEnable_stop,
+                appPref_schedulerEnable_report = appPref_schedulerEnable_report,
+                appPref_schedulerEnable_reset = appPref_schedulerEnable_reset,
+
+                appPref_schedulerTime_start = appPref_schedulerTime_start,
+                appPref_schedulerTime_stop = appPref_schedulerTime_stop,
+                appPref_schedulerTime_report = appPref_schedulerTime_report,
+                appPref_schedulerTime_reset = appPref_schedulerTime_reset,
             };
 
             if (options.ShowDialog() == DialogResult.OK)
@@ -243,6 +266,17 @@ namespace Mother_of_Ping_GUI
 
                 appPref_showLowerPanel = options.appPref_showLowerPanel;
                 appPref_showLowerPanel_onlyFailed = options.appPref_showLowerPanel_onlyFailed;
+
+                appPref_schedulerEnable = options.appPref_schedulerEnable;
+                appPref_schedulerEnable_start = options.appPref_schedulerEnable_start;
+                appPref_schedulerEnable_stop = options.appPref_schedulerEnable_stop;
+                appPref_schedulerEnable_report = options.appPref_schedulerEnable_report;
+                appPref_schedulerEnable_reset = options.appPref_schedulerEnable_reset;
+
+                appPref_schedulerTime_start = options.appPref_schedulerTime_start;
+                appPref_schedulerTime_stop = options.appPref_schedulerTime_stop;
+                appPref_schedulerTime_report = options.appPref_schedulerTime_report;
+                appPref_schedulerTime_reset = options.appPref_schedulerTime_reset;
 
                 appPref_showLowerPanel_limit = options.appPref_showLowerPanel_limit;
                 updateLatestLogSizeLimit();
@@ -566,6 +600,17 @@ namespace Mother_of_Ping_GUI
 
             appPref_generateReportAtExit = Settings.Get("appPref_generateReportAtExit", true);
 
+            appPref_schedulerEnable = Settings.Get("appPref_schedulerEnable", false);
+            appPref_schedulerEnable_start = Settings.Get("appPref_schedulerEnable_start", false);
+            appPref_schedulerEnable_stop = Settings.Get("appPref_schedulerEnable_stop", false);
+            appPref_schedulerEnable_report = Settings.Get("appPref_schedulerEnable_report", false);
+            appPref_schedulerEnable_reset = Settings.Get("appPref_schedulerEnable_reset", false);
+
+            appPref_schedulerTime_start = Settings.Get("appPref_schedulerTime_start", "07:29");
+            appPref_schedulerTime_stop = Settings.Get("appPref_schedulerTime_stop", "16:29");
+            appPref_schedulerTime_report = Settings.Get("appPref_schedulerTime_report", "16:30");
+            appPref_schedulerTime_reset = Settings.Get("appPref_schedulerTime_reset", "07:28");
+
             if (appPref_saveHostList)
             {
                 if (File.Exists(defaultHostListPath))
@@ -612,6 +657,17 @@ namespace Mother_of_Ping_GUI
             Settings.Set("appPref_showLowerPanel", appPref_showLowerPanel);
             Settings.Set("appPref_showLowerPanel_onlyFailed", appPref_showLowerPanel_onlyFailed);
             Settings.Set("appPref_showLowerPanel_limit", appPref_showLowerPanel_limit);
+
+            Settings.Set("appPref_schedulerEnable", appPref_schedulerEnable);
+            Settings.Set("appPref_schedulerEnable_start", appPref_schedulerEnable_start);
+            Settings.Set("appPref_schedulerEnable_stop", appPref_schedulerEnable_stop);
+            Settings.Set("appPref_schedulerEnable_report", appPref_schedulerEnable_report);
+            Settings.Set("appPref_schedulerEnable_reset", appPref_schedulerEnable_reset);
+
+            Settings.Set("appPref_schedulerTime_start", appPref_schedulerTime_start);
+            Settings.Set("appPref_schedulerTime_stop", appPref_schedulerTime_stop);
+            Settings.Set("appPref_schedulerTime_report", appPref_schedulerTime_report);
+            Settings.Set("appPref_schedulerTime_reset", appPref_schedulerTime_reset);
 
             // save host list
             if (appPref_saveHostList)

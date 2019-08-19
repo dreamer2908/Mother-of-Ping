@@ -45,6 +45,17 @@ namespace Mother_of_Ping_GUI
         public bool appPref_showLowerPanel_onlyFailed = false;
         public int appPref_showLowerPanel_limit = 50;
 
+        public bool appPref_schedulerEnable = false;
+        public bool appPref_schedulerEnable_start = false;
+        public bool appPref_schedulerEnable_stop = false;
+        public bool appPref_schedulerEnable_report = false;
+        public bool appPref_schedulerEnable_reset = false;
+
+        public string appPref_schedulerTime_start = "7:29";
+        public string appPref_schedulerTime_stop = "16:29";
+        public string appPref_schedulerTime_report = "16:30";
+        public string appPref_schedulerTime_reset = "7:28";
+
         private void btnOK_Click(object sender, EventArgs e)
         {
             storeSettings();
@@ -96,6 +107,17 @@ namespace Mother_of_Ping_GUI
             appPref_showLowerPanel = chbShowLowerPanel.Checked;
             appPref_showLowerPanel_onlyFailed = radbtnchbShowLowerPanel_failed.Checked;
             int.TryParse(txtShowLowerPanel_limit.Text, out appPref_showLowerPanel_limit);
+
+            appPref_schedulerEnable = chbScheduleStartStopReport.Checked;
+            appPref_schedulerEnable_start = chbSchedulerEnable_start.Checked;
+            appPref_schedulerEnable_stop = chbSchedulerEnable_stop.Checked;
+            appPref_schedulerEnable_report = chbSchedulerEnable_report.Checked;
+            appPref_schedulerEnable_reset = chbSchedulerEnable_reset.Checked;
+
+            appPref_schedulerTime_start = txtSchedulerTime_start.Text;
+            appPref_schedulerTime_stop = txtSchedulerTime_stop.Text;
+            appPref_schedulerTime_report = txtSchedulerTime_report.Text;
+            appPref_schedulerTime_reset = txtSchedulerTime_reset.Text;
         }
 
         private void loadSettings()
@@ -134,6 +156,17 @@ namespace Mother_of_Ping_GUI
             radbtnchbShowLowerPanel_failed.Checked = appPref_showLowerPanel_onlyFailed;
             radbtnchbShowLowerPanel_all.Checked = !radbtnchbShowLowerPanel_failed.Checked;
             txtShowLowerPanel_limit.Text = appPref_showLowerPanel_limit.ToString();
+
+            chbScheduleStartStopReport.Checked = appPref_schedulerEnable;
+            chbSchedulerEnable_start.Checked = appPref_schedulerEnable_start;
+            chbSchedulerEnable_stop.Checked = appPref_schedulerEnable_stop;
+            chbSchedulerEnable_report.Checked = appPref_schedulerEnable_report;
+            chbSchedulerEnable_reset.Checked = appPref_schedulerEnable_reset;
+
+            txtSchedulerTime_start.Text = appPref_schedulerTime_start;
+            txtSchedulerTime_stop.Text = appPref_schedulerTime_stop;
+            txtSchedulerTime_report.Text = appPref_schedulerTime_report;
+            txtSchedulerTime_reset.Text = appPref_schedulerTime_reset;
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
