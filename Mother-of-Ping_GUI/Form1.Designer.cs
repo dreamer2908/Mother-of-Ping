@@ -49,6 +49,7 @@
             this.btnReset = new System.Windows.Forms.Button();
             this.cbbShowHide = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.timer4 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dgvPing)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -236,6 +237,11 @@
             this.label1.TabIndex = 9;
             this.label1.Text = "Show";
             // 
+            // timer4
+            // 
+            this.timer4.Interval = 1000;
+            this.timer4.Tick += new System.EventHandler(this.timer4_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -288,6 +294,7 @@
         private System.Windows.Forms.Button btnReset;
         private System.Windows.Forms.ComboBox cbbShowHide;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Timer timer4;
     }
 }
 

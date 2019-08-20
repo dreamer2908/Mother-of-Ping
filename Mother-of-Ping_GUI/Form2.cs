@@ -46,10 +46,10 @@ namespace Mother_of_Ping_GUI
         public int appPref_showLowerPanel_limit = 50;
 
         public bool appPref_schedulerEnable = false;
-        public bool appPref_schedulerEnable_start = false;
-        public bool appPref_schedulerEnable_stop = false;
-        public bool appPref_schedulerEnable_report = false;
-        public bool appPref_schedulerEnable_reset = false;
+        public bool appPref_schedulerEnable_start = true;
+        public bool appPref_schedulerEnable_stop = true;
+        public bool appPref_schedulerEnable_report = true;
+        public bool appPref_schedulerEnable_reset = true;
 
         public string appPref_schedulerTime_start = "7:29";
         public string appPref_schedulerTime_stop = "16:29";

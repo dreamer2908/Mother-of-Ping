@@ -81,6 +81,9 @@ namespace Mother_of_Ping_GUI
         string appPref_schedulerTime_report = "16:30";
         string appPref_schedulerTime_reset = "7:28";
 
+        readonly string scheduler_timeFormat = "HH:mm";
+        string scheduler_lastTime = string.Empty;
+
         #region events
 
         private void btnLoad_Click(object sender, EventArgs e)
@@ -108,10 +111,7 @@ namespace Mother_of_Ping_GUI
 
         private void btnStop_Click(object sender, EventArgs e)
         {
-            stopPing(false);
-            stopLogFlushing();
-            stopNotifyOfflineHost();
-            flushLogToDisk();
+            stopPingAio();
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
@@ -127,11 +127,7 @@ namespace Mother_of_Ping_GUI
 
             if (appPref_generateReportAtExit && workForce != null)
             {
-                string today = getTodayString();
-                string filename1 = Path.Combine(actualLogFolder, string.Format("ping_session_report_{0}.csv", today));
-                string filename2 = Path.Combine(actualLogFolder, string.Format("ping_session_report_{0}.html", today));
-                tools.generateCsvReport(workForce, filename1);
-                tools.generateHtmlReport(workForce, filename2);
+                generateReportAutoMode();
             }
         }
 
@@ -278,6 +274,15 @@ namespace Mother_of_Ping_GUI
                 appPref_schedulerTime_report = options.appPref_schedulerTime_report;
                 appPref_schedulerTime_reset = options.appPref_schedulerTime_reset;
 
+                if (appPref_schedulerEnable)
+                {
+                    timer4.Start();
+                }
+                else
+                {
+                    timer4.Stop();
+                }
+
                 appPref_showLowerPanel_limit = options.appPref_showLowerPanel_limit;
                 updateLatestLogSizeLimit();
 
@@ -302,6 +307,11 @@ namespace Mother_of_Ping_GUI
                 backgroundWorker1.RunWorkerAsync();
             }
         }
+
+        private void timer4_Tick(object sender, EventArgs e)
+        {
+            schedulerLoop();
+        }
         #endregion
 
         private void startPingAio()
@@ -312,6 +322,14 @@ namespace Mother_of_Ping_GUI
                 startGridUpdate();
                 startLogFlushing();
             }
+        }
+
+        private void stopPingAio()
+        {
+            stopPing(false);
+            stopLogFlushing();
+            stopNotifyOfflineHost();
+            flushLogToDisk();
         }
 
         private void loadNewHostListAio(string filename)
@@ -601,10 +619,10 @@ namespace Mother_of_Ping_GUI
             appPref_generateReportAtExit = Settings.Get("appPref_generateReportAtExit", true);
 
             appPref_schedulerEnable = Settings.Get("appPref_schedulerEnable", false);
-            appPref_schedulerEnable_start = Settings.Get("appPref_schedulerEnable_start", false);
-            appPref_schedulerEnable_stop = Settings.Get("appPref_schedulerEnable_stop", false);
-            appPref_schedulerEnable_report = Settings.Get("appPref_schedulerEnable_report", false);
-            appPref_schedulerEnable_reset = Settings.Get("appPref_schedulerEnable_reset", false);
+            appPref_schedulerEnable_start = Settings.Get("appPref_schedulerEnable_start", true);
+            appPref_schedulerEnable_stop = Settings.Get("appPref_schedulerEnable_stop", true);
+            appPref_schedulerEnable_report = Settings.Get("appPref_schedulerEnable_report", true);
+            appPref_schedulerEnable_reset = Settings.Get("appPref_schedulerEnable_reset", true);
 
             appPref_schedulerTime_start = Settings.Get("appPref_schedulerTime_start", "07:29");
             appPref_schedulerTime_stop = Settings.Get("appPref_schedulerTime_stop", "16:29");
@@ -627,6 +645,15 @@ namespace Mother_of_Ping_GUI
             }
 
             showHideLowerPanel();
+
+            if (appPref_schedulerEnable)
+            {
+                timer4.Start();
+            }
+            else
+            {
+                timer4.Stop();
+            }
         }
 
         private void saveSettings()
@@ -783,7 +810,7 @@ namespace Mother_of_Ping_GUI
 
             if (appPref_useTodayFolder)
             {
-                string today = getTodayString();
+                string today = tools.getTodayString();
                 actualLogFolder = Path.Combine(appPref_logFolder, today);
                 Directory.CreateDirectory(actualLogFolder);
             }
@@ -838,11 +865,6 @@ namespace Mother_of_Ping_GUI
             timer.Stop();
             timer.Interval = interval;
             timer.Start();
-        }
-
-        private static string getTodayString()
-        {
-            return DateTime.Now.ToString("yyyy-MM-dd");
         }
 
         private void updateLatestLogSizeLimit()
@@ -989,6 +1011,60 @@ namespace Mother_of_Ping_GUI
                 if (_pingStarted)
                 {
                     startPingAio();
+                }
+            }
+        }
+
+        private void generateReportAutoMode()
+        {
+            string today = tools.getNowStringForFilename();
+            string filename1 = Path.Combine(actualLogFolder, string.Format("ping_session_report_{0}.csv", today));
+            string filename2 = Path.Combine(actualLogFolder, string.Format("ping_session_report_{0}.html", today));
+            tools.generateCsvReport(workForce, filename1);
+            tools.generateHtmlReport(workForce, filename2);
+        }
+
+        private void schedulerLoop()
+        {
+            if (!appPref_schedulerEnable) return;
+
+            string now = DateTime.Now.ToString(scheduler_timeFormat);
+            if (now == scheduler_lastTime) return; // skip this loop if it's still the same minute
+            scheduler_lastTime = now;
+
+            if (appPref_schedulerEnable_start)
+            {
+                if (now == appPref_schedulerTime_start)
+                {
+                    //MessageBox.Show("scheduler running start");
+                    startPingAio();
+                }
+            }
+
+            if (appPref_schedulerEnable_stop)
+            {
+                if (now == appPref_schedulerTime_stop)
+                {
+                    //MessageBox.Show("scheduler running stop");
+                    stopPingAio();
+                }
+            }
+
+            if (appPref_schedulerEnable_report)
+            {
+                if (now == appPref_schedulerTime_report)
+                {
+                    //MessageBox.Show("scheduler running report");
+                    generateReportAutoMode();
+                }
+            }
+
+            if (appPref_schedulerEnable_reset)
+            {
+                if (now == appPref_schedulerTime_reset)
+                {
+                    //MessageBox.Show("scheduler running reset");
+                    resetStats();
                 }
             }
         }

@@ -648,6 +648,8 @@
             // chbSchedulerEnable_start
             // 
             this.chbSchedulerEnable_start.AutoSize = true;
+            this.chbSchedulerEnable_start.Checked = true;
+            this.chbSchedulerEnable_start.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chbSchedulerEnable_start.Location = new System.Drawing.Point(9, 43);
             this.chbSchedulerEnable_start.Name = "chbSchedulerEnable_start";
             this.chbSchedulerEnable_start.Size = new System.Drawing.Size(48, 17);
@@ -658,6 +660,8 @@
             // chbSchedulerEnable_stop
             // 
             this.chbSchedulerEnable_stop.AutoSize = true;
+            this.chbSchedulerEnable_stop.Checked = true;
+            this.chbSchedulerEnable_stop.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chbSchedulerEnable_stop.Location = new System.Drawing.Point(116, 43);
             this.chbSchedulerEnable_stop.Name = "chbSchedulerEnable_stop";
             this.chbSchedulerEnable_stop.Size = new System.Drawing.Size(48, 17);
@@ -668,6 +672,8 @@
             // chbSchedulerEnable_report
             // 
             this.chbSchedulerEnable_report.AutoSize = true;
+            this.chbSchedulerEnable_report.Checked = true;
+            this.chbSchedulerEnable_report.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chbSchedulerEnable_report.Location = new System.Drawing.Point(223, 43);
             this.chbSchedulerEnable_report.Name = "chbSchedulerEnable_report";
             this.chbSchedulerEnable_report.Size = new System.Drawing.Size(58, 17);
@@ -678,6 +684,8 @@
             // chbSchedulerEnable_reset
             // 
             this.chbSchedulerEnable_reset.AutoSize = true;
+            this.chbSchedulerEnable_reset.Checked = true;
+            this.chbSchedulerEnable_reset.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chbSchedulerEnable_reset.Location = new System.Drawing.Point(340, 43);
             this.chbSchedulerEnable_reset.Name = "chbSchedulerEnable_reset";
             this.chbSchedulerEnable_reset.Size = new System.Drawing.Size(54, 17);

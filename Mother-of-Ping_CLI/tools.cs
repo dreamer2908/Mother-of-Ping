@@ -409,5 +409,15 @@ namespace Mother_of_Ping_CLI
         {
             return new TimeSpan(tmspan.Days, tmspan.Hours, tmspan.Minutes, tmspan.Seconds + (int)Math.Round(1.0 * tmspan.Milliseconds / 1000, MidpointRounding.AwayFromZero));
         }
+
+        public static string getTodayString()
+        {
+            return DateTime.Now.ToString("yyyy-MM-dd");
+        }
+
+        public static string getNowStringForFilename()
+        {
+            return DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+        }
     }
 }
