@@ -84,6 +84,8 @@ namespace Mother_of_Ping_GUI
         readonly string scheduler_timeFormat = "HH:mm";
         string scheduler_lastTime = string.Empty;
 
+        NotifyIcon lastNotifyIcon;
+
         #region events
 
         private void btnLoad_Click(object sender, EventArgs e)
@@ -767,14 +769,20 @@ namespace Mother_of_Ping_GUI
 
             if (mess.Count > 0 && appPref_sendTaskbarNotifications)
             {
+                // remove the old notification. in some cases, they won't go away automatically and overflow the notification area
+                if (lastNotifyIcon != null)
+                {
+                    lastNotifyIcon.Dispose();
+                }
+
                 string message = String.Join("\n", mess);
-                sendTrayNotification(message, 5000);
+                lastNotifyIcon = sendTrayNotification(message, 5000);
             }
         }
 
-        private void sendTrayNotification(string message, int duration)
+        private NotifyIcon sendTrayNotification(string message, int duration)
         {
-            var notification = new System.Windows.Forms.NotifyIcon()
+            var notification = new NotifyIcon()
             {
                 Visible = true,
                 Icon = System.Drawing.SystemIcons.Information,
@@ -789,6 +797,8 @@ namespace Mother_of_Ping_GUI
             // display for x miliseconds
             // note that duration > 5s is ignored in vista+
             notification.ShowBalloonTip(duration);
+
+            return notification;
         }
 
         private void startLogFlushing()
