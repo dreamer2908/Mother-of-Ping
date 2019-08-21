@@ -76,15 +76,15 @@
             this.radbtnchbShowLowerPanel_failed = new System.Windows.Forms.RadioButton();
             this.chbShowLowerPanel = new System.Windows.Forms.CheckBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.chbScheduleStartStopReport = new System.Windows.Forms.CheckBox();
-            this.txtSchedulerTime_start = new System.Windows.Forms.TextBox();
-            this.txtSchedulerTime_stop = new System.Windows.Forms.TextBox();
-            this.txtSchedulerTime_reset = new System.Windows.Forms.TextBox();
-            this.txtSchedulerTime_report = new System.Windows.Forms.TextBox();
-            this.chbSchedulerEnable_start = new System.Windows.Forms.CheckBox();
-            this.chbSchedulerEnable_stop = new System.Windows.Forms.CheckBox();
-            this.chbSchedulerEnable_report = new System.Windows.Forms.CheckBox();
             this.chbSchedulerEnable_reset = new System.Windows.Forms.CheckBox();
+            this.chbSchedulerEnable_report = new System.Windows.Forms.CheckBox();
+            this.chbSchedulerEnable_stop = new System.Windows.Forms.CheckBox();
+            this.chbSchedulerEnable_start = new System.Windows.Forms.CheckBox();
+            this.txtSchedulerTime_report = new System.Windows.Forms.TextBox();
+            this.txtSchedulerTime_reset = new System.Windows.Forms.TextBox();
+            this.txtSchedulerTime_stop = new System.Windows.Forms.TextBox();
+            this.txtSchedulerTime_start = new System.Windows.Forms.TextBox();
+            this.chbScheduleStartStopReport = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -603,71 +603,17 @@
             this.groupBox6.TabIndex = 28;
             this.groupBox6.TabStop = false;
             // 
-            // chbScheduleStartStopReport
+            // chbSchedulerEnable_reset
             // 
-            this.chbScheduleStartStopReport.AutoSize = true;
-            this.chbScheduleStartStopReport.Location = new System.Drawing.Point(9, 20);
-            this.chbScheduleStartStopReport.Name = "chbScheduleStartStopReport";
-            this.chbScheduleStartStopReport.Size = new System.Drawing.Size(374, 17);
-            this.chbScheduleStartStopReport.TabIndex = 26;
-            this.chbScheduleStartStopReport.Text = "Enable schedulers for daily starting, stopping, reporting, and resetting stats";
-            this.chbScheduleStartStopReport.UseVisualStyleBackColor = true;
-            // 
-            // txtSchedulerTime_start
-            // 
-            this.txtSchedulerTime_start.Location = new System.Drawing.Point(63, 41);
-            this.txtSchedulerTime_start.Name = "txtSchedulerTime_start";
-            this.txtSchedulerTime_start.Size = new System.Drawing.Size(47, 20);
-            this.txtSchedulerTime_start.TabIndex = 28;
-            this.txtSchedulerTime_start.Text = "07:29";
-            // 
-            // txtSchedulerTime_stop
-            // 
-            this.txtSchedulerTime_stop.Location = new System.Drawing.Point(170, 41);
-            this.txtSchedulerTime_stop.Name = "txtSchedulerTime_stop";
-            this.txtSchedulerTime_stop.Size = new System.Drawing.Size(47, 20);
-            this.txtSchedulerTime_stop.TabIndex = 30;
-            this.txtSchedulerTime_stop.Text = "16:29";
-            // 
-            // txtSchedulerTime_reset
-            // 
-            this.txtSchedulerTime_reset.Location = new System.Drawing.Point(400, 41);
-            this.txtSchedulerTime_reset.Name = "txtSchedulerTime_reset";
-            this.txtSchedulerTime_reset.Size = new System.Drawing.Size(47, 20);
-            this.txtSchedulerTime_reset.TabIndex = 34;
-            this.txtSchedulerTime_reset.Text = "07:28";
-            // 
-            // txtSchedulerTime_report
-            // 
-            this.txtSchedulerTime_report.Location = new System.Drawing.Point(287, 41);
-            this.txtSchedulerTime_report.Name = "txtSchedulerTime_report";
-            this.txtSchedulerTime_report.Size = new System.Drawing.Size(47, 20);
-            this.txtSchedulerTime_report.TabIndex = 32;
-            this.txtSchedulerTime_report.Text = "16:30";
-            // 
-            // chbSchedulerEnable_start
-            // 
-            this.chbSchedulerEnable_start.AutoSize = true;
-            this.chbSchedulerEnable_start.Checked = true;
-            this.chbSchedulerEnable_start.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chbSchedulerEnable_start.Location = new System.Drawing.Point(9, 43);
-            this.chbSchedulerEnable_start.Name = "chbSchedulerEnable_start";
-            this.chbSchedulerEnable_start.Size = new System.Drawing.Size(48, 17);
-            this.chbSchedulerEnable_start.TabIndex = 27;
-            this.chbSchedulerEnable_start.Text = "Start";
-            this.chbSchedulerEnable_start.UseVisualStyleBackColor = true;
-            // 
-            // chbSchedulerEnable_stop
-            // 
-            this.chbSchedulerEnable_stop.AutoSize = true;
-            this.chbSchedulerEnable_stop.Checked = true;
-            this.chbSchedulerEnable_stop.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chbSchedulerEnable_stop.Location = new System.Drawing.Point(116, 43);
-            this.chbSchedulerEnable_stop.Name = "chbSchedulerEnable_stop";
-            this.chbSchedulerEnable_stop.Size = new System.Drawing.Size(48, 17);
-            this.chbSchedulerEnable_stop.TabIndex = 29;
-            this.chbSchedulerEnable_stop.Text = "Stop";
-            this.chbSchedulerEnable_stop.UseVisualStyleBackColor = true;
+            this.chbSchedulerEnable_reset.AutoSize = true;
+            this.chbSchedulerEnable_reset.Checked = true;
+            this.chbSchedulerEnable_reset.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chbSchedulerEnable_reset.Location = new System.Drawing.Point(340, 43);
+            this.chbSchedulerEnable_reset.Name = "chbSchedulerEnable_reset";
+            this.chbSchedulerEnable_reset.Size = new System.Drawing.Size(54, 17);
+            this.chbSchedulerEnable_reset.TabIndex = 33;
+            this.chbSchedulerEnable_reset.Text = "Reset";
+            this.chbSchedulerEnable_reset.UseVisualStyleBackColor = true;
             // 
             // chbSchedulerEnable_report
             // 
@@ -681,17 +627,72 @@
             this.chbSchedulerEnable_report.Text = "Report";
             this.chbSchedulerEnable_report.UseVisualStyleBackColor = true;
             // 
-            // chbSchedulerEnable_reset
+            // chbSchedulerEnable_stop
             // 
-            this.chbSchedulerEnable_reset.AutoSize = true;
-            this.chbSchedulerEnable_reset.Checked = true;
-            this.chbSchedulerEnable_reset.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chbSchedulerEnable_reset.Location = new System.Drawing.Point(340, 43);
-            this.chbSchedulerEnable_reset.Name = "chbSchedulerEnable_reset";
-            this.chbSchedulerEnable_reset.Size = new System.Drawing.Size(54, 17);
-            this.chbSchedulerEnable_reset.TabIndex = 33;
-            this.chbSchedulerEnable_reset.Text = "Reset";
-            this.chbSchedulerEnable_reset.UseVisualStyleBackColor = true;
+            this.chbSchedulerEnable_stop.AutoSize = true;
+            this.chbSchedulerEnable_stop.Checked = true;
+            this.chbSchedulerEnable_stop.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chbSchedulerEnable_stop.Location = new System.Drawing.Point(116, 43);
+            this.chbSchedulerEnable_stop.Name = "chbSchedulerEnable_stop";
+            this.chbSchedulerEnable_stop.Size = new System.Drawing.Size(48, 17);
+            this.chbSchedulerEnable_stop.TabIndex = 29;
+            this.chbSchedulerEnable_stop.Text = "Stop";
+            this.chbSchedulerEnable_stop.UseVisualStyleBackColor = true;
+            // 
+            // chbSchedulerEnable_start
+            // 
+            this.chbSchedulerEnable_start.AutoSize = true;
+            this.chbSchedulerEnable_start.Checked = true;
+            this.chbSchedulerEnable_start.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chbSchedulerEnable_start.Location = new System.Drawing.Point(9, 43);
+            this.chbSchedulerEnable_start.Name = "chbSchedulerEnable_start";
+            this.chbSchedulerEnable_start.Size = new System.Drawing.Size(48, 17);
+            this.chbSchedulerEnable_start.TabIndex = 27;
+            this.chbSchedulerEnable_start.Text = "Start";
+            this.chbSchedulerEnable_start.UseVisualStyleBackColor = true;
+            // 
+            // txtSchedulerTime_report
+            // 
+            this.txtSchedulerTime_report.Location = new System.Drawing.Point(287, 41);
+            this.txtSchedulerTime_report.Name = "txtSchedulerTime_report";
+            this.txtSchedulerTime_report.Size = new System.Drawing.Size(47, 20);
+            this.txtSchedulerTime_report.TabIndex = 32;
+            this.txtSchedulerTime_report.Text = "16:30";
+            // 
+            // txtSchedulerTime_reset
+            // 
+            this.txtSchedulerTime_reset.Location = new System.Drawing.Point(400, 41);
+            this.txtSchedulerTime_reset.Name = "txtSchedulerTime_reset";
+            this.txtSchedulerTime_reset.Size = new System.Drawing.Size(47, 20);
+            this.txtSchedulerTime_reset.TabIndex = 34;
+            this.txtSchedulerTime_reset.Text = "07:28";
+            // 
+            // txtSchedulerTime_stop
+            // 
+            this.txtSchedulerTime_stop.Location = new System.Drawing.Point(170, 41);
+            this.txtSchedulerTime_stop.Name = "txtSchedulerTime_stop";
+            this.txtSchedulerTime_stop.Size = new System.Drawing.Size(47, 20);
+            this.txtSchedulerTime_stop.TabIndex = 30;
+            this.txtSchedulerTime_stop.Text = "16:29";
+            // 
+            // txtSchedulerTime_start
+            // 
+            this.txtSchedulerTime_start.Location = new System.Drawing.Point(63, 41);
+            this.txtSchedulerTime_start.Name = "txtSchedulerTime_start";
+            this.txtSchedulerTime_start.Size = new System.Drawing.Size(47, 20);
+            this.txtSchedulerTime_start.TabIndex = 28;
+            this.txtSchedulerTime_start.Text = "07:29";
+            // 
+            // chbScheduleStartStopReport
+            // 
+            this.chbScheduleStartStopReport.AutoSize = true;
+            this.chbScheduleStartStopReport.Location = new System.Drawing.Point(9, 20);
+            this.chbScheduleStartStopReport.Name = "chbScheduleStartStopReport";
+            this.chbScheduleStartStopReport.Size = new System.Drawing.Size(374, 17);
+            this.chbScheduleStartStopReport.TabIndex = 26;
+            this.chbScheduleStartStopReport.Text = "Enable schedulers for daily starting, stopping, reporting, and resetting stats";
+            this.chbScheduleStartStopReport.UseVisualStyleBackColor = true;
+            this.chbScheduleStartStopReport.CheckedChanged += new System.EventHandler(this.chbScheduleStartStopReport_CheckedChanged);
             // 
             // Form2
             // 

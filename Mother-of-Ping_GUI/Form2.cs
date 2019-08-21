@@ -167,6 +167,36 @@ namespace Mother_of_Ping_GUI
             txtSchedulerTime_stop.Text = appPref_schedulerTime_stop;
             txtSchedulerTime_report.Text = appPref_schedulerTime_report;
             txtSchedulerTime_reset.Text = appPref_schedulerTime_reset;
+
+            lockUnlockSchedulerControls();
+        }
+
+        private void lockUnlockSchedulerControls()
+        {
+            if (!chbScheduleStartStopReport.Checked)
+            {
+                chbSchedulerEnable_start.Enabled = false;
+                chbSchedulerEnable_stop.Enabled = false;
+                chbSchedulerEnable_reset.Enabled = false;
+                chbSchedulerEnable_report.Enabled = false;
+
+                txtSchedulerTime_start.Enabled = false;
+                txtSchedulerTime_stop.Enabled = false;
+                txtSchedulerTime_report.Enabled = false;
+                txtSchedulerTime_reset.Enabled = false;
+            }
+            else
+            {
+                chbSchedulerEnable_start.Enabled = true;
+                chbSchedulerEnable_stop.Enabled = true;
+                chbSchedulerEnable_reset.Enabled = true;
+                chbSchedulerEnable_report.Enabled = true;
+
+                txtSchedulerTime_start.Enabled = true;
+                txtSchedulerTime_stop.Enabled = true;
+                txtSchedulerTime_report.Enabled = true;
+                txtSchedulerTime_reset.Enabled = true;
+            }
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -200,6 +230,11 @@ namespace Mother_of_Ping_GUI
             {
                 txtLogFolder.Text = folderBrowserDialog1.SelectedPath;
             }
+        }
+
+        private void chbScheduleStartStopReport_CheckedChanged(object sender, EventArgs e)
+        {
+            lockUnlockSchedulerControls();
         }
     }
 }
