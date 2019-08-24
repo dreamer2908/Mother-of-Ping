@@ -50,6 +50,7 @@
             this.cbbShowHide = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.timer4 = new System.Windows.Forms.Timer(this.components);
+            this.lblStatusBar = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPing)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -70,7 +71,7 @@
             this.dgvPing.ReadOnly = true;
             this.dgvPing.RowHeadersVisible = false;
             this.dgvPing.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvPing.Size = new System.Drawing.Size(776, 298);
+            this.dgvPing.Size = new System.Drawing.Size(776, 285);
             this.dgvPing.TabIndex = 0;
             // 
             // btnLoad
@@ -183,8 +184,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.dgvLowerPanel);
-            this.splitContainer1.Size = new System.Drawing.Size(776, 397);
-            this.splitContainer1.SplitterDistance = 298;
+            this.splitContainer1.Size = new System.Drawing.Size(776, 381);
+            this.splitContainer1.SplitterDistance = 285;
             this.splitContainer1.TabIndex = 8;
             // 
             // dgvLowerPanel
@@ -199,7 +200,7 @@
             this.dgvLowerPanel.ReadOnly = true;
             this.dgvLowerPanel.RowHeadersVisible = false;
             this.dgvLowerPanel.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvLowerPanel.Size = new System.Drawing.Size(776, 95);
+            this.dgvLowerPanel.Size = new System.Drawing.Size(776, 92);
             this.dgvLowerPanel.TabIndex = 0;
             // 
             // btnReset
@@ -242,11 +243,22 @@
             this.timer4.Interval = 1000;
             this.timer4.Tick += new System.EventHandler(this.timer4_Tick);
             // 
+            // lblStatusBar
+            // 
+            this.lblStatusBar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblStatusBar.AutoSize = true;
+            this.lblStatusBar.Location = new System.Drawing.Point(12, 425);
+            this.lblStatusBar.Name = "lblStatusBar";
+            this.lblStatusBar.Size = new System.Drawing.Size(289, 13);
+            this.lblStatusBar.TabIndex = 10;
+            this.lblStatusBar.Text = "Total: 9001. Online: 1. Offline 9000. Long-term offline: 9000.";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.lblStatusBar);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cbbShowHide);
             this.Controls.Add(this.btnReset);
@@ -295,6 +307,7 @@
         private System.Windows.Forms.ComboBox cbbShowHide;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Timer timer4;
+        private System.Windows.Forms.Label lblStatusBar;
     }
 }
 

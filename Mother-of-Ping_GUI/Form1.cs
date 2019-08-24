@@ -153,6 +153,7 @@ namespace Mother_of_Ping_GUI
             updateRowColor();
             showHideRow();
             updateLowerPanel();
+            updateStatusBar();
         }
 
         private void btnReport_Click(object sender, EventArgs e)
@@ -1077,6 +1078,27 @@ namespace Mother_of_Ping_GUI
                     resetStats();
                 }
             }
+        }
+
+        private void updateStatusBar()
+        {
+            int status_total = 0;
+            int status_online = 0;
+            int status_offline = 0;
+            int status_orange = 0;
+
+            foreach (DataGridViewRow row in dgvPing.Rows)
+            {
+                status_total++;
+
+                bool online = row.Cells[0].Value == icon_ok || row.Cells[0].Value == icon_blank;
+                bool orange = row.DefaultCellStyle.BackColor == Color.Orange;
+
+                if (online) status_online++; else status_offline++;
+                if (orange) status_orange++;
+            }
+
+            lblStatusBar.Text = string.Format("Total: {0}. Online: {1}. Offline {2}. Long-term offline: {3}.", status_total, status_online, status_offline, status_orange);
         }
     }
 }
