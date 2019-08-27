@@ -351,6 +351,7 @@ namespace Mother_of_Ping_GUI
             cleanUpOldThreads();
             clearPingPanel();
             loadHostListToTable(hostList);
+            updateStatusBar();
             clearLowerPanel();
         }
 
@@ -1091,10 +1092,12 @@ namespace Mother_of_Ping_GUI
             {
                 status_total++;
 
-                bool online = row.Cells[0].Value == icon_ok || row.Cells[0].Value == icon_blank;
+                bool online = row.Cells[0].Value == icon_ok;
+                bool offline = row.Cells[0].Value == icon_warning;
                 bool orange = row.DefaultCellStyle.BackColor == Color.Orange;
 
-                if (online) status_online++; else status_offline++;
+                if (online) status_online++;
+                if (offline) status_offline++;
                 if (orange) status_orange++;
             }
 

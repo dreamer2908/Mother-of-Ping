@@ -249,9 +249,9 @@
             this.lblStatusBar.AutoSize = true;
             this.lblStatusBar.Location = new System.Drawing.Point(12, 425);
             this.lblStatusBar.Name = "lblStatusBar";
-            this.lblStatusBar.Size = new System.Drawing.Size(289, 13);
+            this.lblStatusBar.Size = new System.Drawing.Size(235, 13);
             this.lblStatusBar.TabIndex = 10;
-            this.lblStatusBar.Text = "Total: 9001. Online: 1. Offline 9000. Long-term offline: 9000.";
+            this.lblStatusBar.Text = "Total: 0. Online: 0. Offline 0. Long-term offline: 0.";
             // 
             // Form1
             // 
