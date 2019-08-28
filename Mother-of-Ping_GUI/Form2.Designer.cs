@@ -686,6 +686,8 @@
             // chbScheduleStartStopReport
             // 
             this.chbScheduleStartStopReport.AutoSize = true;
+            this.chbScheduleStartStopReport.Checked = true;
+            this.chbScheduleStartStopReport.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chbScheduleStartStopReport.Location = new System.Drawing.Point(9, 20);
             this.chbScheduleStartStopReport.Name = "chbScheduleStartStopReport";
             this.chbScheduleStartStopReport.Size = new System.Drawing.Size(374, 17);
