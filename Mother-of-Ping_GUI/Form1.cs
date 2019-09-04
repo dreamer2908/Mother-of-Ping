@@ -64,6 +64,7 @@ namespace Mother_of_Ping_GUI
         bool appPref_showLowerPanel = true;
         bool appPref_showLowerPanel_onlyFailed = false;
         int appPref_showLowerPanel_limit = 50;
+        int lastSelectedHost = 0;
 
         Mutex mutexLogFlush = new Mutex();
         Mutex mutexStopPing = new Mutex();
@@ -916,13 +917,9 @@ namespace Mother_of_Ping_GUI
             {
                 var selectedRow = dgvPing.SelectedRows[0];
                 int id = Convert.ToInt32(selectedRow.Cells[2].Value);
-                var worker = workForce[id];
-
-                clearLowerPanel();
-
-                smallData.BeginLoadData();
 
                 string[][] data;
+                var worker = workForce[id];
 
                 if (appPref_showLowerPanel_onlyFailed)
                 {
@@ -933,10 +930,26 @@ namespace Mother_of_Ping_GUI
                     data = worker.latestLog_all.ToArray();
                 }
 
+                // only clear the panel if a different host is selected
+                // actually, you don't need to clear it even in that case
+                // if (lastSelectedHost != id) clearLowerPanel();
+
+                smallData.BeginLoadData();
+
+                // create enough rows to store data
+                while (smallData.Rows.Count < data.Length)
+                {
+                    smallData.Rows.Add();
+                }
+                // and remove excessive ones
+                while (smallData.Rows.Count > data.Length)
+                {
+                    smallData.Rows.RemoveAt(0);
+                }
+
                 for (int i = 0; i < data.Length; i++)
                 {
                     string[] line = data[data.Length - i - 1];
-                    smallData.Rows.Add();
                     var row = smallData.Rows[i];
 
                     row[0] = pingStatusToIcon(pingWork.textToPingStatus[line[2]]);
@@ -952,6 +965,8 @@ namespace Mother_of_Ping_GUI
                 smallData.EndLoadData();
 
                 showHideLowerPanel();
+
+                lastSelectedHost = id;
             } 
             else
             {
