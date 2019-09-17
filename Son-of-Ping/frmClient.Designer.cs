@@ -40,14 +40,14 @@
             this.btnLoadList = new System.Windows.Forms.Button();
             this.dgvPing = new System.Windows.Forms.DataGridView();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.txtFailToMark = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.chbSendNotifications = new System.Windows.Forms.CheckBox();
+            this.txtFailToMark = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.lblStatusBar = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.timer3 = new System.Windows.Forms.Timer(this.components);
-            this.label4 = new System.Windows.Forms.Label();
             this.cbbShowHide = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
@@ -167,23 +167,14 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Notification";
             // 
-            // label3
+            // label4
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(7, 24);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(116, 13);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "Offline duration to mark";
-            // 
-            // txtFailToMark
-            // 
-            this.txtFailToMark.Location = new System.Drawing.Point(129, 20);
-            this.txtFailToMark.Name = "txtFailToMark";
-            this.txtFailToMark.Size = new System.Drawing.Size(48, 20);
-            this.txtFailToMark.TabIndex = 1;
-            this.txtFailToMark.Text = "300";
-            this.txtFailToMark.TextChanged += new System.EventHandler(this.txtFailToMark_TextChanged);
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(184, 24);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(47, 13);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "seconds";
             // 
             // chbSendNotifications
             // 
@@ -197,6 +188,24 @@
             this.chbSendNotifications.Text = "Taskbar notification";
             this.chbSendNotifications.UseVisualStyleBackColor = true;
             this.chbSendNotifications.CheckedChanged += new System.EventHandler(this.chbSendNotifications_CheckedChanged);
+            // 
+            // txtFailToMark
+            // 
+            this.txtFailToMark.Location = new System.Drawing.Point(129, 20);
+            this.txtFailToMark.Name = "txtFailToMark";
+            this.txtFailToMark.Size = new System.Drawing.Size(48, 20);
+            this.txtFailToMark.TabIndex = 1;
+            this.txtFailToMark.Text = "300";
+            this.txtFailToMark.TextChanged += new System.EventHandler(this.txtFailToMark_TextChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(7, 24);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(116, 13);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "Offline duration to mark";
             // 
             // lblStatusBar
             // 
@@ -217,15 +226,6 @@
             // 
             this.timer3.Interval = 60000;
             this.timer3.Tick += new System.EventHandler(this.timer3_Tick);
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(184, 24);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(47, 13);
-            this.label4.TabIndex = 3;
-            this.label4.Text = "seconds";
             // 
             // cbbShowHide
             // 
