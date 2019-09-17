@@ -7,6 +7,8 @@ using System.Reflection;
 using System.Collections.Concurrent;
 using System.Text;
 using System.Xml;
+using System.Diagnostics;
+using System.Security.Principal;
 
 namespace Mother_of_Ping_CLI
 {
@@ -189,6 +191,20 @@ namespace Mother_of_Ping_CLI
 
         public static void writeCsv_ConcurrentQueue(ConcurrentQueue<string[]> log, string filename, bool overwrite)
         {
+            string csvContents = convertConcurrentQueueToCsv(log);
+
+            if (overwrite)
+            {
+                File.WriteAllText(filename, csvContents);
+            }
+            else
+            {
+                File.AppendAllText(filename, csvContents);
+            }
+        }
+
+        private static string convertConcurrentQueueToCsv(ConcurrentQueue<string[]> log)
+        {
             StringBuilder sb = new StringBuilder();
             int logCount = log.Count;
             for (int i = 0; i < logCount; i++)
@@ -203,14 +219,8 @@ namespace Mother_of_Ping_CLI
                 }
             }
 
-            if (overwrite)
-            {
-                File.WriteAllText(filename, sb.ToString());
-            }
-            else
-            {
-                File.AppendAllText(filename, sb.ToString());
-            }
+            string csvContents = sb.ToString();
+            return csvContents;
         }
 
         // see https://en.m.wikipedia.org/wiki/Comma-separated_values for what to quote
@@ -235,6 +245,13 @@ namespace Mother_of_Ping_CLI
             ConcurrentQueue<string[]> contents = prepareReport(workForce);
 
             writeCsv_ConcurrentQueue(contents, filename, true);
+        }
+
+        public static string generateCsvReport(pingWork[] workForce)
+        {
+            ConcurrentQueue<string[]> contents = prepareReport(workForce);
+
+            return convertConcurrentQueueToCsv(contents);
         }
 
         private static ConcurrentQueue<string[]> prepareReport(pingWork[] workForce)
@@ -354,7 +371,21 @@ namespace Mother_of_Ping_CLI
             writeHtmlReport(contents, filename);
         }
 
+        public static string generateHtmlReport(pingWork[] workForce)
+        {
+            ConcurrentQueue<string[]> contents = prepareReport(workForce);
+
+            return prepareHtmlReport(contents);
+        }
+
         private static void writeHtmlReport(ConcurrentQueue<string[]> contents, string filename)
+        {
+            string htmlContents = prepareHtmlReport(contents);
+            Encoding utf8WithoutBom = new UTF8Encoding(false);
+            File.WriteAllText(filename, htmlContents, utf8WithoutBom);
+        }
+
+        private static string prepareHtmlReport(ConcurrentQueue<string[]> contents)
         {
             StringBuilder sb = new StringBuilder();
             string part1 = @"<?xml version=""1.0"" encoding=""utf-8""?><!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.1//EN"" ""http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd""><html xmlns=""http://www.w3.org/1999/xhtml""><head><title></title></head><body><h3>Pings List<br/></h3><h4>Created using Mother of Ping!<br/></h4><table border=""1"" cellpadding=""5""><tr style=""background-color: #E0E0E0;"">";
@@ -381,8 +412,8 @@ namespace Mother_of_Ping_CLI
 
             sb.Append(@"</table></body></html>");
 
-            Encoding utf8WithoutBom = new UTF8Encoding(false);
-            File.WriteAllText(filename, sb.ToString(), utf8WithoutBom);
+            string htmlContents = sb.ToString();
+            return htmlContents;
         }
 
         #endregion
@@ -418,6 +449,37 @@ namespace Mother_of_Ping_CLI
         public static string getNowStringForFilename()
         {
             return DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+        }
+
+        public static void executeAsAdmin(string fileName, string arg, bool hide, bool wait)
+        {
+            Process proc = new Process();
+
+            proc.StartInfo.FileName = fileName;
+            proc.StartInfo.Arguments = arg;
+
+            // set it to run in elevated mode
+            proc.StartInfo.UseShellExecute = true;
+            proc.StartInfo.Verb = "runas";
+
+            if (hide)
+            {
+                proc.StartInfo.CreateNoWindow = true;
+                proc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            }
+
+            proc.Start();
+            if (wait)
+            {
+                proc.WaitForExit();
+            }
+        }
+
+        public static bool isAdministrator()
+        {
+            WindowsIdentity identity = WindowsIdentity.GetCurrent();
+            WindowsPrincipal principal = new WindowsPrincipal(identity);
+            return principal.IsInRole(WindowsBuiltInRole.Administrator);
         }
     }
 }

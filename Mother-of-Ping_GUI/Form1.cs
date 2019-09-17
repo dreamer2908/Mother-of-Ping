@@ -4,6 +4,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -87,6 +88,11 @@ namespace Mother_of_Ping_GUI
 
         NotifyIcon lastNotifyIcon;
 
+        HttpServer Server1;
+        HttpServer Server2;
+
+        bool appPref_httpServer_enable = false;
+
         #region events
 
         private void btnLoad_Click(object sender, EventArgs e)
@@ -128,6 +134,8 @@ namespace Mother_of_Ping_GUI
             saveSettings();
             flushLogToDisk();
 
+            stopHttpServer();
+
             if (appPref_generateReportAtExit && workForce != null)
             {
                 generateReportAutoMode();
@@ -146,6 +154,11 @@ namespace Mother_of_Ping_GUI
             {
                 startPingAio();
             }
+
+            if (appPref_httpServer_enable)
+            {
+                startHttpServer();
+            }
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -155,6 +168,9 @@ namespace Mother_of_Ping_GUI
             showHideRow();
             updateLowerPanel();
             updateStatusBar();
+
+            Server1.responseString = tools.generateCsvReport(workForce);
+            Server2.responseString = tools.generateHtmlReport(workForce);
         }
 
         private void btnReport_Click(object sender, EventArgs e)
@@ -231,6 +247,8 @@ namespace Mother_of_Ping_GUI
                 appPref_schedulerTime_stop = appPref_schedulerTime_stop,
                 appPref_schedulerTime_report = appPref_schedulerTime_report,
                 appPref_schedulerTime_reset = appPref_schedulerTime_reset,
+
+                appPref_httpServer_enable = appPref_httpServer_enable,
             };
 
             if (options.ShowDialog() == DialogResult.OK)
@@ -291,6 +309,8 @@ namespace Mother_of_Ping_GUI
                 updateLatestLogSizeLimit();
 
                 showHideLowerPanel();
+
+                appPref_httpServer_enable = options.appPref_httpServer_enable;
             }
         }
 
@@ -634,6 +654,8 @@ namespace Mother_of_Ping_GUI
             appPref_schedulerTime_report = Settings.Get("appPref_schedulerTime_report", "16:30");
             appPref_schedulerTime_reset = Settings.Get("appPref_schedulerTime_reset", "07:28");
 
+            appPref_httpServer_enable = Settings.Get("appPref_httpServer_enable", false);
+
             if (appPref_saveHostList)
             {
                 if (File.Exists(defaultHostListPath))
@@ -700,6 +722,8 @@ namespace Mother_of_Ping_GUI
             Settings.Set("appPref_schedulerTime_stop", appPref_schedulerTime_stop);
             Settings.Set("appPref_schedulerTime_report", appPref_schedulerTime_report);
             Settings.Set("appPref_schedulerTime_reset", appPref_schedulerTime_reset);
+
+            Settings.Set("appPref_httpServer_enable", appPref_httpServer_enable);
 
             // save host list
             if (appPref_saveHostList)
@@ -1117,6 +1141,54 @@ namespace Mother_of_Ping_GUI
             }
 
             lblStatusBar.Text = string.Format("Total: {0}. Online: {1}. Offline {2}. Long-term offline: {3}.", status_total, status_online, status_offline, status_orange);
+        }
+
+        private void startHttpServer()
+        {
+            stopHttpServer();
+
+            string uri1 = "http://+:3037/csv/";
+            string uri2 = "http://+:3037/";
+
+            Server1 = new HttpServer();
+            Server2 = new HttpServer();
+
+            try
+            {
+                Server1.Start(uri1);
+                Server2.Start(uri2);
+            }
+            catch (System.Net.HttpListenerException)
+            {
+                // to bind to all network interfaces, you need use netsh to whitelist address, for a specific user
+                // note: netsh requires elevation
+                // you may also run the whole app in elevated mode (run as administrator); it won't need urlacl then
+                // another choice is getting all interface addresses and bind them; urlacl is also not required in this case
+
+                string userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
+                // MessageBox.Show(userName);
+
+                tools.executeAsAdmin("netsh.exe", @"http add urlacl url=" + uri1 + " user=" + userName, true, true);
+                tools.executeAsAdmin("netsh.exe", @"http add urlacl url=" + uri2 + " user=" + userName, true, true);
+                // Process.Start("netsh.exe", @"http add urlacl url=" + uri1 + " user=" + userName).WaitForExit();
+                // Process.Start("netsh.exe", @"http add urlacl url=" + uri2 + " user=" + userName).WaitForExit();
+
+                // Thread.Sleep(1000);
+
+                try
+                {
+                    stopHttpServer();
+                    Server1.Start(uri1);
+                    Server2.Start(uri2);
+                }
+                catch {}
+            }
+        }
+
+        private void stopHttpServer()
+        {
+            if (Server1 != null) Server1.Stop();
+            if (Server2 != null) Server2.Stop();
         }
     }
 }

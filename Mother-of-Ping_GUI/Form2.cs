@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -55,6 +56,8 @@ namespace Mother_of_Ping_GUI
         public string appPref_schedulerTime_stop = "16:29";
         public string appPref_schedulerTime_report = "16:30";
         public string appPref_schedulerTime_reset = "7:28";
+
+        public bool appPref_httpServer_enable = false;
 
         private void btnOK_Click(object sender, EventArgs e)
         {
@@ -118,6 +121,8 @@ namespace Mother_of_Ping_GUI
             appPref_schedulerTime_stop = txtSchedulerTime_stop.Text;
             appPref_schedulerTime_report = txtSchedulerTime_report.Text;
             appPref_schedulerTime_reset = txtSchedulerTime_reset.Text;
+
+            appPref_httpServer_enable = btnEnableHttpServer.Checked;
         }
 
         private void loadSettings()
@@ -169,6 +174,8 @@ namespace Mother_of_Ping_GUI
             txtSchedulerTime_reset.Text = appPref_schedulerTime_reset;
 
             lockUnlockSchedulerControls();
+
+            btnEnableHttpServer.Checked = appPref_httpServer_enable;
         }
 
         private void lockUnlockSchedulerControls()
@@ -235,6 +242,16 @@ namespace Mother_of_Ping_GUI
         private void chbScheduleStartStopReport_CheckedChanged(object sender, EventArgs e)
         {
             lockUnlockSchedulerControls();
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("http://localhost:3037");
+        }
+
+        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("http://localhost:3037/csv");
         }
     }
 }

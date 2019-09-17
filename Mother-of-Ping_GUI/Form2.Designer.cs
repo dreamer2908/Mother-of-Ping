@@ -85,12 +85,17 @@
             this.txtSchedulerTime_stop = new System.Windows.Forms.TextBox();
             this.txtSchedulerTime_start = new System.Windows.Forms.TextBox();
             this.chbScheduleStartStopReport = new System.Windows.Forms.CheckBox();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.btnEnableHttpServer = new System.Windows.Forms.CheckBox();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.linkLabel2 = new System.Windows.Forms.LinkLabel();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
+            this.groupBox7.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -425,7 +430,7 @@
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.Location = new System.Drawing.Point(395, 505);
+            this.btnCancel.Location = new System.Drawing.Point(395, 571);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 27;
@@ -436,7 +441,7 @@
             // btnOK
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOK.Location = new System.Drawing.Point(314, 505);
+            this.btnOK.Location = new System.Drawing.Point(314, 571);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 26;
@@ -696,11 +701,55 @@
             this.chbScheduleStartStopReport.UseVisualStyleBackColor = true;
             this.chbScheduleStartStopReport.CheckedChanged += new System.EventHandler(this.chbScheduleStartStopReport_CheckedChanged);
             // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.linkLabel2);
+            this.groupBox7.Controls.Add(this.linkLabel1);
+            this.groupBox7.Controls.Add(this.btnEnableHttpServer);
+            this.groupBox7.Location = new System.Drawing.Point(15, 505);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(455, 60);
+            this.groupBox7.TabIndex = 29;
+            this.groupBox7.TabStop = false;
+            // 
+            // btnEnableHttpServer
+            // 
+            this.btnEnableHttpServer.AutoSize = true;
+            this.btnEnableHttpServer.Location = new System.Drawing.Point(9, 20);
+            this.btnEnableHttpServer.Name = "btnEnableHttpServer";
+            this.btnEnableHttpServer.Size = new System.Drawing.Size(328, 17);
+            this.btnEnableHttpServer.TabIndex = 0;
+            this.btnEnableHttpServer.Text = "Enable HTTP server for remote stats access (requires re-launch)";
+            this.btnEnableHttpServer.UseVisualStyleBackColor = true;
+            // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Location = new System.Drawing.Point(29, 40);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(107, 13);
+            this.linkLabel1.TabIndex = 1;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "http://localhost:3037";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            // 
+            // linkLabel2
+            // 
+            this.linkLabel2.AutoSize = true;
+            this.linkLabel2.Location = new System.Drawing.Point(169, 40);
+            this.linkLabel2.Name = "linkLabel2";
+            this.linkLabel2.Size = new System.Drawing.Size(129, 13);
+            this.linkLabel2.TabIndex = 1;
+            this.linkLabel2.TabStop = true;
+            this.linkLabel2.Text = "http://localhost:3037/csv";
+            this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(483, 540);
+            this.ClientSize = new System.Drawing.Size(483, 606);
+            this.Controls.Add(this.groupBox7);
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox4);
@@ -724,6 +773,8 @@
             this.groupBox5.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -787,5 +838,9 @@
         private System.Windows.Forms.CheckBox chbSchedulerEnable_report;
         private System.Windows.Forms.CheckBox chbSchedulerEnable_stop;
         private System.Windows.Forms.CheckBox chbSchedulerEnable_start;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.CheckBox btnEnableHttpServer;
+        private System.Windows.Forms.LinkLabel linkLabel2;
     }
 }
