@@ -163,14 +163,14 @@ namespace Son_of_Ping
             {
                 if (File.Exists(defaultHostListPath))
                 {
-                    loadNewHostListAio(defaultHostListPath);
+                    loadHostWhiteList(defaultHostListPath);
                 }
             }
             else if (appPref_autoLoadList)
             {
                 if (File.Exists(appPref_autoLoadListFilename))
                 {
-                    loadNewHostListAio(appPref_autoLoadListFilename);
+                    loadHostWhiteList(appPref_autoLoadListFilename);
                 }
             }
         }
@@ -197,7 +197,7 @@ namespace Son_of_Ping
             }
         }
 
-        private void loadNewHostListAio(string filename)
+        private void loadHostWhiteList(string filename)
         {
             if (filename.ToLower().EndsWith(".csv"))
             {
@@ -207,11 +207,6 @@ namespace Son_of_Ping
             {
                 hostList = tools.txtPinginfoviewParser(filename, false);
             }
-
-            stopGridUpdate();
-            clearPingPanel();
-            // loadHostListToTable(hostList);
-            updateStatusBar();
         }
 
         private void stopGridUpdate()
@@ -255,6 +250,26 @@ namespace Son_of_Ping
             lblStatusBar.Text = string.Format("Total: {0}. Online: {1}. Offline {2}. Long-term offline: {3}.", status_total, status_online, status_offline, status_orange);
         }
 
+        private bool isHostInWhiteList(string hostname)
+        {
+            // return true if the host list is empty
+            if (hostList.Count == 0)
+            {
+                return true;
+            }
+
+            // otherwise, check if hostname in the host list
+            foreach (var white in hostList)
+            {
+                if (white[0] == hostname)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private void updateStats()
         {
             upstreamCsv = tools.readTextFromUrl(csvUrl);
@@ -266,40 +281,51 @@ namespace Son_of_Ping
             {
                 bigData.Rows.Add();
             }
-            // and remove excessive ones
-            while (bigData.Rows.Count > csvRows.Count)
-            {
-                bigData.Rows.RemoveAt(0);
-            }
 
             bigData.BeginLoadData();
+
+            int rowAdded = 0;
 
             for (int i = 0; i < csvRows.Count; i++)
             {
                 var csvRow = csvRows[i];
-                var row = bigData.Rows[i];
 
-                row[1] = true;
-                row[2] = i;
-                row[3] = csvRow[0];
-                row[4] = csvRow[1];
-                row[5] = csvRow[2];
-                row[6] = int.Parse(csvRow[3]);
-                row[7] = int.Parse(csvRow[4]);
-                row[8] = int.Parse(csvRow[5]);
-                row[9] = int.Parse(csvRow[6]);
-                row[10] = csvRow[7];
-                row[11] = csvRow[8];
-                row[12] = csvRow[9];
-                row[13] = csvRow[10];
-                row[14] = csvRow[11];
-                row[15] = csvRow[12];
-                row[16] = csvRow[13];
-                row[17] = csvRow[14];
-                row[18] = csvRow[15];
-                row[19] = csvRow[16];
-                row[20] = csvRow[17];
-                row[0] = pingStatusToIcon(pingWork.textToPingStatus[csvRow[10]]);
+                string hostname = csvRow[0];
+
+                if (isHostInWhiteList(hostname))
+                {
+                    var row = bigData.Rows[rowAdded];
+
+                    row[1] = true;
+                    row[2] = i;
+                    row[3] = csvRow[0];
+                    row[4] = csvRow[1];
+                    row[5] = csvRow[2];
+                    row[6] = int.Parse(csvRow[3]);
+                    row[7] = int.Parse(csvRow[4]);
+                    row[8] = int.Parse(csvRow[5]);
+                    row[9] = int.Parse(csvRow[6]);
+                    row[10] = csvRow[7];
+                    row[11] = csvRow[8];
+                    row[12] = csvRow[9];
+                    row[13] = csvRow[10];
+                    row[14] = csvRow[11];
+                    row[15] = csvRow[12];
+                    row[16] = csvRow[13];
+                    row[17] = csvRow[14];
+                    row[18] = csvRow[15];
+                    row[19] = csvRow[16];
+                    row[20] = csvRow[17];
+                    row[0] = pingStatusToIcon(pingWork.textToPingStatus[csvRow[10]]);
+
+                    rowAdded++;
+                }
+            }
+
+            // and remove excessive ones
+            while (bigData.Rows.Count > rowAdded)
+            {
+                bigData.Rows.RemoveAt(bigData.Rows.Count - 1);
             }
 
             bigData.EndLoadData();
@@ -447,6 +473,22 @@ namespace Son_of_Ping
         private void chbSendNotifications_CheckedChanged(object sender, EventArgs e)
         {
             appPref_sendTaskbarNotifications = chbSendNotifications.Checked;
+        }
+
+        private void btnLoadList_Click(object sender, EventArgs e)
+        {
+            string filename = string.Empty;
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                filename = openFileDialog1.FileName;
+
+                loadHostWhiteList(filename);
+            }
+        }
+
+        private void btnClearList_Click(object sender, EventArgs e)
+        {
+            hostList.Clear();
         }
     }
 }

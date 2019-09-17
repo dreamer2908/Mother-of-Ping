@@ -167,7 +167,7 @@ namespace Mother_of_Ping_CLI
         {
             int numberOfElements = 2;
             string text = File.ReadAllText(textFile);
-            return csvParser(textFile, hasHeader, numberOfElements);
+            return csvParser(text, hasHeader, numberOfElements);
         }
 
         public static List<string[]> csvParser(string text, bool hasHeader, int numberOfElements)

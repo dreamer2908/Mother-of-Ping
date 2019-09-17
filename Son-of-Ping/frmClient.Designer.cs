@@ -50,6 +50,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.cbbShowHide = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPing)).BeginInit();
@@ -124,6 +125,7 @@
             this.btnClearList.TabIndex = 0;
             this.btnClearList.Text = "Clear";
             this.btnClearList.UseVisualStyleBackColor = true;
+            this.btnClearList.Click += new System.EventHandler(this.btnClearList_Click);
             // 
             // btnLoadList
             // 
@@ -133,6 +135,7 @@
             this.btnLoadList.TabIndex = 0;
             this.btnLoadList.Text = "Load...";
             this.btnLoadList.UseVisualStyleBackColor = true;
+            this.btnLoadList.Click += new System.EventHandler(this.btnLoadList_Click);
             // 
             // dgvPing
             // 
@@ -248,6 +251,11 @@
             this.label5.TabIndex = 10;
             this.label5.Text = "Show";
             // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            this.openFileDialog1.Filter = "Csv files|*.csv|Text files|*.txt|All files|*.*";
+            // 
             // frmClient
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -298,6 +306,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox cbbShowHide;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
     }
 }
 
