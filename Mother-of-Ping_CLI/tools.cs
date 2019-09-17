@@ -9,6 +9,7 @@ using System.Text;
 using System.Xml;
 using System.Diagnostics;
 using System.Security.Principal;
+using System.Net;
 
 namespace Mother_of_Ping_CLI
 {
@@ -164,9 +165,17 @@ namespace Mother_of_Ping_CLI
 
         public static List<string[]> csvHostListParser(string textFile, bool hasHeader)
         {
-            List<string[]> result = new List<string[]>();
+            int numberOfElements = 2;
+            string text = File.ReadAllText(textFile);
+            return csvParser(textFile, hasHeader, numberOfElements);
+        }
 
-            using (TextFieldParser parser = new TextFieldParser(textFile))
+        public static List<string[]> csvParser(string text, bool hasHeader, int numberOfElements)
+        {
+            List<string[]> result = new List<string[]>();
+            StringReader sr = new StringReader(text);
+
+            using (TextFieldParser parser = new TextFieldParser(sr))
             {
                 parser.TextFieldType = FieldType.Delimited;
                 parser.SetDelimiters(",");
@@ -177,8 +186,6 @@ namespace Mother_of_Ping_CLI
                 while (!parser.EndOfData)
                 {
                     string[] fields = parser.ReadFields();
-
-                    int numberOfElements = 2;
 
                     string[] elements = sanitizeStringArray(fields, numberOfElements);
 
@@ -480,6 +487,18 @@ namespace Mother_of_Ping_CLI
             WindowsIdentity identity = WindowsIdentity.GetCurrent();
             WindowsPrincipal principal = new WindowsPrincipal(identity);
             return principal.IsInRole(WindowsBuiltInRole.Administrator);
+        }
+
+        public static string readTextFromUrl(string url)
+        {
+            // WebClient is still convenient
+            // Assume UTF8, but detect BOM - could also honor response charset I suppose
+            using (var client = new WebClient())
+            using (var stream = client.OpenRead(url))
+            using (var textReader = new StreamReader(stream, Encoding.UTF8, true))
+            {
+                return textReader.ReadToEnd();
+            }
         }
     }
 }
