@@ -80,7 +80,14 @@ namespace Mother_of_Ping_GUI
             if (this.ReceiveWebRequest != null)
                 this.ReceiveWebRequest(context);
 
-            this.ProcessRequest(context);
+            // ignore all errors when processing the request
+            // to prevent the http server from bringing the whole app down
+            // when it encounters errors
+            try
+            {
+                this.ProcessRequest(context);
+            }
+            catch { }
         }
 
         /// <summary>
