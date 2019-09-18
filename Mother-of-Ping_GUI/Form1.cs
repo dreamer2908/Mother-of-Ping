@@ -169,8 +169,11 @@ namespace Mother_of_Ping_GUI
             updateLowerPanel();
             updateStatusBar();
 
-            Server1.responseString = tools.generateCsvReport(workForce);
-            Server2.responseString = tools.generateHtmlReport(workForce);
+            if (Server1 != null && Server2 != null)
+            {
+                Server1.responseString = tools.generateCsvReport(workForce);
+                Server2.responseString = tools.generateHtmlReport(workForce);
+            }
         }
 
         private void btnReport_Click(object sender, EventArgs e)
