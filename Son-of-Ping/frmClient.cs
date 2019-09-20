@@ -276,18 +276,18 @@ namespace Son_of_Ping
 
             List<string[]> csvRows = tools.csvParser(upstreamCsv, true, 18);
 
-            // create enough rows to store data
-            while (bigData.Rows.Count < csvRows.Count)
-            {
-                bigData.Rows.Add();
-            }
-
             bigData.BeginLoadData();
 
             int rowAdded = 0;
 
             for (int i = 0; i < csvRows.Count; i++)
             {
+                // create enough rows to store data
+                while (bigData.Rows.Count < rowAdded + 1)
+                {
+                    bigData.Rows.Add();
+                }
+
                 var csvRow = csvRows[i];
 
                 string hostname = csvRow[0];
