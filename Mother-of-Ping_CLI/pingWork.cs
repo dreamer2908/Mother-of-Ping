@@ -185,6 +185,7 @@ namespace Mother_of_Ping_CLI
             mutex.WaitOne();
 
             DateTime startLine = DateTime.Now;
+            long timeOffset = 0;
 
             while (!stopSignal)
             {
@@ -211,17 +212,19 @@ namespace Mother_of_Ping_CLI
                 // Windows is not real-time OS, so never expect timing to be precise
                 // the resolution is somewhere around 10ms
                 // it isn't guaranteed to do much of anything except 'approximately' this long
-                DateTime loopEndTime = startLine.AddMilliseconds(totalCount * period);
+                DateTime loopEndTime = startLine.AddMilliseconds(totalCount * period + timeOffset);
                 int sleepTime = (int)(loopEndTime - DateTime.Now).TotalMilliseconds;
 
-                if (sleepTime > 0)
+                // added timeOffset to avoid the situation where the loop runs without any delay
+                // when the timeout > period, and timeout occurs, so sleepTime < 0 for (timeout - period) loop
+                while (sleepTime <= 0)
                 {
-                    Thread.Sleep(sleepTime);
+                    timeOffset += period;
+                    loopEndTime = startLine.AddMilliseconds(totalCount * period + timeOffset);
+                    sleepTime = (int)(loopEndTime - DateTime.Now).TotalMilliseconds;
                 }
-                //else
-                //{
-                //    Console.WriteLine(hostname + " will NOT sleep: " + sleepTime.ToString());
-                //}
+
+                Thread.Sleep(sleepTime);
             }
 
             //Console.WriteLine(hostname + ": exiting...");
