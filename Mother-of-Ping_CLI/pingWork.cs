@@ -339,6 +339,7 @@ namespace Mother_of_Ping_CLI
 
         public void startPing()
         {
+            stopPingWait();
             stopSignal = false;
             thread = new Thread(() => this.backgroundPing());
             thread.Start();

@@ -108,6 +108,9 @@ namespace Mother_of_Ping_GUI
 
         private void btnStart_Click(object sender, EventArgs e)
         {
+            disableStartStopResetButton();
+            btnStart.Text = "Starting...";
+
             if (hostList.Count > 0)
             {
                 startPingAio();
@@ -116,11 +119,20 @@ namespace Mother_of_Ping_GUI
             {
                 MessageBox.Show("There's nothing to run.", "Start", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+
+            btnStart.Text = "Start";
+            enableStartStopResetButton();
         }
 
         private void btnStop_Click(object sender, EventArgs e)
         {
+            disableStartStopResetButton();
+            btnStop.Text = "Stopping...";
+
             stopPingAio();
+
+            btnStop.Text = "Stop";
+            enableStartStopResetButton();
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
@@ -329,10 +341,13 @@ namespace Mother_of_Ping_GUI
 
         private void btnReset_Click(object sender, EventArgs e)
         {
-            if (!backgroundWorker1.IsBusy)
-            {
-                backgroundWorker1.RunWorkerAsync();
-            }
+            disableStartStopResetButton();
+            btnReset.Text = "Resetting...";
+
+            resetStats();
+
+            btnReset.Text = "Reset";
+            enableStartStopResetButton();
         }
 
         private void timer4_Tick(object sender, EventArgs e)
@@ -474,7 +489,7 @@ namespace Mother_of_Ping_GUI
 
         private void startPing()
         {
-            stopPing(false); // stop all ongoing workers
+            mutexStopPing.WaitOne();
 
             pingStarted = true;
 
@@ -502,6 +517,8 @@ namespace Mother_of_Ping_GUI
 
                 work.startPing();
             });
+
+            mutexStopPing.ReleaseMutex();
         }
 
         private void stopPing(bool wait)
@@ -1192,6 +1209,20 @@ namespace Mother_of_Ping_GUI
         {
             if (Server1 != null) Server1.Stop();
             if (Server2 != null) Server2.Stop();
+        }
+
+        private void enableStartStopResetButton()
+        {
+            btnStart.Enabled = true;
+            btnStop.Enabled = true;
+            btnReset.Enabled = true;
+        }
+
+        private void disableStartStopResetButton()
+        {
+            btnStart.Enabled = false;
+            btnStop.Enabled = false;
+            btnReset.Enabled = false;
         }
     }
 }
