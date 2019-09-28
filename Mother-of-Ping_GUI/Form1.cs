@@ -108,31 +108,20 @@ namespace Mother_of_Ping_GUI
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            disableStartStopResetButton();
-            btnStart.Text = "Starting...";
 
             if (hostList.Count > 0)
             {
-                startPingAio();
+                startPingGui();
             }
             else
             {
                 MessageBox.Show("There's nothing to run.", "Start", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-
-            btnStart.Text = "Start";
-            enableStartStopResetButton();
         }
 
         private void btnStop_Click(object sender, EventArgs e)
         {
-            disableStartStopResetButton();
-            btnStop.Text = "Stopping...";
-
-            stopPingAio();
-
-            btnStop.Text = "Stop";
-            enableStartStopResetButton();
+            stopPingGui();
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
@@ -341,13 +330,7 @@ namespace Mother_of_Ping_GUI
 
         private void btnReset_Click(object sender, EventArgs e)
         {
-            disableStartStopResetButton();
-            btnReset.Text = "Resetting...";
-
-            resetStats();
-
-            btnReset.Text = "Reset";
-            enableStartStopResetButton();
+            resetStatsGui();
         }
 
         private void timer4_Tick(object sender, EventArgs e)
@@ -1108,7 +1091,7 @@ namespace Mother_of_Ping_GUI
                 if (now == appPref_schedulerTime_start)
                 {
                     //MessageBox.Show("scheduler running start");
-                    startPingAio();
+                    startPingGui();
                 }
             }
 
@@ -1117,7 +1100,7 @@ namespace Mother_of_Ping_GUI
                 if (now == appPref_schedulerTime_stop)
                 {
                     //MessageBox.Show("scheduler running stop");
-                    stopPingAio();
+                    stopPingGui();
                 }
             }
 
@@ -1135,7 +1118,7 @@ namespace Mother_of_Ping_GUI
                 if (now == appPref_schedulerTime_reset)
                 {
                     //MessageBox.Show("scheduler running reset");
-                    resetStats();
+                    resetStatsGui();
                 }
             }
         }
@@ -1213,16 +1196,83 @@ namespace Mother_of_Ping_GUI
 
         private void enableStartStopResetButton()
         {
-            btnStart.Enabled = true;
-            btnStop.Enabled = true;
-            btnReset.Enabled = true;
+            buttonEnableDisable(btnStart, true);
+            buttonEnableDisable(btnStop, true);
+            buttonEnableDisable(btnReset, true);
         }
 
         private void disableStartStopResetButton()
         {
-            btnStart.Enabled = false;
-            btnStop.Enabled = false;
-            btnReset.Enabled = false;
+            buttonEnableDisable(btnStart, false);
+            buttonEnableDisable(btnStop, false);
+            buttonEnableDisable(btnReset, false);
+        }
+
+        private void buttonEnableDisable(Button b, bool enabled)
+        {
+            if (b.InvokeRequired)
+            {
+                // It's on a different thread, so use Invoke.
+                b.BeginInvoke(new MethodInvoker(() =>
+                {
+                    b.Enabled = enabled;
+                }));
+            }
+            else
+            {
+                // It's on the same thread, no need for Invoke
+                b.Enabled = enabled;
+            }
+        }
+
+        private void buttonEditText(Button b, string text)
+        {
+            if (b.InvokeRequired)
+            {
+                // It's on a different thread, so use Invoke.
+                b.BeginInvoke(new MethodInvoker(() =>
+                {
+                    b.Text = text;
+                }));
+            }
+            else
+            {
+                // It's on the same thread, no need for Invoke
+                b.Text = text;
+            }
+        }
+
+        private void startPingGui()
+        {
+            disableStartStopResetButton();
+            buttonEditText(btnStart, "Starting...");
+
+            startPingAio();
+
+            buttonEditText(btnStart, "Start");
+            enableStartStopResetButton();
+        }
+
+        private void stopPingGui()
+        {
+            disableStartStopResetButton();
+            buttonEditText(btnStop, "Stopping...");
+
+            stopPingAio();
+
+            buttonEditText(btnStop, "Stop");
+            enableStartStopResetButton();
+        }
+
+        private void resetStatsGui()
+        {
+            disableStartStopResetButton();
+            buttonEditText(btnReset, "Resetting...");
+
+            resetStats();
+
+            buttonEditText(btnReset, "Reset");
+            enableStartStopResetButton();
         }
     }
 }
