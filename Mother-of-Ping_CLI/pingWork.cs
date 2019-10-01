@@ -156,8 +156,8 @@ namespace Mother_of_Ping_CLI
             //rnd.NextBytes(buffer);
 
             // Set options for transmission:
-            // The data can go through <ttl> gateways or routers before it is destroyed, and the data packet cannot be fragmented.
-            PingOptions options = new PingOptions(ttl, true);
+            // The data can go through <ttl> gateways or routers before it is destroyed, and the data packet can be fragmented.
+            PingOptions options = new PingOptions(ttl, false);
 
             // True work here
             PingReply reply = null;
