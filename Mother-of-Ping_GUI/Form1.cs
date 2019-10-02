@@ -867,7 +867,10 @@ namespace Mother_of_Ping_GUI
                     globalFilePath = Path.Combine(actualLogFolder, filename);
                 }
 
-                tools.writeCsv_ConcurrentQueue(pingWork.globalLog, globalFilePath, false);
+                if (!pingWork.globalLog.IsEmpty)
+                {
+                    tools.writeCsv_ConcurrentQueue(pingWork.globalLog, globalFilePath, false);
+                }
             }
             else
             {
@@ -885,7 +888,10 @@ namespace Mother_of_Ping_GUI
                         filePath = Path.Combine(actualLogFolder, filePath);
                     }
 
-                    tools.writeCsv_ConcurrentQueue(worker.log, filePath, false);
+                    if (!worker.log.IsEmpty)
+                    {
+                        tools.writeCsv_ConcurrentQueue(worker.log, filePath, false);
+                    }
                 };
             }
             else
