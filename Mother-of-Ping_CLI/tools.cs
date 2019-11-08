@@ -210,6 +210,47 @@ namespace Mother_of_Ping_CLI
             }
         }
 
+        public static int writeCsv_ConcurrentQueue(ConcurrentQueue<string[]> log, string filename, bool overwrite, int tries = 1, int retryDelay = 1000)
+        {
+            string csvContents = convertConcurrentQueueToCsv(log);
+
+            int i = 0;
+            bool good = true;
+
+            // try to write until it's successful or the number of time exceeds <tries>
+            // <tries> = 0 is also valid, and understandable for fags
+            for (i = 0; i < tries; i++)
+            {
+                try
+                {
+                    if (overwrite)
+                    {
+                        File.WriteAllText(filename, csvContents);
+                    }
+                    else
+                    {
+                        File.AppendAllText(filename, csvContents);
+                    }
+                }
+                catch (Exception ex) when (
+                       ex is DirectoryNotFoundException
+                    || ex is IOException
+                    || ex is UnauthorizedAccessException
+                    || ex is System.Security.SecurityException
+                )
+                {
+                    System.Threading.Thread.Sleep(retryDelay);
+                    good = false;
+                    continue;
+                }
+
+                good = true;
+                break;
+            }
+
+            return (good) ? 0 : i; // if failed to write, return how many times it tries
+        }
+
         private static string convertConcurrentQueueToCsv(ConcurrentQueue<string[]> log)
         {
             StringBuilder sb = new StringBuilder();

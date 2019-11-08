@@ -59,6 +59,8 @@ namespace Mother_of_Ping_GUI
 
         public bool appPref_httpServer_enable = false;
 
+        public bool appPref_ignoreWriteFailure = true;
+
         private void btnOK_Click(object sender, EventArgs e)
         {
             storeSettings();
@@ -123,6 +125,8 @@ namespace Mother_of_Ping_GUI
             appPref_schedulerTime_reset = txtSchedulerTime_reset.Text;
 
             appPref_httpServer_enable = btnEnableHttpServer.Checked;
+
+            appPref_ignoreWriteFailure = chbIgnoreWriteFailure.Checked;
         }
 
         private void loadSettings()
@@ -176,6 +180,8 @@ namespace Mother_of_Ping_GUI
             lockUnlockSchedulerControls();
 
             btnEnableHttpServer.Checked = appPref_httpServer_enable;
+
+            chbIgnoreWriteFailure.Checked = appPref_ignoreWriteFailure;
         }
 
         private void lockUnlockSchedulerControls()

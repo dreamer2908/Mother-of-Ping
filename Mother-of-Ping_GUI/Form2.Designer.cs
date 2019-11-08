@@ -86,9 +86,10 @@
             this.txtSchedulerTime_start = new System.Windows.Forms.TextBox();
             this.chbScheduleStartStopReport = new System.Windows.Forms.CheckBox();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.btnEnableHttpServer = new System.Windows.Forms.CheckBox();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.btnEnableHttpServer = new System.Windows.Forms.CheckBox();
+            this.chbIgnoreWriteFailure = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -293,6 +294,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.chbIgnoreWriteFailure);
             this.groupBox3.Controls.Add(this.chbGenerateReportAtExit);
             this.groupBox3.Controls.Add(this.label10);
             this.groupBox3.Controls.Add(this.label9);
@@ -712,15 +714,16 @@
             this.groupBox7.TabIndex = 29;
             this.groupBox7.TabStop = false;
             // 
-            // btnEnableHttpServer
+            // linkLabel2
             // 
-            this.btnEnableHttpServer.AutoSize = true;
-            this.btnEnableHttpServer.Location = new System.Drawing.Point(9, 20);
-            this.btnEnableHttpServer.Name = "btnEnableHttpServer";
-            this.btnEnableHttpServer.Size = new System.Drawing.Size(328, 17);
-            this.btnEnableHttpServer.TabIndex = 0;
-            this.btnEnableHttpServer.Text = "Enable HTTP server for remote stats access (requires re-launch)";
-            this.btnEnableHttpServer.UseVisualStyleBackColor = true;
+            this.linkLabel2.AutoSize = true;
+            this.linkLabel2.Location = new System.Drawing.Point(169, 40);
+            this.linkLabel2.Name = "linkLabel2";
+            this.linkLabel2.Size = new System.Drawing.Size(129, 13);
+            this.linkLabel2.TabIndex = 1;
+            this.linkLabel2.TabStop = true;
+            this.linkLabel2.Text = "http://localhost:3037/csv";
+            this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
             // 
             // linkLabel1
             // 
@@ -733,16 +736,27 @@
             this.linkLabel1.Text = "http://localhost:3037";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
-            // linkLabel2
+            // btnEnableHttpServer
             // 
-            this.linkLabel2.AutoSize = true;
-            this.linkLabel2.Location = new System.Drawing.Point(169, 40);
-            this.linkLabel2.Name = "linkLabel2";
-            this.linkLabel2.Size = new System.Drawing.Size(129, 13);
-            this.linkLabel2.TabIndex = 1;
-            this.linkLabel2.TabStop = true;
-            this.linkLabel2.Text = "http://localhost:3037/csv";
-            this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
+            this.btnEnableHttpServer.AutoSize = true;
+            this.btnEnableHttpServer.Location = new System.Drawing.Point(9, 20);
+            this.btnEnableHttpServer.Name = "btnEnableHttpServer";
+            this.btnEnableHttpServer.Size = new System.Drawing.Size(328, 17);
+            this.btnEnableHttpServer.TabIndex = 0;
+            this.btnEnableHttpServer.Text = "Enable HTTP server for remote stats access (requires re-launch)";
+            this.btnEnableHttpServer.UseVisualStyleBackColor = true;
+            // 
+            // chbIgnoreWriteFailure
+            // 
+            this.chbIgnoreWriteFailure.AutoSize = true;
+            this.chbIgnoreWriteFailure.Checked = true;
+            this.chbIgnoreWriteFailure.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chbIgnoreWriteFailure.Location = new System.Drawing.Point(252, 91);
+            this.chbIgnoreWriteFailure.Name = "chbIgnoreWriteFailure";
+            this.chbIgnoreWriteFailure.Size = new System.Drawing.Size(142, 17);
+            this.chbIgnoreWriteFailure.TabIndex = 22;
+            this.chbIgnoreWriteFailure.Text = "Ignore log writing failures";
+            this.chbIgnoreWriteFailure.UseVisualStyleBackColor = true;
             // 
             // Form2
             // 
@@ -842,5 +856,6 @@
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.CheckBox btnEnableHttpServer;
         private System.Windows.Forms.LinkLabel linkLabel2;
+        private System.Windows.Forms.CheckBox chbIgnoreWriteFailure;
     }
 }

@@ -93,6 +93,8 @@ namespace Mother_of_Ping_GUI
 
         bool appPref_httpServer_enable = false;
 
+        bool appPref_ignoreWriteFailure = true;
+
         #region events
 
         private void btnLoad_Click(object sender, EventArgs e)
@@ -253,6 +255,8 @@ namespace Mother_of_Ping_GUI
                 appPref_schedulerTime_reset = appPref_schedulerTime_reset,
 
                 appPref_httpServer_enable = appPref_httpServer_enable,
+
+                appPref_ignoreWriteFailure = appPref_ignoreWriteFailure,
             };
 
             if (options.ShowDialog() == DialogResult.OK)
@@ -315,6 +319,8 @@ namespace Mother_of_Ping_GUI
                 showHideLowerPanel();
 
                 appPref_httpServer_enable = options.appPref_httpServer_enable;
+
+                appPref_ignoreWriteFailure = options.appPref_ignoreWriteFailure;
             }
         }
 
@@ -659,6 +665,8 @@ namespace Mother_of_Ping_GUI
 
             appPref_httpServer_enable = Settings.Get("appPref_httpServer_enable", false);
 
+            appPref_ignoreWriteFailure = Settings.Get("appPref_ignoreWriteFailure", true);
+
             if (appPref_saveHostList)
             {
                 if (File.Exists(defaultHostListPath))
@@ -727,6 +735,8 @@ namespace Mother_of_Ping_GUI
             Settings.Set("appPref_schedulerTime_reset", appPref_schedulerTime_reset);
 
             Settings.Set("appPref_httpServer_enable", appPref_httpServer_enable);
+
+            Settings.Set("appPref_ignoreWriteFailure", appPref_ignoreWriteFailure);
 
             // save host list
             if (appPref_saveHostList)
@@ -869,7 +879,14 @@ namespace Mother_of_Ping_GUI
 
                 if (!pingWork.globalLog.IsEmpty)
                 {
-                    tools.writeCsv_ConcurrentQueue(pingWork.globalLog, globalFilePath, false);
+                    if (!appPref_ignoreWriteFailure)
+                    {
+                        tools.writeCsv_ConcurrentQueue(pingWork.globalLog, globalFilePath, false);
+                    }
+                    else
+                    {
+                        tools.writeCsv_ConcurrentQueue(pingWork.globalLog, globalFilePath, false, 10, 1000);
+                    }
                 }
             }
             else
@@ -890,7 +907,14 @@ namespace Mother_of_Ping_GUI
 
                     if (!worker.log.IsEmpty)
                     {
-                        tools.writeCsv_ConcurrentQueue(worker.log, filePath, false);
+                        if (!appPref_ignoreWriteFailure)
+                        {
+                            tools.writeCsv_ConcurrentQueue(worker.log, filePath, false);
+                        }
+                        else
+                        {
+                            tools.writeCsv_ConcurrentQueue(worker.log, filePath, false, 5, 500);
+                        }
                     }
                 };
             }
