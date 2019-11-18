@@ -1101,11 +1101,14 @@ namespace Mother_of_Ping_GUI
 
         private void generateReportAutoMode()
         {
-            string today = tools.getNowStringForFilename();
-            string filename1 = Path.Combine(actualLogFolder, string.Format("ping_session_report_{0}.csv", today));
-            string filename2 = Path.Combine(actualLogFolder, string.Format("ping_session_report_{0}.html", today));
-            tools.generateCsvReport(workForce, filename1);
-            tools.generateHtmlReport(workForce, filename2);
+            if (workForce != null)
+            {
+                string today = tools.getNowStringForFilename();
+                string filename1 = Path.Combine(actualLogFolder, string.Format("ping_session_report_{0}.csv", today));
+                string filename2 = Path.Combine(actualLogFolder, string.Format("ping_session_report_{0}.html", today));
+                tools.generateCsvReport(workForce, filename1);
+                tools.generateHtmlReport(workForce, filename2);
+            }
         }
 
         private void schedulerLoop()
