@@ -308,7 +308,18 @@ namespace Mother_of_Ping_GUI
             // or when delay is asked to be ignored
             double secondSinceLastEmail = (DateTime.Now - lastEmailTimestamp).TotalSeconds;
 
-            if (ignoreDelay || secondSinceLastEmail >= delayBetweenEmails)
+            // only send email if there're at least one orange row
+            // or alert status is asked to be ignored
+            int orangeCount = 0;
+            foreach (DataGridViewRow row in dgvPing.Rows)
+            {
+                if (row.DefaultCellStyle.BackColor == Color.Orange)
+                {
+                    orangeCount++;
+                }
+            }
+
+            if ((ignoreAlertStatus || orangeCount > 0) && (ignoreDelay || secondSinceLastEmail >= delayBetweenEmails))
             {
                 string email_body = emailHeadline + "At system time: " + getNowString() + "\n ";
 
