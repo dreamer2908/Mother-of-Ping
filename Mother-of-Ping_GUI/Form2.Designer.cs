@@ -47,6 +47,7 @@
             this.radbtnSaveList = new System.Windows.Forms.RadioButton();
             this.chbAutoStart = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.chbIgnoreWriteFailure = new System.Windows.Forms.CheckBox();
             this.chbGenerateReportAtExit = new System.Windows.Forms.CheckBox();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
@@ -64,9 +65,14 @@
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.btnEmailSetup = new System.Windows.Forms.Button();
             this.chbSendNotificationsLine = new System.Windows.Forms.CheckBox();
+            this.chbEmailNotification = new System.Windows.Forms.CheckBox();
             this.chbSendNotifications = new System.Windows.Forms.CheckBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
+            this.txtEmailDelaySeconds = new System.Windows.Forms.TextBox();
             this.chbMarkHostConsFail = new System.Windows.Forms.CheckBox();
             this.txtFailToMark = new System.Windows.Forms.TextBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
@@ -89,7 +95,6 @@
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.btnEnableHttpServer = new System.Windows.Forms.CheckBox();
-            this.chbIgnoreWriteFailure = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -136,7 +141,7 @@
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Location = new System.Drawing.Point(15, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(456, 70);
+            this.groupBox1.Size = new System.Drawing.Size(456, 64);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             // 
@@ -144,7 +149,7 @@
             // 
             this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(403, 43);
+            this.label8.Location = new System.Drawing.Point(403, 39);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(30, 13);
             this.label8.TabIndex = 3;
@@ -172,7 +177,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(169, 44);
+            this.label4.Location = new System.Drawing.Point(169, 40);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(63, 13);
             this.label4.TabIndex = 3;
@@ -181,7 +186,7 @@
             // txtTTL
             // 
             this.txtTTL.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtTTL.Location = new System.Drawing.Point(333, 40);
+            this.txtTTL.Location = new System.Drawing.Point(333, 36);
             this.txtTTL.Name = "txtTTL";
             this.txtTTL.Size = new System.Drawing.Size(64, 20);
             this.txtTTL.TabIndex = 4;
@@ -206,7 +211,7 @@
             // 
             // txtPeriod
             // 
-            this.txtPeriod.Location = new System.Drawing.Point(99, 41);
+            this.txtPeriod.Location = new System.Drawing.Point(99, 36);
             this.txtPeriod.Name = "txtPeriod";
             this.txtPeriod.Size = new System.Drawing.Size(64, 20);
             this.txtPeriod.TabIndex = 2;
@@ -215,7 +220,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 43);
+            this.label3.Location = new System.Drawing.Point(6, 39);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(86, 13);
             this.label3.TabIndex = 0;
@@ -225,7 +230,7 @@
             // 
             this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(278, 43);
+            this.label7.Location = new System.Drawing.Point(278, 39);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(27, 13);
             this.label7.TabIndex = 0;
@@ -239,7 +244,7 @@
             this.groupBox2.Controls.Add(this.radbtnLoadFile);
             this.groupBox2.Controls.Add(this.radbtnSaveList);
             this.groupBox2.Controls.Add(this.chbAutoStart);
-            this.groupBox2.Location = new System.Drawing.Point(15, 89);
+            this.groupBox2.Location = new System.Drawing.Point(15, 82);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(456, 48);
             this.groupBox2.TabIndex = 2;
@@ -294,6 +299,8 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox3.Controls.Add(this.chbIgnoreWriteFailure);
             this.groupBox3.Controls.Add(this.chbGenerateReportAtExit);
             this.groupBox3.Controls.Add(this.label10);
@@ -306,11 +313,23 @@
             this.groupBox3.Controls.Add(this.txtGlobalLogPath);
             this.groupBox3.Controls.Add(this.chbSaveIndividualLog);
             this.groupBox3.Controls.Add(this.chbSaveGlobalLog);
-            this.groupBox3.Location = new System.Drawing.Point(15, 220);
+            this.groupBox3.Location = new System.Drawing.Point(15, 235);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(456, 115);
+            this.groupBox3.Size = new System.Drawing.Size(456, 113);
             this.groupBox3.TabIndex = 4;
             this.groupBox3.TabStop = false;
+            // 
+            // chbIgnoreWriteFailure
+            // 
+            this.chbIgnoreWriteFailure.AutoSize = true;
+            this.chbIgnoreWriteFailure.Checked = true;
+            this.chbIgnoreWriteFailure.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chbIgnoreWriteFailure.Location = new System.Drawing.Point(252, 91);
+            this.chbIgnoreWriteFailure.Name = "chbIgnoreWriteFailure";
+            this.chbIgnoreWriteFailure.Size = new System.Drawing.Size(142, 17);
+            this.chbIgnoreWriteFailure.TabIndex = 22;
+            this.chbIgnoreWriteFailure.Text = "Ignore log writing failures";
+            this.chbIgnoreWriteFailure.UseVisualStyleBackColor = true;
             // 
             // chbGenerateReportAtExit
             // 
@@ -432,7 +451,7 @@
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.Location = new System.Drawing.Point(395, 571);
+            this.btnCancel.Location = new System.Drawing.Point(395, 576);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 27;
@@ -443,7 +462,7 @@
             // btnOK
             // 
             this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOK.Location = new System.Drawing.Point(314, 571);
+            this.btnOK.Location = new System.Drawing.Point(314, 576);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 26;
@@ -464,16 +483,31 @@
             // 
             this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox4.Controls.Add(this.btnEmailSetup);
             this.groupBox4.Controls.Add(this.chbSendNotificationsLine);
+            this.groupBox4.Controls.Add(this.chbEmailNotification);
             this.groupBox4.Controls.Add(this.chbSendNotifications);
+            this.groupBox4.Controls.Add(this.label14);
+            this.groupBox4.Controls.Add(this.label13);
             this.groupBox4.Controls.Add(this.label11);
+            this.groupBox4.Controls.Add(this.txtEmailDelaySeconds);
             this.groupBox4.Controls.Add(this.chbMarkHostConsFail);
             this.groupBox4.Controls.Add(this.txtFailToMark);
-            this.groupBox4.Location = new System.Drawing.Point(15, 144);
+            this.groupBox4.Location = new System.Drawing.Point(15, 136);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(456, 70);
+            this.groupBox4.Size = new System.Drawing.Size(456, 93);
             this.groupBox4.TabIndex = 3;
             this.groupBox4.TabStop = false;
+            // 
+            // btnEmailSetup
+            // 
+            this.btnEmailSetup.Location = new System.Drawing.Point(145, 62);
+            this.btnEmailSetup.Name = "btnEmailSetup";
+            this.btnEmailSetup.Size = new System.Drawing.Size(75, 23);
+            this.btnEmailSetup.TabIndex = 13;
+            this.btnEmailSetup.Text = "Setup...";
+            this.btnEmailSetup.UseVisualStyleBackColor = true;
+            this.btnEmailSetup.Click += new System.EventHandler(this.btnEmailSetup_Click);
             // 
             // chbSendNotificationsLine
             // 
@@ -485,6 +519,18 @@
             this.chbSendNotificationsLine.TabIndex = 12;
             this.chbSendNotificationsLine.Text = "Send notifications via LINE (n/a)";
             this.chbSendNotificationsLine.UseVisualStyleBackColor = true;
+            // 
+            // chbEmailNotification
+            // 
+            this.chbEmailNotification.AutoSize = true;
+            this.chbEmailNotification.Checked = true;
+            this.chbEmailNotification.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chbEmailNotification.Location = new System.Drawing.Point(9, 66);
+            this.chbEmailNotification.Name = "chbEmailNotification";
+            this.chbEmailNotification.Size = new System.Drawing.Size(137, 17);
+            this.chbEmailNotification.TabIndex = 11;
+            this.chbEmailNotification.Text = "Send email notifications";
+            this.chbEmailNotification.UseVisualStyleBackColor = true;
             // 
             // chbSendNotifications
             // 
@@ -498,6 +544,26 @@
             this.chbSendNotifications.Text = "Send taskbar notifications every minute";
             this.chbSendNotifications.UseVisualStyleBackColor = true;
             // 
+            // label14
+            // 
+            this.label14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(247, 67);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(110, 13);
+            this.label14.TabIndex = 3;
+            this.label14.Text = "Delay between emails";
+            // 
+            // label13
+            // 
+            this.label13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(403, 67);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(47, 13);
+            this.label13.TabIndex = 3;
+            this.label13.Text = "seconds";
+            // 
             // label11
             // 
             this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -507,6 +573,15 @@
             this.label11.Size = new System.Drawing.Size(47, 13);
             this.label11.TabIndex = 3;
             this.label11.Text = "seconds";
+            // 
+            // txtEmailDelaySeconds
+            // 
+            this.txtEmailDelaySeconds.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtEmailDelaySeconds.Location = new System.Drawing.Point(363, 64);
+            this.txtEmailDelaySeconds.Name = "txtEmailDelaySeconds";
+            this.txtEmailDelaySeconds.Size = new System.Drawing.Size(34, 20);
+            this.txtEmailDelaySeconds.TabIndex = 10;
+            this.txtEmailDelaySeconds.Text = "300";
             // 
             // chbMarkHostConsFail
             // 
@@ -531,14 +606,16 @@
             // 
             // groupBox5
             // 
+            this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox5.Controls.Add(this.label12);
             this.groupBox5.Controls.Add(this.txtShowLowerPanel_limit);
             this.groupBox5.Controls.Add(this.radbtnchbShowLowerPanel_all);
             this.groupBox5.Controls.Add(this.radbtnchbShowLowerPanel_failed);
             this.groupBox5.Controls.Add(this.chbShowLowerPanel);
-            this.groupBox5.Location = new System.Drawing.Point(15, 342);
+            this.groupBox5.Location = new System.Drawing.Point(15, 354);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(455, 75);
+            this.groupBox5.Size = new System.Drawing.Size(455, 71);
             this.groupBox5.TabIndex = 5;
             this.groupBox5.TabStop = false;
             // 
@@ -595,6 +672,8 @@
             // 
             // groupBox6
             // 
+            this.groupBox6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox6.Controls.Add(this.chbSchedulerEnable_reset);
             this.groupBox6.Controls.Add(this.chbSchedulerEnable_report);
             this.groupBox6.Controls.Add(this.chbSchedulerEnable_stop);
@@ -604,9 +683,9 @@
             this.groupBox6.Controls.Add(this.txtSchedulerTime_stop);
             this.groupBox6.Controls.Add(this.txtSchedulerTime_start);
             this.groupBox6.Controls.Add(this.chbScheduleStartStopReport);
-            this.groupBox6.Location = new System.Drawing.Point(15, 424);
+            this.groupBox6.Location = new System.Drawing.Point(15, 431);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(455, 75);
+            this.groupBox6.Size = new System.Drawing.Size(455, 70);
             this.groupBox6.TabIndex = 28;
             this.groupBox6.TabStop = false;
             // 
@@ -705,10 +784,12 @@
             // 
             // groupBox7
             // 
+            this.groupBox7.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox7.Controls.Add(this.linkLabel2);
             this.groupBox7.Controls.Add(this.linkLabel1);
             this.groupBox7.Controls.Add(this.btnEnableHttpServer);
-            this.groupBox7.Location = new System.Drawing.Point(15, 505);
+            this.groupBox7.Location = new System.Drawing.Point(15, 507);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Size = new System.Drawing.Size(455, 60);
             this.groupBox7.TabIndex = 29;
@@ -746,23 +827,11 @@
             this.btnEnableHttpServer.Text = "Enable HTTP server for remote stats access (requires re-launch)";
             this.btnEnableHttpServer.UseVisualStyleBackColor = true;
             // 
-            // chbIgnoreWriteFailure
-            // 
-            this.chbIgnoreWriteFailure.AutoSize = true;
-            this.chbIgnoreWriteFailure.Checked = true;
-            this.chbIgnoreWriteFailure.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chbIgnoreWriteFailure.Location = new System.Drawing.Point(252, 91);
-            this.chbIgnoreWriteFailure.Name = "chbIgnoreWriteFailure";
-            this.chbIgnoreWriteFailure.Size = new System.Drawing.Size(142, 17);
-            this.chbIgnoreWriteFailure.TabIndex = 22;
-            this.chbIgnoreWriteFailure.Text = "Ignore log writing failures";
-            this.chbIgnoreWriteFailure.UseVisualStyleBackColor = true;
-            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(483, 606);
+            this.ClientSize = new System.Drawing.Size(483, 611);
             this.Controls.Add(this.groupBox7);
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox5);
@@ -857,5 +926,10 @@
         private System.Windows.Forms.CheckBox btnEnableHttpServer;
         private System.Windows.Forms.LinkLabel linkLabel2;
         private System.Windows.Forms.CheckBox chbIgnoreWriteFailure;
+        private System.Windows.Forms.Button btnEmailSetup;
+        private System.Windows.Forms.CheckBox chbEmailNotification;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox txtEmailDelaySeconds;
     }
 }

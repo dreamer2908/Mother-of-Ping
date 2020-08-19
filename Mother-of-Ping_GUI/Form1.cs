@@ -97,6 +97,7 @@ namespace Mother_of_Ping_GUI
 
         bool appPref_ignoreWriteFailure = true;
 
+        bool email_enable = false;
         string email_host = "";
         int email_port = 25;
         bool email_ssl = false;
@@ -301,7 +302,7 @@ namespace Mother_of_Ping_GUI
         private static string emailHeadline = "*** This is a system generated email, do not reply to this email id ***\n \n";
         private static string eventSeparator = "\n \n####################################################################\n \n";
 
-        private void sendEmailAlert(bool ignoreDelay = false, bool ignoreAlertStatus = false, List<string> custom_to = null)
+        public void sendEmailAlert(bool ignoreDelay = false, bool ignoreAlertStatus = false, List<string> custom_to = null)
         {
             // only send email if more than delayBetweenEmails seconds has passed since last email
             // or when delay is asked to be ignored
@@ -495,6 +496,19 @@ namespace Mother_of_Ping_GUI
                 appPref_httpServer_enable = appPref_httpServer_enable,
 
                 appPref_ignoreWriteFailure = appPref_ignoreWriteFailure,
+
+                email_host = email_host,
+                email_port = email_port,
+                email_ssl = email_ssl,
+                email_from = email_from,
+                email_user = email_user,
+                email_login = email_login,
+                email_password = email_password,
+                email_subject = email_subject,
+                delayBetweenEmails = delayBetweenEmails,
+                email_to = email_to,
+                email_enable = email_enable,
+                form1 = this,
             };
 
             if (options.ShowDialog() == DialogResult.OK)
@@ -559,6 +573,18 @@ namespace Mother_of_Ping_GUI
                 appPref_httpServer_enable = options.appPref_httpServer_enable;
 
                 appPref_ignoreWriteFailure = options.appPref_ignoreWriteFailure;
+
+                email_host = options.email_host;
+                email_port = options.email_port;
+                email_ssl = options.email_ssl;
+                email_from = options.email_from;
+                email_user = options.email_user;
+                email_login = options.email_login;
+                email_password = options.email_password;
+                email_subject = options.email_subject;
+                delayBetweenEmails = options.delayBetweenEmails;
+                email_to = options.email_to;
+                email_enable = options.email_enable;
             }
         }
 
@@ -921,6 +947,7 @@ namespace Mother_of_Ping_GUI
 
             appPref_ignoreWriteFailure = Settings.Get("appPref_ignoreWriteFailure", true);
 
+            email_enable = Settings.Get("email_enable", false);
             email_host = Settings.Get("email_host", "");
             email_port = Settings.Get("email_port", 25);
             email_ssl = Settings.Get("email_ssl", false);
@@ -1005,6 +1032,7 @@ namespace Mother_of_Ping_GUI
             Settings.Set("appPref_ignoreWriteFailure", appPref_ignoreWriteFailure);
 
             Settings.Set("email_host", email_host);
+            Settings.Set("email_enable", email_enable);
             Settings.Set("email_port", email_port);
             Settings.Set("email_ssl", email_ssl);
             Settings.Set("email_from", email_from);

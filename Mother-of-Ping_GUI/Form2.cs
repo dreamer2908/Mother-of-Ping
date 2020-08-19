@@ -18,6 +18,8 @@ namespace Mother_of_Ping_GUI
             InitializeComponent();
         }
 
+        public Form1 form1;
+
         public int pingPref_period = 1000;
         public int pingPref_timeout = 1000;
         public int pingPref_bufferSize = 32;
@@ -60,6 +62,18 @@ namespace Mother_of_Ping_GUI
         public bool appPref_httpServer_enable = false;
 
         public bool appPref_ignoreWriteFailure = true;
+
+        public bool email_enable = true;
+        public string email_host = "";
+        public int email_port = 25;
+        public bool email_ssl = false;
+        public string email_from = "";
+        public string email_user = "";
+        public bool email_login = true;
+        public string email_password = "";
+        public List<string> email_to = new List<string>();
+        public string email_subject = "";
+        public double delayBetweenEmails = 900; // seconds
 
         private void btnOK_Click(object sender, EventArgs e)
         {
@@ -127,6 +141,9 @@ namespace Mother_of_Ping_GUI
             appPref_httpServer_enable = btnEnableHttpServer.Checked;
 
             appPref_ignoreWriteFailure = chbIgnoreWriteFailure.Checked;
+
+            email_enable = chbEmailNotification.Checked;
+            double.TryParse(txtEmailDelaySeconds.Text, out delayBetweenEmails);
         }
 
         private void loadSettings()
@@ -182,6 +199,9 @@ namespace Mother_of_Ping_GUI
             btnEnableHttpServer.Checked = appPref_httpServer_enable;
 
             chbIgnoreWriteFailure.Checked = appPref_ignoreWriteFailure;
+
+            chbEmailNotification.Checked = email_enable;
+            txtEmailDelaySeconds.Text = delayBetweenEmails.ToString();
         }
 
         private void lockUnlockSchedulerControls()
@@ -258,6 +278,19 @@ namespace Mother_of_Ping_GUI
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start("http://localhost:3037/csv");
+        }
+
+        private void btnEmailSetup_Click(object sender, EventArgs e)
+        {
+            var emset = new Form3
+            {
+                form2 = this,
+            };
+
+            if (emset.ShowDialog() == DialogResult.OK)
+            {
+                // do nothing here, everything in form3
+            }
         }
     }
 }
