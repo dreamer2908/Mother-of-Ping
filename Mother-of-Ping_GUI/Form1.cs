@@ -6,8 +6,10 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Reflection;
 using System.Text;
 using System.Threading;
@@ -94,6 +96,242 @@ namespace Mother_of_Ping_GUI
         bool appPref_httpServer_enable = false;
 
         bool appPref_ignoreWriteFailure = true;
+
+        string email_host = "";
+        int email_port = 25;
+        bool email_ssl = false;
+        string email_from = "";
+        string email_user = "";
+        bool email_login = true;
+        string email_password = "";
+        List<string> email_to = new List<string>();
+        string email_subject = "";
+        double delayBetweenEmails = 900; // seconds
+
+        DateTime lastEmailTimestamp = DateTime.MinValue;
+
+        #region email
+
+        public static string getNowStringForFilename()
+        {
+            return DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
+        }
+
+        public static string datetimeCommonFormatString = "yyyy-MM-dd HH:mm:ss";
+        public static string getNowString()
+        {
+            return formatDateTime(DateTime.Now);
+        }
+
+        public static string formatDateTime(DateTime d)
+        {
+            return d.ToString(datetimeCommonFormatString);
+        }
+
+        public static DateTime parseDateTime(string s)
+        {
+            try
+            {
+                return DateTime.ParseExact(s, datetimeCommonFormatString, CultureInfo.InvariantCulture);
+            }
+            catch (FormatException)
+            {
+                return DateTime.MinValue;
+            }
+        }
+
+        public static DateTime parseDateTime(string s, TimeSpan maxDistanceFromNow)
+        {
+            var d = parseDateTime(s);
+            var now = DateTime.Now;
+            if (now - d > maxDistanceFromNow)
+            {
+                d = now.Subtract(maxDistanceFromNow);
+            }
+            else if (d - now > maxDistanceFromNow)
+            {
+                d = now.Add(maxDistanceFromNow);
+            }
+            return d;
+        }
+
+        public static string formatTimeSpan(TimeSpan s)
+        {
+            if (s.TotalDays >= 1)
+            {
+                return s.ToString(@"dd\.hh\:mm\:ss");
+            }
+            else if (s.TotalHours >= 1)
+            {
+                return s.ToString(@"hh\:mm\:ss");
+            }
+            else
+            {
+                return s.ToString(@"hh\:mm\:ss");
+            }
+        }
+
+        private string convertTextToHtml(string input)
+        {
+            string[] lines = splitLines(input);
+
+            StringBuilder sb = new StringBuilder();
+
+            foreach (string text in lines)
+            {
+                string encoded = System.Net.WebUtility.HtmlEncode(text);
+                sb.AppendLine("<pre>" + encoded + "</pre>");
+            }
+
+            return sb.ToString();
+        }
+
+        private string[] splitLines(string text)
+        {
+            string[] lines = text.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+            return lines;
+        }
+
+        private static string[] customSplitLines(string text)
+        {
+            List<string> result = new List<string>();
+
+            string empty = " "; // workaround for Outlook ignoring totally empty line
+
+            string thisLine = empty;
+            int i = 0;
+            while (i < text.Length)
+            {
+                if (text[i] == '\n')
+                {
+                    result.Add(thisLine);
+                    thisLine = empty;
+                    i++;
+                }
+                else if (text[i] == '\r')
+                {
+                    result.Add(thisLine);
+                    thisLine = empty;
+
+                    if (text[i + 1] == '\n')
+                    {
+                        i += 2;
+                    }
+                    else
+                    {
+                        i += 1;
+                    }
+                }
+                else
+                {
+                    thisLine = thisLine + text[i].ToString();
+                    i++;
+                }
+            }
+
+            return result.ToArray();
+        }
+
+        // single receipent
+        private void sendEmail(string email_to, string email_subject, string email_body, List<string> attachments = null)
+        {
+            sendEmail(email_host, email_port, email_ssl, email_from, email_user, email_password, email_to, email_subject, email_body, attachments);
+        }
+
+        // multiple receipents
+        private void sendEmail(List<string> email_to, string email_subject, string email_body, List<string> attachments = null)
+        {
+            sendEmail(email_host, email_port, email_ssl, email_from, email_user, email_password, email_to, email_subject, email_body, attachments);
+        }
+
+        // single receipent
+        private void sendEmail(string email_host, int email_port, bool email_ssl, string email_from, string email_user, string email_password, string email_to, string email_subject, string email_body, List<string> attachments = null)
+        {
+            List<string> to = new List<string>();
+            to.Add(email_to);
+            sendEmail(email_host, email_port, email_ssl, email_from, email_user, email_password, to, email_subject, email_body, attachments);
+        }
+
+        // multiple receipents
+        private void sendEmail(string email_host, int email_port, bool email_ssl, string email_from, string email_user, string email_password, List<string> email_to, string email_subject, string email_body, List<string> attachments = null)
+        {
+            using (SmtpClient SmtpServer = new SmtpClient(email_host))
+            {
+                using (MailMessage mail = new MailMessage())
+                {
+                    try
+                    {
+                        mail.From = new MailAddress(email_from);
+                        foreach (string em in email_to)
+                        {
+                            mail.To.Add(em);
+                        }
+                        mail.Subject = email_subject;
+                        mail.IsBodyHtml = true;
+                        mail.Body = convertTextToHtml(email_body);
+
+                        // attach files
+                        if (attachments != null)
+                        {
+                            foreach (var filename in attachments)
+                            {
+                                mail.Attachments.Add(new Attachment(filename));
+                                // MessageBox.Show("Added attachment to email");
+                            }
+                        }
+
+                        SmtpServer.Port = email_port;
+                        SmtpServer.Credentials = new System.Net.NetworkCredential(email_user, email_password);
+                        SmtpServer.EnableSsl = email_ssl;
+
+                        SmtpServer.Send(mail);
+
+                        // MessageBox.Show("mail Send");
+                        Console.WriteLine("mail Send");
+                    }
+                    catch (Exception ex)
+                    {
+                        // MessageBox.Show(ex.ToString());
+                        Console.WriteLine(ex.ToString());
+                    }
+                }
+            }
+        }
+
+        private static string emailHeadline = "*** This is a system generated email, do not reply to this email id ***\n \n";
+        private static string eventSeparator = "\n \n####################################################################\n \n";
+
+        private void sendEmailAlert(bool ignoreDelay = false, bool ignoreAlertStatus = false, List<string> custom_to = null)
+        {
+            // only send email if more than delayBetweenEmails seconds has passed since last email
+            // or when delay is asked to be ignored
+            double secondSinceLastEmail = (DateTime.Now - lastEmailTimestamp).TotalSeconds;
+
+            if (ignoreDelay || secondSinceLastEmail >= delayBetweenEmails)
+            {
+                string email_body = emailHeadline + "At system time: " + getNowString() + "\n ";
+
+                foreach (DataGridViewRow row in dgvPing.Rows)
+                {
+                    if (row.DefaultCellStyle.BackColor == Color.Orange)
+                    {
+                        string message = string.Format("{0} is offline for {1}", row.Cells[3].Value, row.Cells[18].Value.ToString());
+                        email_body += "\n" + message;
+                    }
+                }
+
+                lastEmailTimestamp = DateTime.Now;
+                if (custom_to != null)
+                {
+                    sendEmail(custom_to, email_subject, email_body);
+                }
+                else
+                {
+                    sendEmail(email_to, email_subject, email_body);
+                }
+            }
+        }
+        #endregion
 
         #region events
 
@@ -332,6 +570,7 @@ namespace Mother_of_Ping_GUI
         private void timer3_Tick(object sender, EventArgs e)
         {
             notifyOfflineHost();
+            sendEmailAlert();
         }
 
         private void btnReset_Click(object sender, EventArgs e)
@@ -622,6 +861,21 @@ namespace Mother_of_Ping_GUI
             timer3.Stop();
         }
 
+        private string[] separatorComma = new string[] { "," };
+        private void splitMultivalueSettingStringToList(string source, string[] separator, List<string> target)
+        {
+            target.Clear();
+            string[] array = source.Split(separator, StringSplitOptions.None);
+            for (int i = 0; i < array.Length; i++)
+            {
+                string sub = array[i].Trim();
+                if (sub.Length > 0)
+                {
+                    target.Add(sub);
+                }
+            }
+        }
+
         private void loadSettings()
         {
             pingPref_period = Settings.Get("pingPref_period", 1000);
@@ -666,6 +920,18 @@ namespace Mother_of_Ping_GUI
             appPref_httpServer_enable = Settings.Get("appPref_httpServer_enable", false);
 
             appPref_ignoreWriteFailure = Settings.Get("appPref_ignoreWriteFailure", true);
+
+            email_host = Settings.Get("email_host", "");
+            email_port = Settings.Get("email_port", 25);
+            email_ssl = Settings.Get("email_ssl", false);
+            email_from = Settings.Get("email_from", "");
+            email_user = Settings.Get("email_user", "");
+            email_login = Settings.Get("email_login", true);
+            email_password = Settings.Get("email_password", "");
+            email_subject = Settings.Get("email_subject", "");
+            delayBetweenEmails = Settings.Get("delayBetweenEmails", 900);
+            string email_tos = Settings.Get("email_to", "");
+            splitMultivalueSettingStringToList(email_tos, separatorComma, email_to);
 
             if (appPref_saveHostList)
             {
@@ -737,6 +1003,17 @@ namespace Mother_of_Ping_GUI
             Settings.Set("appPref_httpServer_enable", appPref_httpServer_enable);
 
             Settings.Set("appPref_ignoreWriteFailure", appPref_ignoreWriteFailure);
+
+            Settings.Set("email_host", email_host);
+            Settings.Set("email_port", email_port);
+            Settings.Set("email_ssl", email_ssl);
+            Settings.Set("email_from", email_from);
+            Settings.Set("email_user", email_user);
+            Settings.Set("email_login", email_login);
+            Settings.Set("email_password", email_password);
+            Settings.Set("email_subject", email_subject);
+            Settings.Set("delayBetweenEmails", (int)delayBetweenEmails);
+            Settings.Set("email_to", string.Join(separatorComma[0], email_to));
 
             // save host list
             if (appPref_saveHostList)
