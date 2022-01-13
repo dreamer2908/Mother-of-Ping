@@ -538,7 +538,14 @@ namespace Mother_of_Ping_CLI
             using (var stream = client.OpenRead(url))
             using (var textReader = new StreamReader(stream, Encoding.UTF8, true))
             {
-                return textReader.ReadToEnd();
+                string re = string.Empty;
+                try {
+                    re = textReader.ReadToEnd();
+                }
+                catch {
+                    // ignore all errors
+                }
+                return re;
             }
         }
     }

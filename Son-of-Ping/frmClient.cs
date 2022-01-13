@@ -24,6 +24,7 @@ namespace Son_of_Ping
 
         string csvUrl = "http://localhost:3037/csv";
         string upstreamCsv = string.Empty;
+        bool serverConnected = false;
 
         DataTable bigData;
         SyncBindingSource bind;
@@ -233,6 +234,7 @@ namespace Son_of_Ping
             int status_online = 0;
             int status_offline = 0;
             int status_orange = 0;
+            string serverStatus = serverConnected ? "Connected" : "Disconnected";
 
             foreach (DataGridViewRow row in dgvPing.Rows)
             {
@@ -247,7 +249,7 @@ namespace Son_of_Ping
                 if (orange) status_orange++;
             }
 
-            lblStatusBar.Text = string.Format("Total: {0}. Online: {1}. Offline {2}. Long-term offline: {3}.", status_total, status_online, status_offline, status_orange);
+            lblStatusBar.Text = string.Format("Server status: {4}. Total: {0}. Online: {1}. Offline {2}. Long-term offline: {3}.", status_total, status_online, status_offline, status_orange, serverStatus);
         }
 
         private bool isHostInWhiteList(string hostname)
@@ -272,9 +274,19 @@ namespace Son_of_Ping
 
         private void updateStats()
         {
-            upstreamCsv = tools.readTextFromUrl(csvUrl);
+            List<string[]> csvRows;
 
-            List<string[]> csvRows = tools.csvParser(upstreamCsv, true, 18);
+            try
+            {
+                upstreamCsv = tools.readTextFromUrl(csvUrl);
+                csvRows = tools.csvParser(upstreamCsv, true, 18);
+                serverConnected = true;
+            }
+            catch
+            {
+                serverConnected = false;
+                return;
+            }
 
             bigData.BeginLoadData();
 
@@ -448,6 +460,7 @@ namespace Son_of_Ping
                 csvUrl = "http://" + txtServer.Text + ":3037/csv";
                 timer1.Start();
                 timer3.Start();
+                bigData.Clear();
                 btnConnect.Text = "Disconnect";
             }
             else
@@ -455,6 +468,8 @@ namespace Son_of_Ping
                 timer1.Stop();
                 timer3.Stop();
                 btnConnect.Text = "Connect";
+                serverConnected = false;
+                updateStatusBar();
             }
         }
 
