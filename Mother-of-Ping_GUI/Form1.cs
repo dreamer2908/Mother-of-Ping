@@ -327,7 +327,7 @@ namespace Mother_of_Ping_GUI
                 {
                     if (row.DefaultCellStyle.BackColor == Color.Orange)
                     {
-                        string message = string.Format("{0} is offline for {1}", row.Cells[3].Value, row.Cells[18].Value.ToString());
+                        string message = string.Format("{0} {2} is offline for {1}", row.Cells[3].Value, row.Cells[18].Value.ToString(), row.Cells[4].Value);
                         email_body += "\n" + message;
                     }
                 }
@@ -1117,7 +1117,7 @@ namespace Mother_of_Ping_GUI
             {
                 if (row.DefaultCellStyle.BackColor == Color.Orange)
                 {
-                    string message = string.Format("{0} is offline for {1}", row.Cells[3].Value, row.Cells[18].Value.ToString());
+                    string message = string.Format("{0} {2} is offline for {1}", row.Cells[3].Value, row.Cells[18].Value.ToString(), row.Cells[4].Value);
                     //sendTrayNotification(message);
                     mess.Add(message);
                 }
