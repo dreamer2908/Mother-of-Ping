@@ -916,7 +916,7 @@ namespace Mother_of_Ping_GUI
         private void loadSettings()
         {
             pingPref_period = Settings.Get("pingPref_period", 1000);
-            pingPref_timeout = Settings.Get("pingPref_timeout", 1000);
+            pingPref_timeout = Settings.Get("pingPref_timeout", 5000);
             pingPref_bufferSize = Settings.Get("pingPref_bufferSize", 32);
             pingPref_ttl = Settings.Get("pingPref_ttl", 128);
 
@@ -930,15 +930,15 @@ namespace Mother_of_Ping_GUI
             appPref_sendTaskbarNotifications = Settings.Get("appPref_sendTaskbarNotifications", true);
             appPref_sendLineNotifications = Settings.Get("appPref_sendLineNotifications", false);
 
-            appPref_saveGlobalLog = Settings.Get("appPref_saveGlobalLog", true);
-            appPref_saveIndividualLog = Settings.Get("appPref_saveIndividualLog", true);
+            appPref_saveGlobalLog = Settings.Get("appPref_saveGlobalLog", false);
+            appPref_saveIndividualLog = Settings.Get("appPref_saveIndividualLog", false);
             appPref_globalLogFilename = Settings.Get("appPref_globalLogFilename", "");
             appPref_logFolder = Settings.Get("appPref_logFolder", "");
             appPref_useTodayFolder = Settings.Get("appPref_useTodayFolder", true);
             appPref_flushLogPeriod = Settings.Get("appPref_flushLogPeriod", 600);
 
             appPref_showLowerPanel = Settings.Get("appPref_showLowerPanel", true);
-            appPref_showLowerPanel_onlyFailed = Settings.Get("appPref_showLowerPanel_onlyFailed", true);
+            appPref_showLowerPanel_onlyFailed = Settings.Get("appPref_showLowerPanel_onlyFailed", false);
             appPref_showLowerPanel_limit = Settings.Get("appPref_showLowerPanel_limit", 50);
 
             appPref_generateReportAtExit = Settings.Get("appPref_generateReportAtExit", true);
