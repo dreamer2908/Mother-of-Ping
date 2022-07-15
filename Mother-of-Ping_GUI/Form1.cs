@@ -619,6 +619,25 @@ namespace Mother_of_Ping_GUI
         {
             schedulerLoop();
         }
+
+        private void dgvPing_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == dgvPing.Columns[1].Index && e.RowIndex != -1)
+            {
+                // Handle checkbox state change here
+                // Actually there's no need to do anything here.
+                // MessageBox.Show("e.ColumnIndex = " + e.ColumnIndex.ToString() + "\ne.RowIndex = " + e.RowIndex);
+            }
+        }
+
+        private void dgvPing_CellMouseUp(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            // End of edition on each click on column of checkbox
+            if (e.ColumnIndex == dgvPing.Columns[1].Index && e.RowIndex != -1)
+            {
+                dgvPing.EndEdit();
+            }
+        }
         #endregion
 
         private void startPingAio()
@@ -1115,7 +1134,8 @@ namespace Mother_of_Ping_GUI
             List<string> mess = new List<string>();
             foreach (DataGridViewRow row in dgvPing.Rows)
             {
-                if (row.DefaultCellStyle.BackColor == Color.Orange)
+                bool thisRowNoticeEnabled = (bool)row.Cells[1].Value;
+                if (row.DefaultCellStyle.BackColor == Color.Orange && thisRowNoticeEnabled)
                 {
                     string message = string.Format("{0} {2} is offline for {1}", row.Cells[3].Value, row.Cells[18].Value.ToString(), row.Cells[4].Value);
                     //sendTrayNotification(message);

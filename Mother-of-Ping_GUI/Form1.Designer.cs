@@ -68,11 +68,12 @@
             this.dgvPing.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvPing.Location = new System.Drawing.Point(0, 0);
             this.dgvPing.Name = "dgvPing";
-            this.dgvPing.ReadOnly = true;
             this.dgvPing.RowHeadersVisible = false;
             this.dgvPing.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvPing.Size = new System.Drawing.Size(776, 285);
             this.dgvPing.TabIndex = 0;
+            this.dgvPing.CellMouseUp += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvPing_CellMouseUp);
+            this.dgvPing.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPing_CellValueChanged);
             // 
             // btnLoad
             // 
