@@ -10,6 +10,8 @@ using System.Xml;
 using System.Diagnostics;
 using System.Security.Principal;
 using System.Net;
+using System.Web.Security;
+using System.Web;
 
 namespace Mother_of_Ping_CLI
 {
@@ -464,6 +466,47 @@ namespace Mother_of_Ping_CLI
             return htmlContents;
         }
 
+        #endregion
+
+        #region password
+        private static string Protect(string text, string purpose)
+        {
+            if (string.IsNullOrEmpty(text))
+                return null;
+
+            byte[] stream = Encoding.UTF8.GetBytes(text);
+            byte[] encodedValue = MachineKey.Protect(stream, purpose);
+            return HttpServerUtility.UrlTokenEncode(encodedValue);
+        }
+
+        private static string Unprotect(string text, string purpose)
+        {
+            if (string.IsNullOrEmpty(text))
+                return null;
+
+            byte[] stream = HttpServerUtility.UrlTokenDecode(text);
+            byte[] decodedValue = MachineKey.Unprotect(stream, purpose);
+            return Encoding.UTF8.GetString(decodedValue);
+        }
+
+        public static string encryptPassword(string text)
+        {
+            string re = Protect(text, "907331bf-0052-464b-be89-19a517e79f6c");
+            return (string.IsNullOrEmpty(re)) ? string.Empty : re;
+        }
+
+        public static string decryptPassword(string text)
+        {
+            try
+            {
+                string re = Unprotect(text, "907331bf-0052-464b-be89-19a517e79f6c");
+                return (string.IsNullOrEmpty(re)) ? string.Empty : re;
+            }
+            catch (Exception)
+            {
+                return text;
+            }
+        }
         #endregion
 
         public static void clearConcurrentQueue(ConcurrentQueue<string[]> log)

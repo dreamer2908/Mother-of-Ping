@@ -986,7 +986,8 @@ namespace Mother_of_Ping_GUI
             email_from = Settings.Get("email_from", "");
             email_user = Settings.Get("email_user", "");
             email_login = Settings.Get("email_login", true);
-            email_password = Settings.Get("email_password", "");
+            string encryptedPassword = Settings.Get("email_password", "");
+            email_password = tools.decryptPassword(encryptedPassword);
             email_subject = Settings.Get("email_subject", "");
             delayBetweenEmails = Settings.Get("delayBetweenEmails", 900);
             string email_tos = Settings.Get("email_to", "");
@@ -1070,7 +1071,8 @@ namespace Mother_of_Ping_GUI
             Settings.Set("email_from", email_from);
             Settings.Set("email_user", email_user);
             Settings.Set("email_login", email_login);
-            Settings.Set("email_password", email_password);
+            string encryptedPassword = tools.encryptPassword(email_password);
+            Settings.Set("email_password", encryptedPassword);
             Settings.Set("email_subject", email_subject);
             Settings.Set("delayBetweenEmails", (int)delayBetweenEmails);
             Settings.Set("email_to", string.Join(separatorComma[0], email_to));
