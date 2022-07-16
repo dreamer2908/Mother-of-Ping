@@ -276,6 +276,8 @@ namespace Son_of_Ping
         {
             List<string[]> csvRows;
 
+            bool firstTime = !serverConnected;
+
             try
             {
                 upstreamCsv = tools.readTextFromUrl(csvUrl);
@@ -308,7 +310,7 @@ namespace Son_of_Ping
                 {
                     var row = bigData.Rows[rowAdded];
 
-                    row[1] = true;
+                    if (firstTime) { row[1] = true; } // Only set "notice" value if it's "firstTime", so that it won't overwrite client user settings
                     row[2] = i;
                     row[3] = csvRow[0];
                     row[4] = csvRow[1];
@@ -411,7 +413,8 @@ namespace Son_of_Ping
             List<string> mess = new List<string>();
             foreach (DataGridViewRow row in dgvPing.Rows)
             {
-                if (row.DefaultCellStyle.BackColor == Color.Orange)
+                bool thisRowNoticeEnabled = (bool)row.Cells[1].Value;
+                if (row.DefaultCellStyle.BackColor == Color.Orange && thisRowNoticeEnabled)
                 {
                     string message = string.Format("{0} is offline for {1}", row.Cells[3].Value, row.Cells[18].Value.ToString());
                     //sendTrayNotification(message);
@@ -504,6 +507,25 @@ namespace Son_of_Ping
         private void btnClearList_Click(object sender, EventArgs e)
         {
             hostList.Clear();
+        }
+
+        private void dgvPing_CellMouseUp(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            // End of edition on each click on column of checkbox
+            if (e.ColumnIndex == dgvPing.Columns[1].Index && e.RowIndex != -1)
+            {
+                dgvPing.EndEdit();
+            }
+        }
+
+        private void dgvPing_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == dgvPing.Columns[1].Index && e.RowIndex != -1)
+            {
+                // Handle checkbox state change here
+                // Actually there's no need to do anything here.
+                // MessageBox.Show("e.ColumnIndex = " + e.ColumnIndex.ToString() + "\ne.RowIndex = " + e.RowIndex);
+            }
         }
     }
 }
