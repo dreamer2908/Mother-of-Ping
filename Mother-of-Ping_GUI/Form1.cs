@@ -599,6 +599,8 @@ namespace Mother_of_Ping_GUI
                 delayBetweenEmails = options.delayBetweenEmails;
                 email_to = options.email_to;
                 email_enable = options.email_enable;
+
+                saveSettings();
             }
         }
 
