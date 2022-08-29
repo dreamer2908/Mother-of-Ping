@@ -310,7 +310,7 @@ namespace Son_of_Ping
                 {
                     var row = bigData.Rows[rowAdded];
 
-                    if (firstTime) { row[1] = true; } // Only set "notice" value if it's "firstTime", so that it won't overwrite client user settings
+                    if (firstTime || rowAdded > 0 || (row[1] == DBNull.Value)) { row[1] = true; } // Only set "notice" value if it's "firstTime" or a new row, so that it won't overwrite client user settings
                     row[2] = i;
                     row[3] = csvRow[0];
                     row[4] = csvRow[1];
@@ -410,10 +410,12 @@ namespace Son_of_Ping
 
         private void notifyOfflineHost()
         {
+            if (!appPref_sendTaskbarNotifications) return;
+
             List<string> mess = new List<string>();
             foreach (DataGridViewRow row in dgvPing.Rows)
             {
-                bool thisRowNoticeEnabled = (bool)row.Cells[1].Value;
+                bool thisRowNoticeEnabled = Convert.ToBoolean(row.Cells[1].Value);
                 if (row.DefaultCellStyle.BackColor == Color.Orange && thisRowNoticeEnabled)
                 {
                     string message = string.Format("{0} is offline for {1}", row.Cells[3].Value, row.Cells[18].Value.ToString());
