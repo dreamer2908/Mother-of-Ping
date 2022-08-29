@@ -322,12 +322,13 @@ namespace Mother_of_Ping_GUI
 
             if ((ignoreAlertStatus || orangeCount > 0) && (ignoreDelay || secondSinceLastEmail >= delayBetweenEmails))
             {
-                string email_body = emailHeadline + "At system time: " + getNowString() + "\n ";
+                string email_body = emailHeadline + "At system time: " + getNowString() + "\n" + lblStatusBar.Text + "\n ";
 
                 foreach (DataGridViewRow row in dgvPing.Rows)
                 {
                     bool thisRowNoticeEnabled = (bool)row.Cells[1].Value;
-                    if (row.DefaultCellStyle.BackColor == Color.Orange && thisRowNoticeEnabled)
+                    bool online = row.Cells[0].Value == icon_ok || row.Cells[0].Value == icon_blank;
+                    if (!online && thisRowNoticeEnabled)
                     {
                         string message = string.Format("{0} {2} is offline for {1}", row.Cells[3].Value, row.Cells[18].Value.ToString(), row.Cells[4].Value);
                         email_body += "\n" + message;
