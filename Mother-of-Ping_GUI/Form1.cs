@@ -177,6 +177,7 @@ namespace Mother_of_Ping_GUI
             string[] lines = splitLines(input);
 
             StringBuilder sb = new StringBuilder();
+            sb.Append("<meta charset='utf-8' />");
 
             foreach (string text in lines)
             {
@@ -270,6 +271,7 @@ namespace Mother_of_Ping_GUI
                         mail.Subject = email_subject;
                         mail.IsBodyHtml = true;
                         mail.Body = convertTextToHtml(email_body);
+                        mail.BodyEncoding = System.Text.Encoding.UTF8;
 
                         // attach files
                         if (attachments != null)
