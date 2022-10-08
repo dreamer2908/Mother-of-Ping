@@ -304,8 +304,11 @@ namespace Mother_of_Ping_GUI
         private static string emailHeadline = "*** This is a system generated email, do not reply to this email id ***\n \n";
         private static string eventSeparator = "\n \n####################################################################\n \n";
 
-        public void sendEmailAlert(bool ignoreDelay = false, bool ignoreAlertStatus = false, List<string> custom_to = null)
+        public void sendEmailAlert(bool force = false, List<string> custom_to = null)
         {
+            // don't send email when not enabled or forced
+            if (!(email_enable || force)) { return; }
+
             // only send email if more than delayBetweenEmails seconds has passed since last email
             // or when delay is asked to be ignored
             double secondSinceLastEmail = (DateTime.Now - lastEmailTimestamp).TotalSeconds;
@@ -322,7 +325,7 @@ namespace Mother_of_Ping_GUI
                 }
             }
 
-            if ((ignoreAlertStatus || orangeCount > 0) && (ignoreDelay || secondSinceLastEmail >= delayBetweenEmails))
+            if ((force || orangeCount > 0) && (force || secondSinceLastEmail >= delayBetweenEmails))
             {
                 string email_body = emailHeadline + "At system time: " + getNowString() + "\n" + lblStatusBar.Text + "\n ";
 

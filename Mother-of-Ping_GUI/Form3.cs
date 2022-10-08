@@ -42,7 +42,7 @@ namespace Mother_of_Ping_GUI
                 custom_to.Add(lsvReceiver.Items[i].Text);
             }
 
-            form2.form1.sendEmailAlert(true, true, custom_to);
+            form2.form1.sendEmailAlert(true, custom_to);
         }
 
         private void Form3_Load(object sender, EventArgs e)
