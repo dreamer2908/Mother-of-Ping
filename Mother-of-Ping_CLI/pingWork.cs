@@ -217,11 +217,19 @@ namespace Mother_of_Ping_CLI
 
                 // added timeOffset to avoid the situation where the loop runs without any delay
                 // when the timeout > period, and timeout occurs, so sleepTime < 0 for (timeout - period) loop
+                // or when the system clock changes forward
                 while (sleepTime <= 0)
                 {
                     timeOffset += period;
                     loopEndTime = startLine.AddMilliseconds(totalCount * period + timeOffset);
                     sleepTime = (int)(loopEndTime - DateTime.Now).TotalMilliseconds;
+                }
+
+                // fix for when the system clock changes backward
+                if (sleepTime > period)
+                {
+                    sleepTime = period;
+                    timeOffset = 0;
                 }
 
                 Thread.Sleep(sleepTime);
